@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template gradingform_rubric/grades/grader/gradingpanel
+    @template gradingform_rubrix/grades/grader/gradingpanel
 
     Classes required for JS:
     * none
@@ -53,7 +53,7 @@
         ]
     }
 }}
-<form id="gradingform_rubric-{{uniqid}}">
+<form id="gradingform_rubrix-{{uniqid}}">
     <input type="hidden" name="instanceid" value="{{instanceid}}">
     <div id="rubric-advancedgrading-{{uniqid}}" class="criterion">
         {{#criteria}}
@@ -99,7 +99,7 @@
                                     {{{definition}}}
                                 </span>
                                 <span class="pull-right">
-                                    {{#str}}pointsvalue, gradingform_rubric, {{score}}{{/str}}
+                                    {{#str}}pointsvalue, gradingform_rubrix, {{score}}{{/str}}
                                 </span>
                             </label>
                         </div>
@@ -122,6 +122,6 @@
 </form>
 {{#js}}
 require(['core/auto_rows'], function(AutoRows) {
-    AutoRows.init(document.getElementById('gradingform_rubric-{{uniqid}}'));
+    AutoRows.init(document.getElementById('gradingform_rubrix-{{uniqid}}'));
 });
 {{/js}}

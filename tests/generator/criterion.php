@@ -17,18 +17,18 @@
 /**
  * Generator for the gradingforum_rubric plugin.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @category   test
  * @copyright  2018 Adrian Greeve <adriangreeve.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tests\gradingform_rubric\generator;
+namespace tests\gradingform_rubrix\generator;
 
 /**
  * Convenience class to create rubric criterion.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2018 Adrian Greeve <adriangreeve.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

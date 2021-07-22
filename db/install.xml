@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="grade/grading/form/rubric/db" VERSION="20120122" COMMENT="XMLDB file for Moodle rubrics"
+<XMLDB PATH="grade/grading/form/rubric/db" VERSION="20120122" COMMENT="XMLDB file for Moodle rubrix"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="gradingform_rubric_criteria" COMMENT="Stores the rows of the rubric grid.">
+    <TABLE NAME="gradingform_rubrix_criteria" COMMENT="Stores the rows of the rubric grid.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="definitionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The ID of the form definition this criterion is part of"/>
@@ -17,7 +17,7 @@
         <KEY NAME="fk_definitionid" TYPE="foreign" FIELDS="definitionid" REFTABLE="grading_definitions" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="gradingform_rubric_levels" COMMENT="Stores the columns of the rubric grid.">
+    <TABLE NAME="gradingform_rubrix_levels" COMMENT="Stores the columns of the rubric grid.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="criterionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The rubric criterion we are level of"/>
@@ -27,10 +27,10 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="fk_criterionid" TYPE="foreign" FIELDS="criterionid" REFTABLE="gradingform_rubric_criteria" REFFIELDS="id"/>
+        <KEY NAME="fk_criterionid" TYPE="foreign" FIELDS="criterionid" REFTABLE="gradingform_rubrix_criteria" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="gradingform_rubric_fillings" COMMENT="Stores the data of how the rubric is filled by a particular rater">
+    <TABLE NAME="gradingform_rubrix_fillings" COMMENT="Stores the data of how the rubric is filled by a particular rater">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="instanceid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The ID of the grading form instance"/>
@@ -42,7 +42,7 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="fk_instanceid" TYPE="foreign" FIELDS="instanceid" REFTABLE="grading_instances" REFFIELDS="id"/>
-        <KEY NAME="fk_criterionid" TYPE="foreign" FIELDS="criterionid" REFTABLE="gradingform_rubric_criteria" REFFIELDS="id"/>
+        <KEY NAME="fk_criterionid" TYPE="foreign" FIELDS="criterionid" REFTABLE="gradingform_rubrix_criteria" REFFIELDS="id"/>
         <KEY NAME="uq_instance_criterion" TYPE="unique" FIELDS="instanceid, criterionid"/>
       </KEYS>
       <INDEXES>

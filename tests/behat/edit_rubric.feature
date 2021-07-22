@@ -1,4 +1,4 @@
-@gradingform @gradingform_rubric
+@gradingform @gradingform_rubrix
 Feature: Rubrics can be created and edited
   In order to use and refine rubrics to grade students
   As a teacher

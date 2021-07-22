@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Language file for plugin gradingform_rubric
+ * Language file for plugin gradingform_rubrix
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -59,7 +59,7 @@ $string['lockzeropoints_help'] = 'This setting only applies if the sum of the mi
 $string['name'] = 'Name';
 $string['needregrademessage'] = 'The rubric definition was changed after this student had been graded. The student can not see this rubric until you check the rubric and update the grade.';
 $string['notset'] = 'Not set';
-$string['pluginname'] = 'Rubric';
+$string['pluginname'] = 'Rubrix';
 $string['pointsvalue'] = '{$a} points';
 $string['previewrubric'] = 'Preview rubric';
 $string['privacy:metadata:criterionid'] = 'An identifier for a specific criterion being graded.';
@@ -72,7 +72,7 @@ $string['regrademessage5'] = 'You are about to save significant changes to a rub
 $string['regradeoption0'] = 'Do not mark for regrade';
 $string['regradeoption1'] = 'Mark for regrade';
 $string['restoredfromdraft'] = 'NOTE: The last attempt to grade this person was not saved properly so draft grades have been restored. If you want to cancel these changes use the \'Cancel\' button below.';
-$string['rubric'] = 'Rubric';
+$string['rubrix'] = 'Rubrix';
 $string['rubricmapping'] = 'Score to grade mapping rules';
 $string['rubricmappingexplained'] = 'The minimum possible score for this rubric is <b>{$a->minscore} points</b>. It will be converted to the minimum grade available for the activity (which is 0 unless a scale is used). The maximum score of <b>{$a->maxscore} points</b> will be converted to the maximum grade. Intermediate scores will be converted respectively.
 

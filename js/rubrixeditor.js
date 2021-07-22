@@ -1,44 +1,44 @@
-M.gradingform_rubriceditor = {'templates' : {}, 'eventhandler' : null, 'name' : null, 'Y' : null};
+M.gradingform_rubrixeditor = {'templates' : {}, 'eventhandler' : null, 'name' : null, 'Y' : null};
 
 /**
  * This function is called for each rubriceditor on page.
  */
-M.gradingform_rubriceditor.init = function(Y, options) {
-    M.gradingform_rubriceditor.name = options.name
-    M.gradingform_rubriceditor.Y = Y
-    M.gradingform_rubriceditor.templates[options.name] = {
+M.gradingform_rubrixeditor.init = function(Y, options) {
+    M.gradingform_rubrixeditor.name = options.name
+    M.gradingform_rubrixeditor.Y = Y
+    M.gradingform_rubrixeditor.templates[options.name] = {
         'criterion' : options.criteriontemplate,
         'level' : options.leveltemplate
     }
-    M.gradingform_rubriceditor.disablealleditors()
-    Y.on('click', M.gradingform_rubriceditor.clickanywhere, 'body', null)
+    M.gradingform_rubrixeditor.disablealleditors()
+    Y.on('click', M.gradingform_rubrixeditor.clickanywhere, 'body', null)
     YUI().use('event-touch', function (Y) {
-        Y.one('body').on('touchstart', M.gradingform_rubriceditor.clickanywhere);
-        Y.one('body').on('touchend', M.gradingform_rubriceditor.clickanywhere);
+        Y.one('body').on('touchstart', M.gradingform_rubrixeditor.clickanywhere);
+        Y.one('body').on('touchend', M.gradingform_rubrixeditor.clickanywhere);
     })
-    M.gradingform_rubriceditor.addhandlers()
+    M.gradingform_rubrixeditor.addhandlers()
 };
 
 // Adds handlers for clicking submit button. This function must be called each time JS adds new elements to html
-M.gradingform_rubriceditor.addhandlers = function() {
-    var Y = M.gradingform_rubriceditor.Y
-    var name = M.gradingform_rubriceditor.name
-    if (M.gradingform_rubriceditor.eventhandler) M.gradingform_rubriceditor.eventhandler.detach()
-    M.gradingform_rubriceditor.eventhandler = Y.on('click', M.gradingform_rubriceditor.buttonclick, '#rubric-'+name+' input[type=submit]', null);
+M.gradingform_rubrixeditor.addhandlers = function() {
+    var Y = M.gradingform_rubrixeditor.Y
+    var name = M.gradingform_rubrixeditor.name
+    if (M.gradingform_rubrixeditor.eventhandler) M.gradingform_rubrixeditor.eventhandler.detach()
+    M.gradingform_rubrixeditor.eventhandler = Y.on('click', M.gradingform_rubrixeditor.buttonclick, '#rubric-'+name+' input[type=submit]', null);
 }
 
 // switches all input text elements to non-edit mode
-M.gradingform_rubriceditor.disablealleditors = function() {
-    var Y = M.gradingform_rubriceditor.Y
-    var name = M.gradingform_rubriceditor.name
-    Y.all('#rubric-'+name+' .level').each( function(node) {M.gradingform_rubriceditor.editmode(node, false)} );
-    Y.all('#rubric-'+name+' .description').each( function(node) {M.gradingform_rubriceditor.editmode(node, false)} );
+M.gradingform_rubrixeditor.disablealleditors = function() {
+    var Y = M.gradingform_rubrixeditor.Y
+    var name = M.gradingform_rubrixeditor.name
+    Y.all('#rubric-'+name+' .level').each( function(node) {M.gradingform_rubrixeditor.editmode(node, false)} );
+    Y.all('#rubric-'+name+' .description').each( function(node) {M.gradingform_rubrixeditor.editmode(node, false)} );
 }
 
 // function invoked on each click on the page. If level and/or criterion description is clicked
 // it switches this element to edit mode. If rubric button is clicked it does nothing so the 'buttonclick'
 // function is invoked
-M.gradingform_rubriceditor.clickanywhere = function(e) {
+M.gradingform_rubrixeditor.clickanywhere = function(e) {
     if (e.type == 'touchstart') return
     var el = e.target
     // if clicked on button - disablecurrenteditor, continue
@@ -54,17 +54,17 @@ M.gradingform_rubriceditor.clickanywhere = function(e) {
     }
     if (el) {
         if (el.one('textarea').hasClass('hiddenelement')) {
-            M.gradingform_rubriceditor.disablealleditors()
-            M.gradingform_rubriceditor.editmode(el, true, focustb)
+            M.gradingform_rubrixeditor.disablealleditors()
+            M.gradingform_rubrixeditor.editmode(el, true, focustb)
         }
         return
     }
     // else disablecurrenteditor
-    M.gradingform_rubriceditor.disablealleditors()
+    M.gradingform_rubrixeditor.disablealleditors()
 }
 
 // switch the criterion description or level to edit mode or switch back
-M.gradingform_rubriceditor.editmode = function(el, editmode, focustb) {
+M.gradingform_rubrixeditor.editmode = function(el, editmode, focustb) {
     var ta = el.one('textarea')
     if (!editmode && ta.hasClass('hiddenelement')) return;
     if (editmode && !ta.hasClass('hiddenelement')) return;
@@ -76,11 +76,11 @@ M.gradingform_rubriceditor.editmode = function(el, editmode, focustb) {
     if (!taplain) {
         ta.get('parentNode').append('<div class="plainvalue">'+pseudotablink+'<span class="textvalue">&nbsp;</span></div>')
         taplain = ta.get('parentNode').one('.plainvalue')
-        taplain.one('.pseudotablink').on('focus', M.gradingform_rubriceditor.clickanywhere)
+        taplain.one('.pseudotablink').on('focus', M.gradingform_rubrixeditor.clickanywhere)
         if (tb) {
             tb.get('parentNode').append('<span class="plainvalue">'+pseudotablink+'<span class="textvalue">&nbsp;</span></span>')
             tbplain = tb.get('parentNode').one('.plainvalue')
-            tbplain.one('.pseudotablink').on('focus', M.gradingform_rubriceditor.clickanywhere)
+            tbplain.one('.pseudotablink').on('focus', M.gradingform_rubrixeditor.clickanywhere)
         }
     }
     if (tb && !tbplain) tbplain = tb.get('parentNode').one('.plainvalue')
@@ -90,7 +90,7 @@ M.gradingform_rubriceditor.editmode = function(el, editmode, focustb) {
         var value = ta.get('value')
         if (value.length) taplain.removeClass('empty')
         else {
-            value = (el.hasClass('level')) ? M.util.get_string('levelempty', 'gradingform_rubric') : M.util.get_string('criterionempty', 'gradingform_rubric')
+            value = (el.hasClass('level')) ? M.util.get_string('levelempty', 'gradingform_rubrix') : M.util.get_string('criterionempty', 'gradingform_rubrix')
             taplain.addClass('empty')
         }
         taplain.one('.textvalue').set('innerHTML', Y.Escape.html(value));
@@ -128,11 +128,11 @@ M.gradingform_rubriceditor.editmode = function(el, editmode, focustb) {
 }
 
 // handler for clicking on submit buttons within rubriceditor element. Adds/deletes/rearranges criteria and/or levels on client side
-M.gradingform_rubriceditor.buttonclick = function(e, confirmed) {
-    var Y = M.gradingform_rubriceditor.Y
-    var name = M.gradingform_rubriceditor.name
+M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
+    var Y = M.gradingform_rubrixeditor.Y
+    var name = M.gradingform_rubrixeditor.name
     if (e.target.get('type') != 'submit') return;
-    M.gradingform_rubriceditor.disablealleditors()
+    M.gradingform_rubrixeditor.disablealleditors()
     var chunks = e.target.get('id').split('-'),
         action = chunks[chunks.length-1]
     if (chunks[0] != name || chunks[1] != 'criteria') return;
@@ -146,13 +146,13 @@ M.gradingform_rubriceditor.buttonclick = function(e, confirmed) {
     var newlevid = 0;
     var newid = 0;
     if (action == 'addcriterion' || action == 'addlevel' || action == 'duplicate' ) {
-        newid = M.gradingform_rubriceditor.calculatenewid('#rubric-'+name+' .criterion');
-        newlevid = M.gradingform_rubriceditor.calculatenewid('#rubric-'+name+' .level');
+        newid = M.gradingform_rubrixeditor.calculatenewid('#rubric-'+name+' .criterion');
+        newlevid = M.gradingform_rubrixeditor.calculatenewid('#rubric-'+name+' .level');
     }
     var dialog_options = {
         'scope' : this,
         'callbackargs' : [e, true],
-        'callback' : M.gradingform_rubriceditor.buttonclick
+        'callback' : M.gradingform_rubrixeditor.buttonclick
     };
     if (chunks.length == 3 && action == 'addcriterion') {
         // ADD NEW CRITERION
@@ -166,18 +166,18 @@ M.gradingform_rubriceditor.buttonclick = function(e, confirmed) {
         for (levidx;levidx<3;levidx++) levelsscores[levidx] = parseFloat(levelsscores[levidx-1])+1
         var levelsstr = '';
         for (levidx=0;levidx<levelsscores.length;levidx++) {
-            levelsstr += M.gradingform_rubriceditor.templates[name].level.
+            levelsstr += M.gradingform_rubrixeditor.templates[name].level.
                 replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
                 replace(/\{LEVEL-score\}/g, levelsscores[levidx]).
                 replace(/\{LEVEL-index\}/g, levidx + 1);
         }
-        var newcriterion = M.gradingform_rubriceditor.templates[name]['criterion'].replace(/\{LEVELS\}/, levelsstr)
+        var newcriterion = M.gradingform_rubrixeditor.templates[name]['criterion'].replace(/\{LEVELS\}/, levelsstr)
         parentel.append(newcriterion.replace(/\{CRITERION-id\}/g, 'NEWID'+newid).replace(/\{.+?\}/g, ''))
-        M.gradingform_rubriceditor.assignclasses('#rubric-'+name+' #'+name+'-criteria-NEWID'+newid+'-levels .level')
-        M.gradingform_rubriceditor.addhandlers();
-        M.gradingform_rubriceditor.disablealleditors()
-        M.gradingform_rubriceditor.assignclasses(elements_str)
-        M.gradingform_rubriceditor.editmode(
+        M.gradingform_rubrixeditor.assignclasses('#rubric-'+name+' #'+name+'-criteria-NEWID'+newid+'-levels .level')
+        M.gradingform_rubrixeditor.addhandlers();
+        M.gradingform_rubrixeditor.disablealleditors()
+        M.gradingform_rubrixeditor.assignclasses(elements_str)
+        M.gradingform_rubrixeditor.editmode(
             Y.one('#rubric-' + name + ' #' + name + '-criteria-NEWID' + newid + '-description-cell'), true
         );
     } else if (chunks.length == 5 && action == 'addlevel') {
@@ -189,33 +189,33 @@ M.gradingform_rubriceditor.buttonclick = function(e, confirmed) {
             newscore = Math.max(newscore, parseFloat(node.one('.score input[type=text]').get('value')) + 1);
             levelIndex++;
         });
-        var newlevel = M.gradingform_rubriceditor.templates[name]['level'].
+        var newlevel = M.gradingform_rubrixeditor.templates[name]['level'].
             replace(/\{CRITERION-id\}/g, chunks[2]).replace(/\{LEVEL-id\}/g, 'NEWID'+newlevid).
             replace(/\{LEVEL-score\}/g, newscore).
             replace(/\{LEVEL-index\}/g, levelIndex).
             replace(/\{.+?\}/g, '');
         parent.append(newlevel)
-        M.gradingform_rubriceditor.addhandlers();
-        M.gradingform_rubriceditor.disablealleditors()
-        M.gradingform_rubriceditor.assignclasses(elements_str)
-        M.gradingform_rubriceditor.editmode(parent.all('.level').item(parent.all('.level').size()-1), true)
+        M.gradingform_rubrixeditor.addhandlers();
+        M.gradingform_rubrixeditor.disablealleditors()
+        M.gradingform_rubrixeditor.assignclasses(elements_str)
+        M.gradingform_rubrixeditor.editmode(parent.all('.level').item(parent.all('.level').size()-1), true)
     } else if (chunks.length == 4 && action == 'moveup') {
         // MOVE CRITERION UP
         el = Y.one('#'+name+'-criteria-'+chunks[2])
         if (el.previous()) el.get('parentNode').insertBefore(el, el.previous())
-        M.gradingform_rubriceditor.assignclasses(elements_str)
+        M.gradingform_rubrixeditor.assignclasses(elements_str)
     } else if (chunks.length == 4 && action == 'movedown') {
         // MOVE CRITERION DOWN
         el = Y.one('#'+name+'-criteria-'+chunks[2])
         if (el.next()) el.get('parentNode').insertBefore(el.next(), el)
-        M.gradingform_rubriceditor.assignclasses(elements_str)
+        M.gradingform_rubrixeditor.assignclasses(elements_str)
     } else if (chunks.length == 4 && action == 'delete') {
         // DELETE CRITERION
         if (confirmed) {
             Y.one('#'+name+'-criteria-'+chunks[2]).remove()
-            M.gradingform_rubriceditor.assignclasses(elements_str)
+            M.gradingform_rubrixeditor.assignclasses(elements_str)
         } else {
-            dialog_options['message'] = M.util.get_string('confirmdeletecriterion', 'gradingform_rubric')
+            dialog_options['message'] = M.util.get_string('confirmdeletecriterion', 'gradingform_rubrix')
             M.util.show_confirm_dialog(e, dialog_options);
         }
     } else if (chunks.length == 4 && action == 'duplicate') {
@@ -238,28 +238,28 @@ M.gradingform_rubriceditor.buttonclick = function(e, confirmed) {
         for (levidx; levidx < 3; levidx++) { levelsscores[levidx] = parseFloat(levelsscores[levidx-1]) + 1; }
         var levelsstr = '';
         for (levidx = 0; levidx < levelsscores.length; levidx++) {
-            levelsstr += M.gradingform_rubriceditor.templates[name].level
+            levelsstr += M.gradingform_rubrixeditor.templates[name].level
                             .replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx))
                             .replace(/\{LEVEL-score\}/g, levelsscores[levidx])
                             .replace(/\{LEVEL-definition\}/g, levelsdef[levidx]);
         }
         var description = source.one('.description .textvalue');
-        var newcriterion = M.gradingform_rubriceditor.templates[name].criterion
+        var newcriterion = M.gradingform_rubrixeditor.templates[name].criterion
                                 .replace(/\{LEVELS\}/, levelsstr)
                                 .replace(/\{CRITERION-description\}/, description.get('innerHTML'));
         parentel.append(newcriterion.replace(/\{CRITERION-id\}/g, 'NEWID'+newid).replace(/\{.+?\}/g, ''));
-        M.gradingform_rubriceditor.assignclasses('#rubric-'+name+' #'+name+'-criteria-NEWID'+newid+'-levels .level');
-        M.gradingform_rubriceditor.addhandlers();
-        M.gradingform_rubriceditor.disablealleditors();
-        M.gradingform_rubriceditor.assignclasses(elements_str);
-        M.gradingform_rubriceditor.editmode(Y.one('#rubric-'+name+' #'+name+'-criteria-NEWID'+newid+'-description-cell'),true);
+        M.gradingform_rubrixeditor.assignclasses('#rubric-'+name+' #'+name+'-criteria-NEWID'+newid+'-levels .level');
+        M.gradingform_rubrixeditor.addhandlers();
+        M.gradingform_rubrixeditor.disablealleditors();
+        M.gradingform_rubrixeditor.assignclasses(elements_str);
+        M.gradingform_rubrixeditor.editmode(Y.one('#rubric-'+name+' #'+name+'-criteria-NEWID'+newid+'-description-cell'),true);
     } else if (chunks.length == 6 && action == 'delete') {
         // DELETE LEVEL
         if (confirmed) {
             Y.one('#'+name+'-criteria-'+chunks[2]+'-'+chunks[3]+'-'+chunks[4]).remove()
-            M.gradingform_rubriceditor.assignclasses(elements_str)
+            M.gradingform_rubrixeditor.assignclasses(elements_str)
         } else {
-            dialog_options['message'] = M.util.get_string('confirmdeletelevel', 'gradingform_rubric')
+            dialog_options['message'] = M.util.get_string('confirmdeletelevel', 'gradingform_rubrix')
             M.util.show_confirm_dialog(e, dialog_options);
         }
     } else {
@@ -270,8 +270,8 @@ M.gradingform_rubriceditor.buttonclick = function(e, confirmed) {
 }
 
 // properly set classes (first/last/odd/even), level width and/or criterion sortorder for elements Y.all(elements_str)
-M.gradingform_rubriceditor.assignclasses = function (elements_str) {
-    var elements = M.gradingform_rubriceditor.Y.all(elements_str)
+M.gradingform_rubrixeditor.assignclasses = function (elements_str) {
+    var elements = M.gradingform_rubrixeditor.Y.all(elements_str)
     for (var i=0;i<elements.size();i++) {
         elements.item(i).removeClass('first').removeClass('last').removeClass('even').removeClass('odd').
             addClass(((i%2)?'odd':'even') + ((i==0)?' first':'') + ((i==elements.size()-1)?' last':''))
@@ -283,9 +283,9 @@ M.gradingform_rubriceditor.assignclasses = function (elements_str) {
 }
 
 // returns unique id for the next added element, it should not be equal to any of Y.all(elements_str) ids
-M.gradingform_rubriceditor.calculatenewid = function (elements_str) {
+M.gradingform_rubrixeditor.calculatenewid = function (elements_str) {
     var newid = 1
-    M.gradingform_rubriceditor.Y.all(elements_str).each( function(node) {
+    M.gradingform_rubrixeditor.Y.all(elements_str).each( function(node) {
         var idchunks = node.get('id').split('-'), id = idchunks.pop();
         if (id.match(/^NEWID(\d+)$/)) newid = Math.max(newid, parseInt(id.substring(5))+1);
     } );

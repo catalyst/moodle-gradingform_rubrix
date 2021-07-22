@@ -15,24 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy tests for gradingform_rubric
+ * Privacy tests for gradingform_rubrix
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @category   test
  * @copyright  2018 Adrian Greeve <adriangreeve.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tests\gradingform_rubric;
+namespace tests\gradingform_rubrix;
 
 use core_privacy\tests\provider_testcase;
 use core_privacy\local\request\writer;
-use gradingform_rubric\privacy\provider;
-use gradingform_rubric_controller;
+use gradingform_rubrix\privacy\provider;
+use gradingform_rubrix_controller;
 use context_module;
 
 /**
- * Privacy tests for gradingform_rubric
+ * Privacy tests for gradingform_rubrix
  *
  * @copyright  2018 Adrian Greeve <adriangreeve.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -71,7 +71,7 @@ class privacy_testcase extends provider_testcase {
 
         // Let's try the method we are testing.
         provider::export_gradingform_instance_data($modulecontext, $instance->get_id(), ['Test']);
-        $data = (array) writer::with_context($modulecontext)->get_data(['Test', 'Rubric', $instanceid]);
+        $data = (array) writer::with_context($modulecontext)->get_data(['Test', 'Rubrix', $instanceid]);
         $this->assertCount(2, $data);
         $this->assertEquals('Spelling is important', $data['Spelling is important']->description);
         $this->assertEquals('This user made several mistakes.', $data['Spelling is important']->remark);
@@ -123,11 +123,11 @@ class privacy_testcase extends provider_testcase {
         $instance->update($data);
 
         // Check how many records we have in the fillings table.
-        $records = $DB->get_records('gradingform_rubric_fillings');
+        $records = $DB->get_records('gradingform_rubrix_fillings');
         $this->assertCount(4, $records);
         // Let's delete one of the instances (the last one would be the easiest).
         provider::delete_gradingform_for_instances([$instance->get_id()]);
-        $records = $DB->get_records('gradingform_rubric_fillings');
+        $records = $DB->get_records('gradingform_rubrix_fillings');
         $this->assertCount(2, $records);
         foreach ($records as $record) {
             $this->assertNotEquals($instance->get_id(), $record->instanceid);
@@ -140,11 +140,11 @@ class privacy_testcase extends provider_testcase {
      * @param context_module $context
      * @param string $component
      * @param string $area
-     * @return gradingform_rubric_controller
+     * @return gradingform_rubrix_controller
      */
-    protected function get_test_rubric(context_module $context, string $component, string $area): gradingform_rubric_controller {
+    protected function get_test_rubric(context_module $context, string $component, string $area): gradingform_rubrix_controller {
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         return $rubricgenerator->get_test_rubric($context, $component, $area);
     }
@@ -152,7 +152,7 @@ class privacy_testcase extends provider_testcase {
     /**
      * Fetch a set of sample data.
      *
-     * @param gradingform_rubric_controller $controller
+     * @param gradingform_rubrix_controller $controller
      * @param int $itemid
      * @param float $spellingscore
      * @param string $spellingremark
@@ -161,7 +161,7 @@ class privacy_testcase extends provider_testcase {
      * @return array
      */
     protected function get_test_form_data(
-        gradingform_rubric_controller $controller,
+        gradingform_rubrix_controller $controller,
         int $itemid,
         float $spellingscore,
         string $spellingremark,
@@ -169,7 +169,7 @@ class privacy_testcase extends provider_testcase {
         string $pictureremark
     ): array {
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         return $rubricgenerator->get_test_form_data(
             $controller,

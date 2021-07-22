@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The form used at the rubric editor page is defined here
+ * The form used at the rubrix editor page is defined here
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 Marina Glancy <marina@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,17 +25,17 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/lib/formslib.php');
-require_once(__DIR__.'/rubriceditor.php');
-MoodleQuickForm::registerElementType('rubriceditor', $CFG->dirroot.'/grade/grading/form/rubric/rubriceditor.php', 'MoodleQuickForm_rubriceditor');
+require_once(__DIR__.'/rubrixeditor.php');
+MoodleQuickForm::registerElementType('rubrixeditor', $CFG->dirroot.'/grade/grading/form/rubrix/rubrixeditor.php', 'MoodleQuickForm_rubrixeditor');
 
 /**
- * Defines the rubric edit form
+ * Defines the rubrix edit form
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 Marina Glancy <marina@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class gradingform_rubric_editrubric extends moodleform {
+class gradingform_rubrix_editrubrix extends moodleform {
 
     /**
      * Form element definition
@@ -50,29 +50,29 @@ class gradingform_rubric_editrubric extends moodleform {
         $form->setType('returnurl', PARAM_LOCALURL);
 
         // name
-        $form->addElement('text', 'name', get_string('name', 'gradingform_rubric'), array('size' => 52, 'aria-required' => 'true'));
+        $form->addElement('text', 'name', get_string('name', 'gradingform_rubrix'), array('size' => 52, 'aria-required' => 'true'));
         $form->addRule('name', get_string('required'), 'required', null, 'client');
         $form->setType('name', PARAM_TEXT);
 
         // description
-        $options = gradingform_rubric_controller::description_form_field_options($this->_customdata['context']);
-        $form->addElement('editor', 'description_editor', get_string('description', 'gradingform_rubric'), null, $options);
+        $options = gradingform_rubrix_controller::description_form_field_options($this->_customdata['context']);
+        $form->addElement('editor', 'description_editor', get_string('description', 'gradingform_rubrix'), null, $options);
         $form->setType('description_editor', PARAM_RAW);
 
-        // rubric completion status
+        // rubrix completion status
         $choices = array();
         $choices[gradingform_controller::DEFINITION_STATUS_DRAFT]    = html_writer::tag('span', get_string('statusdraft', 'core_grading'), array('class' => 'status draft'));
         $choices[gradingform_controller::DEFINITION_STATUS_READY]    = html_writer::tag('span', get_string('statusready', 'core_grading'), array('class' => 'status ready'));
-        $form->addElement('select', 'status', get_string('rubricstatus', 'gradingform_rubric'), $choices)->freeze();
+        $form->addElement('select', 'status', get_string('rubricstatus', 'gradingform_rubrix'), $choices)->freeze();
 
-        // rubric editor
-        $element = $form->addElement('rubriceditor', 'rubric', get_string('rubric', 'gradingform_rubric'));
+        // rubrix editor
+        $element = $form->addElement('rubrixeditor', 'rubric', get_string('rubric', 'gradingform_rubrix'));
         $form->setType('rubric', PARAM_RAW);
 
         $buttonarray = array();
-        $buttonarray[] = &$form->createElement('submit', 'saverubric', get_string('saverubric', 'gradingform_rubric'));
+        $buttonarray[] = &$form->createElement('submit', 'saverubric', get_string('saverubric', 'gradingform_rubrix'));
         if ($this->_customdata['allowdraft']) {
-            $buttonarray[] = &$form->createElement('submit', 'saverubricdraft', get_string('saverubricdraft', 'gradingform_rubric'));
+            $buttonarray[] = &$form->createElement('submit', 'saverubricdraft', get_string('saverubricdraft', 'gradingform_rubrix'));
         }
         $editbutton = &$form->createElement('submit', 'editrubric', ' ');
         $editbutton->freeze();
@@ -98,7 +98,7 @@ class gradingform_rubric_editrubric extends moodleform {
         } else {
             $vals = array_values($el->getValue());
             if ($vals[0] == gradingform_controller::DEFINITION_STATUS_READY) {
-                $this->findButton('saverubric')->setValue(get_string('save', 'gradingform_rubric'));
+                $this->findButton('saverubric')->setValue(get_string('save', 'gradingform_rubrix'));
             }
         }
     }
@@ -154,7 +154,7 @@ class gradingform_rubric_editrubric extends moodleform {
      * mark the current grades for re-grading. User may confirm re-grading and continue,
      * return to editing or cancel the changes
      *
-     * @param gradingform_rubric_controller $controller
+     * @param gradingform_rubrix_controller $controller
      */
     public function need_confirm_regrading($controller) {
         $data = $this->get_data();
@@ -191,7 +191,7 @@ class gradingform_rubric_editrubric extends moodleform {
         // replace button text 'saverubric' and unfreeze 'Back to edit' button
         $this->findButton('saverubric')->setValue(get_string('continue'));
         $el =& $this->findButton('editrubric');
-        $el->setValue(get_string('backtoediting', 'gradingform_rubric'));
+        $el->setValue(get_string('backtoediting', 'gradingform_rubrix'));
         $el->unfreeze();
 
         return true;

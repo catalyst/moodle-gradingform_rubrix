@@ -17,7 +17,7 @@
 /**
  * Rubric editor page
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,13 +36,13 @@ list($context, $course, $cm) = get_context_info_array($manager->get_context()->i
 require_login($course, true, $cm);
 require_capability('moodle/grade:managegradingforms', $context);
 
-$controller = $manager->get_controller('rubric');
+$controller = $manager->get_controller('rubrix');
 
-$PAGE->set_url(new moodle_url('/grade/grading/form/rubric/edit.php', array('areaid' => $areaid)));
-$PAGE->set_title(get_string('definerubric', 'gradingform_rubric'));
-$PAGE->set_heading(get_string('definerubric', 'gradingform_rubric'));
+$PAGE->set_url(new moodle_url('/grade/grading/form/rubrix/edit.php', array('areaid' => $areaid)));
+$PAGE->set_title(get_string('definerubric', 'gradingform_rubrix'));
+$PAGE->set_heading(get_string('definerubric', 'gradingform_rubrix'));
 
-$mform = new gradingform_rubric_editrubric(null, array('areaid' => $areaid, 'context' => $context, 'allowdraft' => !$controller->has_active_instances()), 'post', '', array('class' => 'gradingform_rubric_editform'));
+$mform = new gradingform_rubrix_editrubric(null, array('areaid' => $areaid, 'context' => $context, 'allowdraft' => !$controller->has_active_instances()), 'post', '', array('class' => 'gradingform_rubrix_editform'));
 $data = $controller->get_definition_for_editing(true);
 $returnurl = optional_param('returnurl', $manager->get_management_url(), PARAM_LOCALURL);
 $data->returnurl = $returnurl;
@@ -58,7 +58,7 @@ if ($mform->is_cancelled()) {
     $warning = null;
     if (!empty($data->returnurl) && $data->returnurl !== $manager->get_management_url()->out(false)) {
         if (empty($data->rubric['options']['lockzeropoints']) && ($scores = $controller->get_min_max_score()) && $scores['minscore'] <> 0) {
-            $warning = get_string('zerolevelsabsent', 'gradingform_rubric').'<br>'.
+            $warning = get_string('zerolevelsabsent', 'gradingform_rubrix').'<br>'.
                 html_writer::link($manager->get_management_url(), get_string('back'));
         }
     }

@@ -17,7 +17,7 @@
 /**
  * Steps definitions for rubrics.
  *
- * @package   gradingform_rubric
+ * @package   gradingform_rubrix
  * @category  test
  * @copyright 2013 David Monllaó
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -34,17 +34,17 @@ use Behat\Gherkin\Node\TableNode as TableNode,
 /**
  * Steps definitions to help with rubrics.
  *
- * @package   gradingform_rubric
+ * @package   gradingform_rubrix
  * @category  test
  * @copyright 2013 David Monllaó
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class behat_gradingform_rubric extends behat_base {
+class behat_gradingform_rubrix extends behat_base {
 
     /**
      * @var The number of levels added by default when a rubric is created.
      */
-    const DEFAULT_RUBRIC_LEVELS = 3;
+    const DEFAULT_RUBRIX_LEVELS = 3;
 
     /**
      * Defines the rubric with the provided data, following rubric's definition grid cells.
@@ -75,10 +75,10 @@ class behat_gradingform_rubric extends behat_base {
 
         $criteria = $rubric->getRows();
 
-        $addcriterionbutton = $this->find_button(get_string('addcriterion', 'gradingform_rubric'));
+        $addcriterionbutton = $this->find_button(get_string('addcriterion', 'gradingform_rubrix'));
 
         // Cleaning the current ones.
-        $deletebuttons = $this->find_all('css', "input[value='" . get_string('criteriondelete', 'gradingform_rubric') . "']");
+        $deletebuttons = $this->find_all('css', "input[value='" . get_string('criteriondelete', 'gradingform_rubrix') . "']");
         if ($deletebuttons) {
 
             // We should reverse the deletebuttons because otherwise once we delete
@@ -93,7 +93,7 @@ class behat_gradingform_rubric extends behat_base {
         $levelnumber = 1;
 
         // The next criterion is created with the same number of levels than the last criterion.
-        $defaultnumberoflevels = self::DEFAULT_RUBRIC_LEVELS;
+        $defaultnumberoflevels = self::DEFAULT_RUBRIX_LEVELS;
 
         if ($criteria) {
             foreach ($criteria as $criterionit => $criterion) {
@@ -125,7 +125,7 @@ class behat_gradingform_rubric extends behat_base {
                 // description + definition1 + score1 + definition2 + score2 = 5.
                 if (count($criterion) < 5) {
                     throw new ExpectationException(
-                        get_string('err_mintwolevels', 'gradingform_rubric'),
+                        get_string('err_mintwolevels', 'gradingform_rubrix'),
                         $this->getSession()
                     );
 
@@ -176,12 +176,12 @@ class behat_gradingform_rubric extends behat_base {
                 }
 
                 // Updating it.
-                if ($nlevels > self::DEFAULT_RUBRIC_LEVELS) {
+                if ($nlevels > self::DEFAULT_RUBRIX_LEVELS) {
                     $defaultnumberoflevels = $nlevels;
                 } else {
                     // If it is less than the default value it sets it to
                     // the default value.
-                    $defaultnumberoflevels = self::DEFAULT_RUBRIC_LEVELS;
+                    $defaultnumberoflevels = self::DEFAULT_RUBRIX_LEVELS;
                 }
 
                 foreach ($criterion as $i => $value) {

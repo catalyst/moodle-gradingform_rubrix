@@ -17,7 +17,7 @@
 /**
  * Unit tests for core_grades\component_gradeitems;
  *
- * @package   gradingform_rubric
+ * @package   gradingform_rubrix
  * @category  test
  * @copyright 2019 Mathew May <mathew.solutions>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU Public License
@@ -25,7 +25,7 @@
 
 declare(strict_types = 1);
 
-namespace gradingform_rubric\grades\grader\gradingpanel\external;
+namespace gradingform_rubrix\grades\grader\gradingpanel\external;
 
 use advanced_testcase;
 use coding_exception;
@@ -38,7 +38,7 @@ use moodle_exception;
 /**
  * Unit tests for core_grades\component_gradeitems;
  *
- * @package   gradingform_rubric
+ * @package   gradingform_rubrix
  * @category  test
  * @copyright 2019 Mathew May <mathew.solutions>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -122,7 +122,7 @@ class fetch_test extends advanced_testcase {
         $this->assertIsArray($result);
         $this->assertArrayHasKey('templatename', $result);
 
-        $this->assertEquals('gradingform_rubric/grades/grader/gradingpanel', $result['templatename']);
+        $this->assertEquals('gradingform_rubrix/grades/grader/gradingpanel', $result['templatename']);
 
         $this->assertArrayHasKey('warnings', $result);
         $this->assertIsArray($result['warnings']);
@@ -241,7 +241,7 @@ class fetch_test extends advanced_testcase {
      */
     private function execute_and_assert_fetch ($forum, $controller, $definition, $fetcheruser, $grader, $gradeduser) {
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         $this->setUser($grader);
 
@@ -267,7 +267,7 @@ class fetch_test extends advanced_testcase {
         $this->assertIsArray($result);
         $this->assertArrayHasKey('templatename', $result);
 
-        $this->assertEquals('gradingform_rubric/grades/grader/gradingpanel', $result['templatename']);
+        $this->assertEquals('gradingform_rubrix/grades/grader/gradingpanel', $result['templatename']);
 
         $this->assertArrayHasKey('warnings', $result);
         $this->assertIsArray($result['warnings']);
@@ -364,7 +364,7 @@ class fetch_test extends advanced_testcase {
         $this->resetAfterTest();
 
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         $forum = $this->get_forum_instance();
         $course = $forum->get_course_record();
@@ -402,7 +402,7 @@ class fetch_test extends advanced_testcase {
     /**
      * Fetch a set of sample data.
      *
-     * @param \gradingform_rubric_controller $controller
+     * @param \gradingform_rubrix_controller $controller
      * @param int $itemid
      * @param float $spellingscore
      * @param string $spellingremark
@@ -411,7 +411,7 @@ class fetch_test extends advanced_testcase {
      * @return array
      */
     protected function get_test_form_data(
-        \gradingform_rubric_controller $controller,
+        \gradingform_rubrix_controller $controller,
         int $itemid,
         float $spellingscore,
         string $spellingremark,
@@ -419,7 +419,7 @@ class fetch_test extends advanced_testcase {
         string $pictureremark
     ): array {
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         return $rubricgenerator->get_test_form_data(
             $controller,

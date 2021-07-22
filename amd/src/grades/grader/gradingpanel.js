@@ -14,9 +14,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Grading panel for gradingform_rubric.
+ * Grading panel for gradingform_rubrix.
  *
- * @module     gradingform_rubric/grades/grader/gradingpanel
+ * @module     gradingform_rubrix/grades/grader/gradingpanel
  * @copyright  2019 Mathew May <mathew.solutions>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -40,7 +40,7 @@ import jQuery from 'jquery';
  */
 export const fetchCurrentGrade = (component, contextid, itemname, gradeduserid) => {
     return fetchMany([{
-        methodname: `gradingform_rubric_grader_gradingpanel_fetch`,
+        methodname: `gradingform_rubrix_grader_gradingpanel_fetch`,
         args: {
             component,
             contextid,
@@ -67,7 +67,7 @@ export const storeCurrentGrade = async(component, contextid, itemname, gradeduse
 
     if (compareData(form) === true) {
         return normaliseResult(await fetchMany([{
-            methodname: `gradingform_rubric_grader_gradingpanel_store`,
+            methodname: `gradingform_rubrix_grader_gradingpanel_store`,
             args: {
                 component,
                 contextid,

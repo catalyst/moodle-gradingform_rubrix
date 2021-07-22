@@ -17,7 +17,7 @@
 /**
  * Unit tests for core_grades\component_gradeitems;
  *
- * @package   gradingform_rubric
+ * @package   gradingform_rubrix
  * @category  test
  * @copyright 2019 Mathew May <mathew.solutions>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU Public License
@@ -25,7 +25,7 @@
 
 declare(strict_types = 1);
 
-namespace gradingform_rubric\grades\grader\gradingpanel\external;
+namespace gradingform_rubrix\grades\grader\gradingpanel\external;
 
 use advanced_testcase;
 use coding_exception;
@@ -37,7 +37,7 @@ use moodle_exception;
 /**
  * Unit tests for core_grades\component_gradeitems;
  *
- * @package   gradingform_rubric
+ * @package   gradingform_rubrix
  * @category  test
  * @copyright 2019 Mathew May <mathew.solutions>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -120,7 +120,7 @@ class store_test extends advanced_testcase {
     public function test_execute_store_graded(): void {
         $this->resetAfterTest();
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         [
             'forum' => $forum,
@@ -152,7 +152,7 @@ class store_test extends advanced_testcase {
         $this->assertIsArray($result);
         $this->assertArrayHasKey('templatename', $result);
 
-        $this->assertEquals('gradingform_rubric/grades/grader/gradingpanel', $result['templatename']);
+        $this->assertEquals('gradingform_rubrix/grades/grader/gradingpanel', $result['templatename']);
 
         $this->assertArrayHasKey('warnings', $result);
         $this->assertIsArray($result['warnings']);
@@ -249,7 +249,7 @@ class store_test extends advanced_testcase {
         $this->resetAfterTest();
 
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         $forum = $this->get_forum_instance();
         $course = $forum->get_course_record();

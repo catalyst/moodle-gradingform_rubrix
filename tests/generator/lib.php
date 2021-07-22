@@ -17,7 +17,7 @@
 /**
  * Generator for the gradingforum_rubric plugin.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @category   test
  * @copyright  2019 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,18 +28,18 @@ defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__ . '/rubric.php');
 require_once(__DIR__ . '/criterion.php');
 
-use tests\gradingform_rubric\generator\rubric;
-use tests\gradingform_rubric\generator\criterion;
+use tests\gradingform_rubrix\generator\rubric;
+use tests\gradingform_rubrix\generator\criterion;
 
 /**
  * Generator for the gradingforum_rubric plugintype.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @category   test
  * @copyright  2019 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class gradingform_rubric_generator extends component_generator_base {
+class gradingform_rubrix_generator extends component_generator_base {
 
     /**
      * Create an instance of a rubric.
@@ -50,7 +50,7 @@ class gradingform_rubric_generator extends component_generator_base {
      * @param string $name
      * @param string $description
      * @param array $criteria The list of criteria to add to the generated rubric
-     * @return gradingform_rubric_controller
+     * @return gradingform_rubrix_controller
      */
     public function create_instance(
         context $context,
@@ -59,7 +59,7 @@ class gradingform_rubric_generator extends component_generator_base {
         string $name,
         string $description,
         array $criteria
-    ): gradingform_rubric_controller {
+    ): gradingform_rubrix_controller {
         global $USER;
 
         if ($USER->id === 0) {
@@ -97,13 +97,13 @@ class gradingform_rubric_generator extends component_generator_base {
     }
 
     /**
-     * Get a new rubric for use with a gradingform_rubric_generator_rubric.
+     * Get a new rubric for use with a gradingform_rubrix_generator_rubric.
      *
      * Note: This is just a helper class used to build a new definition. It does not persist the data.
      *
      * @param string $description
      * @param array $levels Set of levels in the form definition => score
-     * @return gradingform_rubric_generator_criterion
+     * @return gradingform_rubrix_generator_criterion
      */
     protected function get_criterion(string $description, array $levels = []): criterion {
         return new criterion($description, $levels);
@@ -156,12 +156,12 @@ class gradingform_rubric_generator extends component_generator_base {
      * Get submitted form data for the supplied controller, itemid, and values.
      * The returned data is in the format used by rubric when handling form submission.
      *
-     * @param gradingform_rubric_controller $controller
+     * @param gradingform_rubrix_controller $controller
      * @param int $itemid
      * @param array $values A set of array values where the array key is the name of the criterion, and the value is an
      * array with the desired score, and any remark.
      */
-    public function get_submitted_form_data(gradingform_rubric_controller $controller, int $itemid, array $values): array {
+    public function get_submitted_form_data(gradingform_rubrix_controller $controller, int $itemid, array $values): array {
         $result = [
             'itemid' => $itemid,
             'criteria' => [],
@@ -186,9 +186,9 @@ class gradingform_rubric_generator extends component_generator_base {
      * @param context $context
      * @param string $component
      * @param string $area
-     * @return gradingform_rubric_controller
+     * @return gradingform_rubrix_controller
      */
-    public function get_test_rubric(context $context, string $component, string $area): gradingform_rubric_controller {
+    public function get_test_rubric(context $context, string $component, string $area): gradingform_rubrix_controller {
         $criteria = [
             'Spelling is important' => [
                 'Nothing but mistakes' => 0,
@@ -208,7 +208,7 @@ class gradingform_rubric_generator extends component_generator_base {
     /**
      * Fetch a set of sample data.
      *
-     * @param gradingform_rubric_controller $controller
+     * @param gradingform_rubrix_controller $controller
      * @param int $itemid
      * @param float $spellingscore
      * @param string $spellingremark
@@ -217,7 +217,7 @@ class gradingform_rubric_generator extends component_generator_base {
      * @return array
      */
     public function get_test_form_data(
-        gradingform_rubric_controller $controller,
+        gradingform_rubrix_controller $controller,
         int $itemid,
         float $spellingscore,
         string $spellingremark,
@@ -225,7 +225,7 @@ class gradingform_rubric_generator extends component_generator_base {
         string $pictureremark
     ): array {
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
         return $rubricgenerator->get_submitted_form_data($controller, $itemid, [
             'Spelling is important' => [
                 'score' => $spellingscore,

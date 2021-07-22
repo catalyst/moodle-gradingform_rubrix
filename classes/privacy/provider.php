@@ -17,12 +17,12 @@
 /**
  * Privacy class for requesting user data.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2018 Sara Arjona <sara@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace gradingform_rubric\privacy;
+namespace gradingform_rubrix\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -45,7 +45,7 @@ class provider implements
      * @return collection A listing of user data stored through this system.
      */
     public static function get_metadata(collection $collection) : collection {
-        $collection->add_database_table('gradingform_rubric_fillings', [
+        $collection->add_database_table('gradingform_rubrix_fillings', [
             'instanceid' => 'privacy:metadata:instanceid',
             'criterionid' => 'privacy:metadata:criterionid',
             'levelid' => 'privacy:metadata:levelid',
@@ -66,13 +66,13 @@ class provider implements
         // Get records from the provided params.
         $params = ['instanceid' => $instanceid];
         $sql = "SELECT rc.description, rl.definition, rl.score, rf.remark
-                  FROM {gradingform_rubric_fillings} rf
-                  JOIN {gradingform_rubric_criteria} rc ON rc.id = rf.criterionid
-                  JOIN {gradingform_rubric_levels} rl ON rf.levelid = rl.id
+                  FROM {gradingform_rubrix_fillings} rf
+                  JOIN {gradingform_rubrix_criteria} rc ON rc.id = rf.criterionid
+                  JOIN {gradingform_rubrix_levels} rl ON rf.levelid = rl.id
                  WHERE rf.instanceid = :instanceid";
         $records = $DB->get_records_sql($sql, $params);
         if ($records) {
-            $subcontext = array_merge($subcontext, [get_string('rubric', 'gradingform_rubric'), $instanceid]);
+            $subcontext = array_merge($subcontext, [get_string('rubric', 'gradingform_rubrix'), $instanceid]);
             \core_privacy\local\request\writer::with_context($context)->export_data($subcontext, (object) $records);
         }
     }
@@ -84,6 +84,6 @@ class provider implements
      */
     public static function delete_gradingform_for_instances(array $instanceids) {
         global $DB;
-        $DB->delete_records_list('gradingform_rubric_fillings', 'instanceid', $instanceids);
+        $DB->delete_records_list('gradingform_rubrix_fillings', 'instanceid', $instanceids);
     }
 }

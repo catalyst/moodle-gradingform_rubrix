@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file keeps track of upgrades to plugin gradingform_rubric
+ * This file keeps track of upgrades to plugin gradingform_rubrix
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param int $oldversion the DB version of currently installed plugin
  * @return bool true
  */
-function xmldb_gradingform_rubric_upgrade($oldversion) {
+function xmldb_gradingform_rubrix_upgrade($oldversion) {
     global $CFG;
 
     // Automatically generated Moodle v3.6.0 release upgrade line.

@@ -17,23 +17,23 @@
 /**
  * Generator testcase for the gradingforum_rubric generator.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @category   test
  * @copyright  2019 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tests\gradingform_rubric;
+namespace tests\gradingform_rubrix;
 
 use advanced_testcase;
 use context_module;
-use gradingform_rubric_controller;
+use gradingform_rubrix_controller;
 use gradingform_controller;
 
 /**
  * Generator testcase for the gradingforum_rubric generator.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @category   test
  * @copyright  2019 Andrew Nicols <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -48,7 +48,7 @@ class generator_testcase extends advanced_testcase {
 
         // Fetch generators.
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         // Create items required for testing.
         $course = $generator->create_course();
@@ -78,7 +78,7 @@ class generator_testcase extends advanced_testcase {
         $this->setUser($user);
         $controller = $rubricgenerator->create_instance($context, 'mod_assign', 'submission', $name, $description, $criteria);
 
-        $this->assertInstanceOf(gradingform_rubric_controller::class, $controller);
+        $this->assertInstanceOf(gradingform_rubrix_controller::class, $controller);
 
         $definition = $controller->get_definition();
         $this->assertNotEmpty($definition->id);
@@ -156,7 +156,7 @@ class generator_testcase extends advanced_testcase {
 
         // Fetch generators.
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         // Create items required for testing.
         $course = $generator->create_course();
@@ -208,7 +208,7 @@ class generator_testcase extends advanced_testcase {
 
         // Fetch generators.
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         // Create items required for testing.
         $course = $generator->create_course();
@@ -236,7 +236,7 @@ class generator_testcase extends advanced_testcase {
 
         // Fetch generators.
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         // Create items required for testing.
         $course = $generator->create_course();
@@ -282,7 +282,7 @@ class generator_testcase extends advanced_testcase {
 
         // Fetch generators.
         $generator = \testing_util::get_data_generator();
-        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubric');
+        $rubricgenerator = $generator->get_plugin_generator('gradingform_rubrix');
 
         // Create items required for testing.
         $course = $generator->create_course();

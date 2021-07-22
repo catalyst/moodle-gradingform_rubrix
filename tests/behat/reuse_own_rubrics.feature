@@ -1,4 +1,4 @@
-@gradingform @gradingform_rubric
+@gradingform @gradingform_rubrix
 Feature: Reuse my rubrics in other activities
   In order to save time creating duplicated grading forms
   As a teacher
@@ -23,7 +23,7 @@ Feature: Reuse my rubrics in other activities
     And I follow "Test assignment 1"
     And I navigate to "Edit settings" in current page administration
     And I set the following fields to these values:
-      | Grading method | Rubric |
+      | Grading method | rubrix |
     And I press "Save and return to course"
     And I go to "Test assignment 1 name" advanced grading definition page
     And I set the following fields to these values:
@@ -39,7 +39,7 @@ Feature: Reuse my rubrics in other activities
     And I follow "Test assignment 2"
     And I navigate to "Edit settings" in current page administration
     And I set the following fields to these values:
-      | Grading method | Rubric |
+      | Grading method | Rubrix |
     And I press "Save and return to course"
     And I set "Test assignment 2 name" activity to use "Assignment 1 rubric" grading form
     Then I should see "Ready for use"

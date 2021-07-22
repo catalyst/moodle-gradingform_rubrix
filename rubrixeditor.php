@@ -17,7 +17,7 @@
 /**
  * File contains definition of class MoodleQuickForm_rubriceditor
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once("HTML/QuickForm/input.php");
 
 /**
- * Form element for handling rubric editor
+ * Form element for handling rubrix editor
  *
  * The rubric editor is defined as a separate form element. This allows us to render
  * criteria, levels and buttons using the rubric's own renderer. Also, the required
@@ -37,11 +37,11 @@ require_once("HTML/QuickForm/input.php");
  * If Javascript is disabled when one of those special buttons is pressed, the form
  * element is not validated and, instead of submitting the form, we process button presses.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
+class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
     /** @var string help message */
     public $_helpbutton = '';
     /** @var string|bool stores the result of the last validation: null - undefined, false - no errors, string - error(s) text */
@@ -54,7 +54,7 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
     protected $regradeconfirmation = false;
 
     /**
-     * Constructor for rubric editor
+     * Constructor for rubrix editor
      *
      * @param string $elementName
      * @param string $elementLabel
@@ -69,7 +69,7 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
      *
      * @deprecated since Moodle 3.1
      */
-    public function MoodleQuickForm_rubriceditor($elementName=null, $elementLabel=null, $attributes=null) {
+    public function MoodleQuickForm_rubrixeditor($elementName=null, $elementLabel=null, $attributes=null) {
         debugging('Use of class name as constructor is deprecated', DEBUG_DEVELOPER);
         self::__construct($elementName, $elementLabel, $attributes);
     }
@@ -96,7 +96,7 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
      * Specifies that confirmation about re-grading needs to be added to this rubric editor.
      * $changelevel is saved in $this->regradeconfirmation and retrieved in toHtml()
      *
-     * @see gradingform_rubric_controller::update_or_check_rubric()
+     * @see gradingform_rubrix_controller::update_or_check_rubric()
      * @param int $changelevel
      */
     public function add_regrade_confirmation($changelevel) {
@@ -111,16 +111,16 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
     public function toHtml() {
         global $PAGE;
         $html = $this->_getTabs();
-        $renderer = $PAGE->get_renderer('gradingform_rubric');
+        $renderer = $PAGE->get_renderer('gradingform_rubrix');
         $data = $this->prepare_data(null, $this->wasvalidated);
         if (!$this->_flagFrozen) {
-            $mode = gradingform_rubric_controller::DISPLAY_EDIT_FULL;
-            $module = array('name'=>'gradingform_rubriceditor', 'fullpath'=>'/grade/grading/form/rubric/js/rubriceditor.js',
+            $mode = gradingform_rubrix_controller::DISPLAY_EDIT_FULL;
+            $module = array('name'=>'gradingform_rubrixeditor', 'fullpath'=>'/grade/grading/form/rubrix/js/rubrixeditor.js',
                 'requires' => array('base', 'dom', 'event', 'event-touch', 'escape'),
-                'strings' => array(array('confirmdeletecriterion', 'gradingform_rubric'), array('confirmdeletelevel', 'gradingform_rubric'),
-                    array('criterionempty', 'gradingform_rubric'), array('levelempty', 'gradingform_rubric')
+                'strings' => array(array('confirmdeletecriterion', 'gradingform_rubrix'), array('confirmdeletelevel', 'gradingform_rubrix'),
+                    array('criterionempty', 'gradingform_rubrix'), array('levelempty', 'gradingform_rubrix')
                 ));
-            $PAGE->requires->js_init_call('M.gradingform_rubriceditor.init', array(
+            $PAGE->requires->js_init_call('M.gradingform_rubrixeditor.init', array(
                 array('name' => $this->getName(),
                     'criteriontemplate' => $renderer->criterion_template($mode, $data['options'], $this->getName()),
                     'leveltemplate' => $renderer->level_template($mode, $data['options'], $this->getName())
@@ -129,9 +129,9 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
         } else {
             // Rubric is frozen, no javascript needed
             if ($this->_persistantFreeze) {
-                $mode = gradingform_rubric_controller::DISPLAY_EDIT_FROZEN;
+                $mode = gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN;
             } else {
-                $mode = gradingform_rubric_controller::DISPLAY_PREVIEW;
+                $mode = gradingform_rubrix_controller::DISPLAY_PREVIEW;
             }
         }
         if ($this->regradeconfirmation) {
@@ -169,7 +169,7 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
         }
         $totalscore = 0;
         $errors = array();
-        $return = array('criteria' => array(), 'options' => gradingform_rubric_controller::get_default_options());
+        $return = array('criteria' => array(), 'options' => gradingform_rubrix_controller::get_default_options());
         if (!isset($value['criteria'])) {
             $value['criteria'] = array();
             $errors['err_nocriteria'] = 1;
@@ -322,7 +322,7 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
             if (count($errors)) {
                 $rv = array();
                 foreach ($errors as $error => $v) {
-                    $rv[] = get_string($error, 'gradingform_rubric');
+                    $rv[] = get_string($error, 'gradingform_rubrix');
                 }
                 $this->validationerrors = join('<br/ >', $rv);
             } else {

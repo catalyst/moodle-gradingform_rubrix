@@ -1,4 +1,4 @@
-@gradingform @gradingform_rubric
+@gradingform @gradingform_rubrix
 Feature: Publish rubrics as templates
   In order to save time to teachers
   As a manager

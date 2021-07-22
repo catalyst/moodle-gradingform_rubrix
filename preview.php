@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Preview rubric page
+ * Preview rubrix page
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,15 +35,15 @@ list($context, $course, $cm) = get_context_info_array($manager->get_context()->i
 
 require_login($course, true, $cm);
 
-$controller = $manager->get_controller('rubric');
+$controller = $manager->get_controller('rubrix');
 $options = $controller->get_options();
 
 if (!$controller->is_form_defined() || empty($options['alwaysshowdefinition'])) {
-    throw new moodle_exception('nopermissions', 'error', '', get_string('previewrubric', 'gradingform_rubric'));
+    throw new moodle_exception('nopermissions', 'error', '', get_string('previewrubric', 'gradingform_rubrix'));
 }
 
-$title = get_string('gradingof', 'gradingform_rubric', $manager->get_area_title());
-$PAGE->set_url(new moodle_url('/grade/grading/form/rubric/preview.php', array('areaid' => $areaid)));
+$title = get_string('gradingof', 'gradingform_rubrix', $manager->get_area_title());
+$PAGE->set_url(new moodle_url('/grade/grading/form/rubrix/preview.php', array('areaid' => $areaid)));
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 

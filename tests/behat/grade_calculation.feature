@@ -1,4 +1,4 @@
-@gradingform @gradingform_rubric @javascript
+@gradingform @gradingform_rubrix @javascript
 Feature: Converting rubric score to grades
   In order to use and refine rubrics to grade students
   As a teacher
@@ -21,7 +21,7 @@ Feature: Converting rubric score to grades
       | Test scale 1 | Disappointing, Good, Very good, Excellent |
     And the following "activities" exist:
       | activity   | name              | intro | course | idnumber    | grade   | advancedgradingmethod_submissions |
-      | assign     | Test assignment 1 | Test  | C1     | assign1     | <grade> | rubric                            |
+      | assign     | Test assignment 1 | Test  | C1     | assign1     | <grade> | rubrix                            |
     When I log in as "teacher1"
     And I change window size to "large"
     And I am on "Course 1" course homepage with editing mode on

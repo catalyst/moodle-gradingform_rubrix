@@ -1,5 +1,5 @@
 /*
-.gradingform_rubric.editor[.frozen|.editable]
+.gradingform_rubrix.editor[.frozen|.editable]
   .criteria
     .criterion[.first][.last][.odd|.even]
         .controls
@@ -30,7 +30,7 @@
     .optionsheading
     .option.OPTIONNAME
 
-.gradingform_rubric[.review][.evaluate[.editable|.frozen]]
+.gradingform_rubrix[.review][.evaluate[.editable|.frozen]]
   .criteria
     .criterion[.first][.last][.odd|.even]
         .description
@@ -45,7 +45,7 @@
 
 */
 
-.gradingform_rubric_editform .status {
+.gradingform_rubrix_editform .status {
     font-weight: normal;
     text-transform: uppercase;
     font-size: 60%;
@@ -53,94 +53,94 @@
     border: 1px solid #eee;
 }
 
-.gradingform_rubric_editform .status.ready {
+.gradingform_rubrix_editform .status.ready {
     background-color: #e7f1c3;
     border-color: #aea;
 }
 
-.gradingform_rubric_editform .status.draft {
+.gradingform_rubrix_editform .status.draft {
     background-color: #f3f2aa;
     border-color: #ee2;
 }
 
-.gradingform_rubric {
+.gradingform_rubrix {
     padding-bottom: 1.5em;
 }
 
-.gradingform_rubric.editor .criterion .controls,
-.gradingform_rubric .criterion .description,
-.gradingform_rubric .criterion .levels,
-.gradingform_rubric.editor .criterion .addlevel,
-.gradingform_rubric .criterion .remark,
-.gradingform_rubric .criterion .levels .level {
+.gradingform_rubrix.editor .criterion .controls,
+.gradingform_rubrix .criterion .description,
+.gradingform_rubrix .criterion .levels,
+.gradingform_rubrix.editor .criterion .addlevel,
+.gradingform_rubrix .criterion .remark,
+.gradingform_rubrix .criterion .levels .level {
     vertical-align: top;
 }
 
-.gradingform_rubric.editor .criterion .controls,
-.gradingform_rubric .criterion .description,
-.gradingform_rubric.editor .criterion .addlevel,
-.gradingform_rubric .criterion .remark,
-.gradingform_rubric .criterion .levels .level {
+.gradingform_rubrix.editor .criterion .controls,
+.gradingform_rubrix .criterion .description,
+.gradingform_rubrix.editor .criterion .addlevel,
+.gradingform_rubrix .criterion .remark,
+.gradingform_rubrix .criterion .levels .level {
     padding: 3px;
 }
 
-.gradingform_rubric .criteria {
+.gradingform_rubrix .criteria {
     height: 100%;
     display: flex;
     width: 100%;
     overflow: auto;
 }
 
-.gradingform_rubric .criterion {
+.gradingform_rubrix .criterion {
     border: 1px solid #ddd;
     overflow: hidden;
 }
 
-.gradingform_rubric .criterion.even {
+.gradingform_rubrix .criterion.even {
     background: #f0f0f0;
 }
 
-.gradingform_rubric .criterion .description {
+.gradingform_rubrix .criterion .description {
     min-width: 150px;
     font-weight: bold;
 }
 
-.gradingform_rubric .criterion .levels table {
+.gradingform_rubrix .criterion .levels table {
     width: 100%;
     height: 100%;
 }
 
-.gradingform_rubric .criterion .levels,
-.gradingform_rubric .criterion .levels table,
-.gradingform_rubric .criterion .levels table tbody {
+.gradingform_rubrix .criterion .levels,
+.gradingform_rubrix .criterion .levels table,
+.gradingform_rubrix .criterion .levels table tbody {
     padding: 0;
     margin: 0;
 }
 
-.gradingform_rubric .criterion .levels .level {
+.gradingform_rubrix .criterion .levels .level {
     border-left: 1px solid #ddd;
     max-width: 150px;
 }
 
-.gradingform_rubric .criterion .levels .level .level-wrapper {
+.gradingform_rubrix .criterion .levels .level .level-wrapper {
     position: relative;
 }
 
-.gradingform_rubric .criterion .levels .level.last {
+.gradingform_rubrix .criterion .levels .level.last {
     border-right: 1px solid #ddd;
 }
 
-.gradingform_rubric .plainvalue.empty {
+.gradingform_rubrix .plainvalue.empty {
     font-style: italic;
     color: #aaa;
 }
 
-.gradingform_rubric.editor .criterion .levels .level .delete {
+.gradingform_rubrix.editor .criterion .levels .level .delete {
     position: absolute;
     right: 0;
 }
 
-.gradingform_rubric .criterion .levels .level .score {
+.gradingform_rubrix .criterion .levels .level .score {
     font-style: italic;
     color: #575;
     font-weight: bold;
@@ -148,77 +148,77 @@
     white-space: nowrap;
 }
 
-.gradingform_rubric .criterion .levels .level .score .scorevalue {
+.gradingform_rubrix .criterion .levels .level .score .scorevalue {
     padding-right: 5px;
 }
 
 /* Make invisible the buttons 'Move up' for the first criterion and
    'Move down' for the last, because those buttons will make no change */
-.gradingform_rubric.editor .criterion.first .controls .moveup input,
-.gradingform_rubric.editor .criterion.last .controls .movedown input {
+.gradingform_rubrix.editor .criterion.first .controls .moveup input,
+.gradingform_rubrix.editor .criterion.last .controls .movedown input {
     display: none;
 }
 
 /* evaluation */
-.gradingform_rubric .criterion .levels .level.currentchecked {
+.gradingform_rubrix .criterion .levels .level.currentchecked {
     background: #fff0f0;
 }
 
-.gradingform_rubric .criterion .levels .level.checked {
+.gradingform_rubrix .criterion .levels .level.checked {
     background: #d0ffd0;
     border: 1px solid #555;
 }
 
-.gradingform_rubric.evaluate .criterion .levels .level:hover {
+.gradingform_rubrix.evaluate .criterion .levels .level:hover {
     background: #30ff30;
 }
 
 /* replace buttons with images */
-.gradingform_rubric.editor .delete input,
-.gradingform_rubric.editor .duplicate input,
-.gradingform_rubric.editor .moveup input,
-.gradingform_rubric.editor .movedown input {
+.gradingform_rubrix.editor .delete input,
+.gradingform_rubrix.editor .duplicate input,
+.gradingform_rubrix.editor .moveup input,
+.gradingform_rubrix.editor .movedown input {
     text-indent: -1000em;
     cursor: pointer;
     border: none;
 }
 
-.gradingform_rubric.editor .criterion .controls .delete input {
+.gradingform_rubrix.editor .criterion .controls .delete input {
     width: 12px;
     height: 12px;
     background: transparent url([[pix:t/delete]]) no-repeat center top;
     margin: .3em .3em 0 .3em;
 }
 
-.gradingform_rubric.editor .criterion .controls .duplicate input {
+.gradingform_rubrix.editor .criterion .controls .duplicate input {
     width: 12px;
     height: 12px;
     background: transparent url([[pix:t/copy]]) no-repeat center top;
     margin: .3em .3em 0 .3em;
 }
 
-.gradingform_rubric.editor .levels .level .delete input {
+.gradingform_rubrix.editor .levels .level .delete input {
     width: 12px;
     height: 16px;
     background: transparent url([[pix:t/delete]]) no-repeat center center;
 }
 
-.gradingform_rubric.editor .moveup input {
+.gradingform_rubrix.editor .moveup input {
     width: 12px;
     height: 12px;
     background: transparent url([[pix:t/up]]) no-repeat center top;
     margin: .3em .3em 0 .3em;
 }
 
-.gradingform_rubric.editor .movedown input {
+.gradingform_rubrix.editor .movedown input {
     width: 12px;
     height: 12px;
     background: transparent url([[pix:t/down]]) no-repeat center top;
     margin: .3em .3em 0 .3em;
 }
 
-.gradingform_rubric.editor .addcriterion input,
-.gradingform_rubric.editor .addlevel input {
+.gradingform_rubrix.editor .addcriterion input,
+.gradingform_rubrix.editor .addlevel input {
     background: #fff url([[pix:t/add]]) no-repeat 7px 8px;
     display: block;
     color: #555;
@@ -226,7 +226,7 @@
     text-decoration: none;
 }
 
-.gradingform_rubric.editor .addcriterion input {
+.gradingform_rubrix.editor .addcriterion input {
     height: 30px;
     line-height: 29px;
     margin-bottom: 14px;
@@ -234,65 +234,65 @@
     padding-right: 10px;
 }
 
-.gradingform_rubric.editor .addlevel input {
+.gradingform_rubrix.editor .addlevel input {
     padding-left: 24px;
     padding-right: 8px;
 }
 
-.gradingform_rubric .options .optionsheading {
+.gradingform_rubrix .options .optionsheading {
     font-weight: bold;
     font-size: 1.1em;
     padding-bottom: 5px;
 }
 
-.gradingform_rubric .options .option {
+.gradingform_rubrix .options .option {
     padding-bottom: 2px;
 }
 
-.gradingform_rubric .options .option label {
+.gradingform_rubrix .options .option label {
     margin-left: 5px;
 }
 
-.gradingform_rubric .options .option .value {
+.gradingform_rubrix .options .option .value {
     margin-left: 5px;
     font-weight: bold;
 }
 
-.gradingform_rubric .criterion .levels.error {
+.gradingform_rubrix .criterion .levels.error {
     border: 1px solid red;
 }
 
-.gradingform_rubric .criterion .description.error,
-.gradingform_rubric .criterion .levels .level .definition.error,
-.gradingform_rubric .criterion .levels .level .score.error {
+.gradingform_rubrix .criterion .description.error,
+.gradingform_rubrix .criterion .levels .level .definition.error,
+.gradingform_rubrix .criterion .levels .level .score.error {
     background: #fdd;
 }
 
-.gradingform_rubric-regrade {
+.gradingform_rubrix-regrade {
     padding: 10px;
     background: #fdd;
     border: 1px solid #f00;
     margin-bottom: 10px;
 }
 
-.gradingform_rubric-restored {
+.gradingform_rubrix-restored {
     padding: 10px;
     background: #ffd;
     border: 1px solid #ff0;
     margin-bottom: 10px;
 }
 
-.gradingform_rubric-error {
+.gradingform_rubrix-error {
     color: red;
     font-weight: bold;
 }
 
 /* special classes for elements created by rubriceditor.js */
-.gradingform_rubric.editor .hiddenelement {
+.gradingform_rubrix.editor .hiddenelement {
     display: none;
 }
 
-.gradingform_rubric.editor .pseudotablink {
+.gradingform_rubrix.editor .pseudotablink {
     background-color: transparent;
     border: 0 solid;
     height: 1px;
@@ -304,6 +304,6 @@
     float: right;
 }
 
-.gradingpanel-gradingform_rubric [aria-checked="true"] {
+.gradingpanel-gradingform_rubrix [aria-checked="true"] {
     border: 1px solid black;
 }

@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for plugin gradingform_rubric
+ * Version information for plugin gradingform_rubrix
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component  = 'gradingform_rubric';
+$plugin->component  = 'gradingform_rubrix';
 $plugin->version    = 2021052500;
 
 $plugin->requires   = 2021052500;

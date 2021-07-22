@@ -17,7 +17,7 @@
 /**
  * Support for restore API
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,11 +27,11 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Restores the rubric specific data from grading.xml file
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
+class restore_gradingform_rubrix_plugin extends restore_gradingform_plugin {
 
     /**
      * Declares the rubric XML paths attached to the form definition element
@@ -42,10 +42,10 @@ class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
 
         $paths = array();
 
-        $paths[] = new restore_path_element('gradingform_rubric_criterion',
+        $paths[] = new restore_path_element('gradingform_rubrix_criterion',
             $this->get_pathfor('/criteria/criterion'));
 
-        $paths[] = new restore_path_element('gradingform_rubric_level',
+        $paths[] = new restore_path_element('gradingform_rubrix_level',
             $this->get_pathfor('/criteria/criterion/levels/level'));
 
         return $paths;
@@ -69,39 +69,39 @@ class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
     /**
      * Processes criterion element data
      *
-     * Sets the mapping 'gradingform_rubric_criterion' to be used later by
+     * Sets the mapping 'gradingform_rubrix_criterion' to be used later by
      * {@link self::process_gradinform_rubric_filling()}
      *
      * @param stdClass|array $data
      */
-    public function process_gradingform_rubric_criterion($data) {
+    public function process_gradingform_rubrix_criterion($data) {
         global $DB;
 
         $data = (object)$data;
         $oldid = $data->id;
         $data->definitionid = $this->get_new_parentid('grading_definition');
 
-        $newid = $DB->insert_record('gradingform_rubric_criteria', $data);
-        $this->set_mapping('gradingform_rubric_criterion', $oldid, $newid);
+        $newid = $DB->insert_record('gradingform_rubrix_criteria', $data);
+        $this->set_mapping('gradingform_rubrix_criterion', $oldid, $newid);
     }
 
     /**
      * Processes level element data
      *
-     * Sets the mapping 'gradingform_rubric_level' to be used later by
+     * Sets the mapping 'gradingform_rubrix_level' to be used later by
      * {@link self::process_gradinform_rubric_filling()}
      *
      * @param stdClass|array $data
      */
-    public function process_gradingform_rubric_level($data) {
+    public function process_gradingform_rubrix_level($data) {
         global $DB;
 
         $data = (object)$data;
         $oldid = $data->id;
-        $data->criterionid = $this->get_new_parentid('gradingform_rubric_criterion');
+        $data->criterionid = $this->get_new_parentid('gradingform_rubrix_criterion');
 
-        $newid = $DB->insert_record('gradingform_rubric_levels', $data);
-        $this->set_mapping('gradingform_rubric_level', $oldid, $newid);
+        $newid = $DB->insert_record('gradingform_rubrix_levels', $data);
+        $this->set_mapping('gradingform_rubrix_level', $oldid, $newid);
     }
 
     /**
@@ -114,11 +114,11 @@ class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
 
         $data = (object)$data;
         $data->instanceid = $this->get_new_parentid('grading_instance');
-        $data->criterionid = $this->get_mappingid('gradingform_rubric_criterion', $data->criterionid);
-        $data->levelid = $this->get_mappingid('gradingform_rubric_level', $data->levelid);
+        $data->criterionid = $this->get_mappingid('gradingform_rubrix_criterion', $data->criterionid);
+        $data->levelid = $this->get_mappingid('gradingform_rubrix_level', $data->levelid);
 
         if (!empty($data->criterionid)) {
-            $DB->insert_record('gradingform_rubric_fillings', $data);
+            $DB->insert_record('gradingform_rubrix_fillings', $data);
         }
 
     }

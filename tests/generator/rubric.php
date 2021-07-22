@@ -17,13 +17,13 @@
 /**
  * Generator for the gradingforum_rubric plugin.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @category   test
  * @copyright  2018 Adrian Greeve <adriangreeve.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tests\gradingform_rubric\generator;
+namespace tests\gradingform_rubrix\generator;
 
 use gradingform_controller;
 use stdClass;
@@ -31,7 +31,7 @@ use stdClass;
 /**
  * Test rubric.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @category   test
  * @copyright  2018 Adrian Greeve <adriangreeve.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -51,7 +51,7 @@ class rubric {
     protected $options = [];
 
     /**
-     * Create a new gradingform_rubric_generator_rubric.
+     * Create a new gradingform_rubrix_generator_rubric.
      *
      * @param string $name
      * @param string $description

@@ -17,7 +17,7 @@
 /**
  * Grading method controller for the Rubric plugin
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,17 +28,17 @@ require_once($CFG->dirroot.'/grade/grading/form/lib.php');
 require_once($CFG->dirroot.'/lib/filelib.php');
 
 /** rubric: Used to compare our gradeitem_type against. */
-const RUBRIC = 'rubric';
+const RUBRIX = 'rubrix';
 
 /**
  * This controller encapsulates the rubric grading logic
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class gradingform_rubric_controller extends gradingform_controller {
-    // Modes of displaying the rubric (used in gradingform_rubric_renderer)
+class gradingform_rubrix_controller extends gradingform_controller {
+    // Modes of displaying the rubric (used in gradingform_rubrix_renderer)
     /** Rubric display mode: For editing (moderator or teacher creates a rubric) */
     const DISPLAY_EDIT_FULL     = 1;
     /** Rubric display mode: Preview the rubric design with hidden fields */
@@ -67,9 +67,9 @@ class gradingform_rubric_controller extends gradingform_controller {
      * @param navigation_node $node {@link navigation_node}
      */
     public function extend_settings_navigation(settings_navigation $settingsnav, navigation_node $node=null) {
-        $node->add(get_string('definerubric', 'gradingform_rubric'),
+        $node->add(get_string('definerubric', 'gradingform_rubrix'),
             $this->get_editor_url(), settings_navigation::TYPE_CUSTOM,
-            null, null, new pix_icon('icon', '', 'gradingform_rubric'));
+            null, null, new pix_icon('icon', '', 'gradingform_rubrix'));
     }
 
     /**
@@ -87,7 +87,7 @@ class gradingform_rubric_controller extends gradingform_controller {
             return;
         }
         if ($this->is_form_defined() && ($options = $this->get_options()) && !empty($options['alwaysshowdefinition'])) {
-            $node->add(get_string('gradingof', 'gradingform_rubric', get_grading_manager($this->get_areaid())->get_area_title()),
+            $node->add(get_string('gradingof', 'gradingform_rubrix', get_grading_manager($this->get_areaid())->get_area_title()),
                     new moodle_url('/grade/grading/form/'.$this->get_method_name().'/preview.php', array('areaid' => $this->get_areaid())),
                     settings_navigation::TYPE_CUSTOM);
         }
@@ -97,7 +97,7 @@ class gradingform_rubric_controller extends gradingform_controller {
      * Saves the rubric definition into the database
      *
      * @see parent::update_definition()
-     * @param stdClass $newdefinition rubric definition data as coming from gradingform_rubric_editrubric::get_data()
+     * @param stdClass $newdefinition rubric definition data as coming from gradingform_rubrix_editrubric::get_data()
      * @param int|null $usermodified optional userid of the author of the definition, defaults to the current user
      */
     public function update_definition(stdClass $newdefinition, $usermodified = null) {
@@ -117,7 +117,7 @@ class gradingform_rubric_controller extends gradingform_controller {
      * 4 - removed levels - students require re-grading and not all students may be re-graded automatically
      * 5 - added criteria - all students require manual re-grading
      *
-     * @param stdClass $newdefinition rubric definition data as coming from gradingform_rubric_editrubric::get_data()
+     * @param stdClass $newdefinition rubric definition data as coming from gradingform_rubrix_editrubric::get_data()
      * @param int|null $usermodified optional userid of the author of the definition, defaults to the current user
      * @param boolean $doupdate if true actually updates DB, otherwise performs a check
      *
@@ -181,7 +181,7 @@ class gradingform_rubric_controller extends gradingform_controller {
                     }
                 }
                 if ($doupdate) {
-                    $id = $DB->insert_record('gradingform_rubric_criteria', $data);
+                    $id = $DB->insert_record('gradingform_rubrix_criteria', $data);
                 }
                 $haschanges[5] = true;
             } else {
@@ -196,7 +196,7 @@ class gradingform_rubric_controller extends gradingform_controller {
                     // update only if something is changed
                     $data['id'] = $id;
                     if ($doupdate) {
-                        $DB->update_record('gradingform_rubric_criteria', $data);
+                        $DB->update_record('gradingform_rubrix_criteria', $data);
                     }
                     $haschanges[1] = true;
                 }
@@ -207,7 +207,7 @@ class gradingform_rubric_controller extends gradingform_controller {
                     }
                     if (!array_key_exists($levelid, $levelsdata)) {
                         if ($doupdate) {
-                            $DB->delete_records('gradingform_rubric_levels', array('id' => $levelid));
+                            $DB->delete_records('gradingform_rubrix_levels', array('id' => $levelid));
                         }
                         $haschanges[4] = true;
                     }
@@ -226,7 +226,7 @@ class gradingform_rubric_controller extends gradingform_controller {
                         }
                     }
                     if ($doupdate) {
-                        $levelid = $DB->insert_record('gradingform_rubric_levels', $data);
+                        $levelid = $DB->insert_record('gradingform_rubrix_levels', $data);
                     }
                     if ($criterionmaxscore !== null && $criterionmaxscore >= $level['score']) {
                         // new level is added but the maximum score for this criteria did not change, re-grading may not be necessary
@@ -246,7 +246,7 @@ class gradingform_rubric_controller extends gradingform_controller {
                         // update only if something is changed
                         $data['id'] = $levelid;
                         if ($doupdate) {
-                            $DB->update_record('gradingform_rubric_levels', $data);
+                            $DB->update_record('gradingform_rubrix_levels', $data);
                         }
                         if (isset($data['score'])) {
                             $haschanges[3] = true;
@@ -260,8 +260,8 @@ class gradingform_rubric_controller extends gradingform_controller {
         foreach (array_keys($currentcriteria) as $id) {
             if (!array_key_exists($id, $newcriteria)) {
                 if ($doupdate) {
-                    $DB->delete_records('gradingform_rubric_criteria', array('id' => $id));
-                    $DB->delete_records('gradingform_rubric_levels', array('criterionid' => $id));
+                    $DB->delete_records('gradingform_rubrix_criteria', array('id' => $id));
+                    $DB->delete_records('gradingform_rubrix_levels', array('criterionid' => $id));
                 }
                 $haschanges[3] = true;
             }
@@ -310,8 +310,8 @@ class gradingform_rubric_controller extends gradingform_controller {
                        rc.id AS rcid, rc.sortorder AS rcsortorder, rc.description AS rcdescription, rc.descriptionformat AS rcdescriptionformat,
                        rl.id AS rlid, rl.score AS rlscore, rl.definition AS rldefinition, rl.definitionformat AS rldefinitionformat
                   FROM {grading_definitions} gd
-             LEFT JOIN {gradingform_rubric_criteria} rc ON (rc.definitionid = gd.id)
-             LEFT JOIN {gradingform_rubric_levels} rl ON (rl.criterionid = rc.id)
+             LEFT JOIN {gradingform_rubrix_criteria} rc ON (rc.definitionid = gd.id)
+             LEFT JOIN {gradingform_rubrix_levels} rl ON (rl.criterionid = rc.id)
                  WHERE gd.areaid = :areaid AND gd.method = :method
               ORDER BY rc.sortorder,rl.score";
         $params = array('areaid' => $this->areaid, 'method' => $this->get_method_name());
@@ -505,7 +505,7 @@ class gradingform_rubric_controller extends gradingform_controller {
      * Returns the rubric plugin renderer
      *
      * @param moodle_page $page the target page
-     * @return gradingform_rubric_renderer
+     * @return gradingform_rubrix_renderer
      */
     public function get_renderer(moodle_page $page) {
         return $page->get_renderer('gradingform_'. $this->get_method_name());
@@ -537,7 +537,7 @@ class gradingform_rubric_controller extends gradingform_controller {
         }
         $output = $this->get_renderer($page);
         if ($showdescription) {
-            $rubric .= $output->box($this->get_formatted_description(), 'gradingform_rubric-description');
+            $rubric .= $output->box($this->get_formatted_description(), 'gradingform_rubrix-description');
         }
         if (has_capability('moodle/grade:managegradingforms', $page->context)) {
             if (!$options['lockzeropoints']) {
@@ -561,15 +561,15 @@ class gradingform_rubric_controller extends gradingform_controller {
         // get the list of instances
         $instances = array_keys($DB->get_records('grading_instances', array('definitionid' => $this->definition->id), '', 'id'));
         // delete all fillings
-        $DB->delete_records_list('gradingform_rubric_fillings', 'instanceid', $instances);
+        $DB->delete_records_list('gradingform_rubrix_fillings', 'instanceid', $instances);
         // delete instances
         $DB->delete_records_list('grading_instances', 'id', $instances);
         // get the list of criteria records
-        $criteria = array_keys($DB->get_records('gradingform_rubric_criteria', array('definitionid' => $this->definition->id), '', 'id'));
+        $criteria = array_keys($DB->get_records('gradingform_rubrix_criteria', array('definitionid' => $this->definition->id), '', 'id'));
         // delete levels
-        $DB->delete_records_list('gradingform_rubric_levels', 'criterionid', $criteria);
+        $DB->delete_records_list('gradingform_rubrix_levels', 'criterionid', $criteria);
         // delete critera
-        $DB->delete_records_list('gradingform_rubric_criteria', 'id', $criteria);
+        $DB->delete_records_list('gradingform_rubrix_criteria', 'id', $criteria);
     }
 
     /**
@@ -594,7 +594,7 @@ class gradingform_rubric_controller extends gradingform_controller {
             if ($rs = $DB->get_records('grading_instances', $params, 'timemodified DESC', '*', 0, 1)) {
                 $record = reset($rs);
                 $currentinstance = $this->get_current_instance($raterid, $itemid);
-                if ($record->status == gradingform_rubric_instance::INSTANCE_STATUS_INCOMPLETE &&
+                if ($record->status == gradingform_rubrix_instance::INSTANCE_STATUS_INCOMPLETE &&
                         (!$currentinstance || $record->timemodified > $currentinstance->get_data('timemodified'))) {
                     $record->isrestored = true;
                     return $this->get_instance($record);
@@ -627,8 +627,8 @@ class gradingform_rubric_controller extends gradingform_controller {
      * @return string
      */
     public static function sql_search_from_tables($gdid) {
-        return " LEFT JOIN {gradingform_rubric_criteria} rc ON (rc.definitionid = $gdid)
-                 LEFT JOIN {gradingform_rubric_levels} rl ON (rl.criterionid = rc.id)";
+        return " LEFT JOIN {gradingform_rubrix_criteria} rc ON (rc.definitionid = $gdid)
+                 LEFT JOIN {gradingform_rubrix_levels} rl ON (rl.criterionid = rc.id)";
     }
 
     /**
@@ -739,11 +739,11 @@ class gradingform_rubric_controller extends gradingform_controller {
  *
  * Stores information and performs actions like update, copy, validate, submit, etc.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2011 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class gradingform_rubric_instance extends gradingform_instance {
+class gradingform_rubrix_instance extends gradingform_instance {
 
     /** @var array stores the rubric, has two keys: 'criteria' and 'options' */
     protected $rubric;
@@ -754,7 +754,7 @@ class gradingform_rubric_instance extends gradingform_instance {
     public function cancel() {
         global $DB;
         parent::cancel();
-        $DB->delete_records('gradingform_rubric_fillings', array('instanceid' => $this->get_id()));
+        $DB->delete_records('gradingform_rubrix_fillings', array('instanceid' => $this->get_id()));
     }
 
     /**
@@ -772,7 +772,7 @@ class gradingform_rubric_instance extends gradingform_instance {
         foreach ($currentgrade['criteria'] as $criterionid => $record) {
             $params = array('instanceid' => $instanceid, 'criterionid' => $criterionid,
                 'levelid' => $record['levelid'], 'remark' => $record['remark'], 'remarkformat' => $record['remarkformat']);
-            $DB->insert_record('gradingform_rubric_fillings', $params);
+            $DB->insert_record('gradingform_rubrix_fillings', $params);
         }
         return $instanceid;
     }
@@ -803,7 +803,7 @@ class gradingform_rubric_instance extends gradingform_instance {
         global $DB;
 
         foreach ($data['criteria'] as $criterionid => $record) {
-            $DB->delete_records('gradingform_rubric_fillings',
+            $DB->delete_records('gradingform_rubrix_fillings',
                 array('criterionid' => $criterionid, 'instanceid' => $this->get_id()));
         }
     }
@@ -837,7 +837,7 @@ class gradingform_rubric_instance extends gradingform_instance {
     public function get_rubric_filling($force = false) {
         global $DB;
         if ($this->rubric === null || $force) {
-            $records = $DB->get_records('gradingform_rubric_fillings', array('instanceid' => $this->get_id()));
+            $records = $DB->get_records('gradingform_rubrix_fillings', array('instanceid' => $this->get_id()));
             $this->rubric = array('criteria' => array());
             foreach ($records as $record) {
                 $this->rubric['criteria'][$record->criterionid] = (array)$record;
@@ -864,7 +864,7 @@ class gradingform_rubric_instance extends gradingform_instance {
                 if (isset($record['remark'])) {
                     $newrecord['remark'] = $record['remark'];
                 }
-                $DB->insert_record('gradingform_rubric_fillings', $newrecord);
+                $DB->insert_record('gradingform_rubrix_fillings', $newrecord);
             } else {
                 $newrecord = array('id' => $currentgrade['criteria'][$criterionid]['id']);
                 foreach (array('levelid', 'remark'/*, 'remarkformat' */) as $key) {
@@ -874,13 +874,13 @@ class gradingform_rubric_instance extends gradingform_instance {
                     }
                 }
                 if (count($newrecord) > 1) {
-                    $DB->update_record('gradingform_rubric_fillings', $newrecord);
+                    $DB->update_record('gradingform_rubrix_fillings', $newrecord);
                 }
             }
         }
         foreach ($currentgrade['criteria'] as $criterionid => $record) {
             if (!array_key_exists($criterionid, $data['criteria'])) {
-                $DB->delete_records('gradingform_rubric_fillings', array('id' => $record['id']));
+                $DB->delete_records('gradingform_rubrix_fillings', array('id' => $record['id']));
             }
         }
         $this->get_rubric_filling(true);
@@ -935,14 +935,14 @@ class gradingform_rubric_instance extends gradingform_instance {
     public function render_grading_element($page, $gradingformelement) {
         global $USER;
         if (!$gradingformelement->_flagFrozen) {
-            $module = array('name'=>'gradingform_rubric', 'fullpath'=>'/grade/grading/form/rubric/js/rubric.js');
-            $page->requires->js_init_call('M.gradingform_rubric.init', array(array('name' => $gradingformelement->getName())), true, $module);
-            $mode = gradingform_rubric_controller::DISPLAY_EVAL;
+            $module = array('name'=>'gradingform_rubrix', 'fullpath'=>'/grade/grading/form/rubric/js/rubric.js');
+            $page->requires->js_init_call('M.gradingform_rubrix.init', array(array('name' => $gradingformelement->getName())), true, $module);
+            $mode = gradingform_rubrix_controller::DISPLAY_EVAL;
         } else {
             if ($gradingformelement->_persistantFreeze) {
-                $mode = gradingform_rubric_controller::DISPLAY_EVAL_FROZEN;
+                $mode = gradingform_rubrix_controller::DISPLAY_EVAL_FROZEN;
             } else {
-                $mode = gradingform_rubric_controller::DISPLAY_REVIEW;
+                $mode = gradingform_rubrix_controller::DISPLAY_REVIEW;
             }
         }
         $criteria = $this->get_controller()->get_definition()->rubric_criteria;
@@ -952,11 +952,11 @@ class gradingform_rubric_instance extends gradingform_instance {
         if ($value === null) {
             $value = $this->get_rubric_filling();
         } else if (!$this->validate_grading_element($value)) {
-            $html .= html_writer::tag('div', get_string('rubricnotcompleted', 'gradingform_rubric'), array('class' => 'gradingform_rubric-error'));
+            $html .= html_writer::tag('div', get_string('rubricnotcompleted', 'gradingform_rubrix'), array('class' => 'gradingform_rubrix-error'));
         }
         $currentinstance = $this->get_current_instance();
         if ($currentinstance && $currentinstance->get_status() == gradingform_instance::INSTANCE_STATUS_NEEDUPDATE) {
-            $html .= html_writer::div(get_string('needregrademessage', 'gradingform_rubric'), 'gradingform_rubric-regrade',
+            $html .= html_writer::div(get_string('needregrademessage', 'gradingform_rubrix'), 'gradingform_rubrix-regrade',
                                       array('role' => 'alert'));
         }
         $haschanges = false;
@@ -974,10 +974,10 @@ class gradingform_rubric_instance extends gradingform_instance {
             }
         }
         if ($this->get_data('isrestored') && $haschanges) {
-            $html .= html_writer::tag('div', get_string('restoredfromdraft', 'gradingform_rubric'), array('class' => 'gradingform_rubric-restored'));
+            $html .= html_writer::tag('div', get_string('restoredfromdraft', 'gradingform_rubrix'), array('class' => 'gradingform_rubrix-restored'));
         }
         if (!empty($options['showdescriptionteacher'])) {
-            $html .= html_writer::tag('div', $this->get_controller()->get_formatted_description(), array('class' => 'gradingform_rubric-description'));
+            $html .= html_writer::tag('div', $this->get_controller()->get_formatted_description(), array('class' => 'gradingform_rubrix-description'));
         }
         $html .= $this->get_controller()->get_renderer($page)->display_rubric($criteria, $options, $mode, $gradingformelement->getName(), $value);
         return $html;

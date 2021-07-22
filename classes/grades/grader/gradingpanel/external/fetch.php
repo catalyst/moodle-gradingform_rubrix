@@ -17,14 +17,14 @@
 /**
  * Web services relating to fetching of a rubric for the grading panel.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2019 Mathew May <mathew.solutions>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 declare(strict_types = 1);
 
-namespace gradingform_rubric\grades\grader\gradingpanel\external;
+namespace gradingform_rubrix\grades\grader\gradingpanel\external;
 
 global $CFG;
 
@@ -40,12 +40,12 @@ use external_value;
 use external_warnings;
 use stdClass;
 use moodle_exception;
-require_once($CFG->dirroot.'/grade/grading/form/rubric/lib.php');
+require_once($CFG->dirroot.'/grade/grading/form/rubrix/lib.php');
 
 /**
  * Web services relating to fetching of a rubric for the grading panel.
  *
- * @package    gradingform_rubric
+ * @package    gradingform_rubrix
  * @copyright  2019 Mathew May <mathew.solutions>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -119,7 +119,7 @@ class fetch extends external_api {
         // Fetch the gradeitem instance.
         $gradeitem = gradeitem::instance($component, $context, $itemname);
 
-        if (RUBRIC !== $gradeitem->get_advanced_grading_method()) {
+        if (RUBRIX !== $gradeitem->get_advanced_grading_method()) {
             throw new moodle_exception(
                 "The {$itemname} item in {$component}/{$contextid} is not configured for advanced grading with a rubric"
             );
@@ -229,7 +229,7 @@ class fetch extends external_api {
                     'id' => null,
                     'criterionid' => $criterion['id'],
                     'score' => '-',
-                    'definition' => get_string('notset', 'gradingform_rubric'),
+                    'definition' => get_string('notset', 'gradingform_rubrix'),
                     'checked' => !$hasgrade,
                 ];
                 // Consult the grade filling to see if a level has been selected and if it is the current level.
@@ -244,7 +244,7 @@ class fetch extends external_api {
         }
 
         return [
-            'templatename' => 'gradingform_rubric/grades/grader/gradingpanel',
+            'templatename' => 'gradingform_rubrix/grades/grader/gradingpanel',
             'hasgrade' => $hasgrade,
             'grade' => [
                 'instanceid' => $instance->get_id(),
