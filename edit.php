@@ -42,7 +42,7 @@ $PAGE->set_url(new moodle_url('/grade/grading/form/rubrix/edit.php', array('area
 $PAGE->set_title(get_string('definerubric', 'gradingform_rubrix'));
 $PAGE->set_heading(get_string('definerubric', 'gradingform_rubrix'));
 
-$mform = new gradingform_rubrix_editrubric(null, array('areaid' => $areaid, 'context' => $context, 'allowdraft' => !$controller->has_active_instances()), 'post', '', array('class' => 'gradingform_rubrix_editform'));
+$mform = new gradingform_rubrix_editrubrix(null, array('areaid' => $areaid, 'context' => $context, 'allowdraft' => !$controller->has_active_instances()), 'post', '', array('class' => 'gradingform_rubrix_editform'));
 $data = $controller->get_definition_for_editing(true);
 $returnurl = optional_param('returnurl', $manager->get_management_url(), PARAM_LOCALURL);
 $data->returnurl = $returnurl;

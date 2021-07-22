@@ -69,7 +69,8 @@ class gradingform_rubrix_generator extends component_generator_base {
         // Fetch the controller for this context/component/area.
         $generator = \testing_util::get_data_generator();
         $gradinggenerator = $generator->get_plugin_generator('core_grading');
-        $controller = $gradinggenerator->create_instance($context, $component, $area, 'rubric');
+        $controller = $gradinggenerator->create_instance($context, $component, $area, 'rubrix');
+        $controller = $gradinggenerator->create_instance($context, $component, $area, 'rubrix');
 
         // Generate a definition for the supplied rubric.
         $rubric = $this->get_rubric($name, $description);

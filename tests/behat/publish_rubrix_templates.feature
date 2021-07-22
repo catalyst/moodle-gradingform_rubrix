@@ -1,5 +1,5 @@
 @gradingform @gradingform_rubrix
-Feature: Publish rubrics as templates
+Feature: Publish rubrix as templates
   In order to save time to teachers
   As a manager
   I need to publish rubrics and make them available to all teachers
@@ -14,8 +14,8 @@ Feature: Publish rubrics as templates
       | Course 1 | C1 | topics |
     And the following "activities" exist:
       | activity | course | idnumber | name                   | intro | advancedgradingmethod_submissions |
-      | assign   | C1     | A1       | Test assignment 1 name | TA1   | rubric                            |
-      | assign   | C1     | A2       | Test assignment 2 name | TA2   | rubric                            |
+      | assign   | C1     | A1       | Test assignment 1 name | TA1   | rubrix                            |
+      | assign   | C1     | A2       | Test assignment 2 name | TA2   | rubrix                            |
     And the following "course enrolments" exist:
       | user | course | role |
       | teacher1 | C1 | editingteacher |

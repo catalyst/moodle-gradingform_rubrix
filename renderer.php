@@ -391,7 +391,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
         $rubrictableparams = array(
             'class' => 'criteria',
             'id' => '{NAME}-criteria',
-            'aria-label' => get_string('rubric', 'gradingform_rubrix'));
+            'aria-label' => get_string('rubrix', 'gradingform_rubrix'));
         $rubrictable = html_writer::tag('table', $criteriastr, $rubrictableparams);
         $rubrictemplate .= $rubrictable;
         if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FULL) {

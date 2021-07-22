@@ -66,7 +66,7 @@ class gradingform_rubrix_editrubrix extends moodleform {
         $form->addElement('select', 'status', get_string('rubricstatus', 'gradingform_rubrix'), $choices)->freeze();
 
         // rubrix editor
-        $element = $form->addElement('rubrixeditor', 'rubric', get_string('rubric', 'gradingform_rubrix'));
+        $element = $form->addElement('rubrixeditor', 'rubric', get_string('rubrix', 'gradingform_rubrix'));
         $form->setType('rubric', PARAM_RAW);
 
         $buttonarray = array();

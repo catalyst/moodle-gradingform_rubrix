@@ -97,7 +97,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
      * Saves the rubric definition into the database
      *
      * @see parent::update_definition()
-     * @param stdClass $newdefinition rubric definition data as coming from gradingform_rubrix_editrubric::get_data()
+     * @param stdClass $newdefinition rubric definition data as coming from gradingform_rubrix_editrubrix::get_data()
      * @param int|null $usermodified optional userid of the author of the definition, defaults to the current user
      */
     public function update_definition(stdClass $newdefinition, $usermodified = null) {
@@ -117,7 +117,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
      * 4 - removed levels - students require re-grading and not all students may be re-graded automatically
      * 5 - added criteria - all students require manual re-grading
      *
-     * @param stdClass $newdefinition rubric definition data as coming from gradingform_rubrix_editrubric::get_data()
+     * @param stdClass $newdefinition rubric definition data as coming from gradingform_rubrix_editrubrix::get_data()
      * @param int|null $usermodified optional userid of the author of the definition, defaults to the current user
      * @param boolean $doupdate if true actually updates DB, otherwise performs a check
      *
@@ -935,7 +935,7 @@ class gradingform_rubrix_instance extends gradingform_instance {
     public function render_grading_element($page, $gradingformelement) {
         global $USER;
         if (!$gradingformelement->_flagFrozen) {
-            $module = array('name'=>'gradingform_rubrix', 'fullpath'=>'/grade/grading/form/rubric/js/rubric.js');
+            $module = array('name'=>'gradingform_rubrix', 'fullpath'=>'/grade/grading/form/rubrix/js/rubrix.js');
             $page->requires->js_init_call('M.gradingform_rubrix.init', array(array('name' => $gradingformelement->getName())), true, $module);
             $mode = gradingform_rubrix_controller::DISPLAY_EVAL;
         } else {

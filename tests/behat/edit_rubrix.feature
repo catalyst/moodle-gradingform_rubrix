@@ -1,5 +1,5 @@
 @gradingform @gradingform_rubrix
-Feature: Rubrics can be created and edited
+Feature: Rubrix can be created and edited
   In order to use and refine rubrics to grade students
   As a teacher
   I need to edit previously used rubrics
@@ -22,7 +22,7 @@ Feature: Rubrics can be created and edited
     And I add a "Assignment" to section "1" and I fill the form with:
       | Assignment name | Test assignment 1 name |
       | Description | Test assignment description |
-      | Grading method | Rubric |
+      | Grading method | Rubrix |
     When I go to "Test assignment 1 name" advanced grading definition page
     # Defining a rubric.
     And I set the following fields to these values:
