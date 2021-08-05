@@ -45,7 +45,7 @@ use moodle_exception;
  */
 class fetch_test extends advanced_testcase {
 
-    public static function setupBeforeClass(): void {
+    public static function setupbeforeclass(): void {
         global $CFG;
         require_once("{$CFG->libdir}/externallib.php");
     }
@@ -238,6 +238,14 @@ class fetch_test extends advanced_testcase {
 
     /**
      * Executes and performs all the assertions of the fetch method with the given parameters.
+     *
+     * @param object $forum
+     * @param object $controller
+     * @param object $definition
+     * @param object $fetcheruser
+     * @param object $grader
+     * @param object $gradeduser
+     * @return void
      */
     private function execute_and_assert_fetch ($forum, $controller, $definition, $fetcheruser, $grader, $gradeduser) {
         $generator = \testing_util::get_data_generator();

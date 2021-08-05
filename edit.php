@@ -42,7 +42,12 @@ $PAGE->set_url(new moodle_url('/grade/grading/form/rubrix/edit.php', array('area
 $PAGE->set_title(get_string('definerubric', 'gradingform_rubrix'));
 $PAGE->set_heading(get_string('definerubric', 'gradingform_rubrix'));
 
-$mform = new gradingform_rubrix_editrubrix(null, array('areaid' => $areaid, 'context' => $context, 'allowdraft' => !$controller->has_active_instances()), 'post', '', array('class' => 'gradingform_rubrix_editform'));
+$mform = new gradingform_rubrix_editrubrix(null, array('areaid' => $areaid,
+                                                       'context' => $context,
+                                                       'allowdraft' => !$controller->has_active_instances()),
+                                                       'post', '', array('class' => 'gradingform_rubrix_editform')
+                                                );
+
 $data = $controller->get_definition_for_editing(true);
 $returnurl = optional_param('returnurl', $manager->get_management_url(), PARAM_LOCALURL);
 $data->returnurl = $returnurl;
@@ -57,7 +62,9 @@ if ($mform->is_cancelled()) {
     // If we do not go back to management url and the minscore warning needs to be displayed, display it during redirection.
     $warning = null;
     if (!empty($data->returnurl) && $data->returnurl !== $manager->get_management_url()->out(false)) {
-        if (empty($data->rubric['options']['lockzeropoints']) && ($scores = $controller->get_min_max_score()) && $scores['minscore'] <> 0) {
+        if (empty($data->rubric['options']['lockzeropoints']) &&
+            ($scores = $controller->get_min_max_score()) &&
+            $scores['minscore'] <> 0) {
             $warning = get_string('zerolevelsabsent', 'gradingform_rubrix').'<br>'.
                 html_writer::link($manager->get_management_url(), get_string('back'));
         }

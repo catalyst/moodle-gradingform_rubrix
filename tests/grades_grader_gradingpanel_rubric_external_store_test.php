@@ -44,7 +44,7 @@ use moodle_exception;
  */
 class store_test extends advanced_testcase {
 
-    public static function setupBeforeClass(): void {
+    public static function setupbeforeclass(): void {
         global $CFG;
         require_once("{$CFG->libdir}/externallib.php");
     }

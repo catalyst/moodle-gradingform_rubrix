@@ -41,7 +41,7 @@ require_once("HTML/QuickForm/input.php");
  * @copyright  2011 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
+class moodlequickformrubrixeditor extends HTML_QuickForm_input {
     /** @var string help message */
     public $_helpbutton = '';
     /** @var string|bool stores the result of the last validation: null - undefined, false - no errors, string - error(s) text */
@@ -53,25 +53,30 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
     /** @var bool Message to display in front of the editor (that there exist grades on this rubric being edited) */
     protected $regradeconfirmation = false;
 
+    // phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod
+
     /**
      * Constructor for rubrix editor
      *
-     * @param string $elementName
-     * @param string $elementLabel
+     * @param string $elementname
+     * @param string $elementlabel
      * @param array $attributes
      */
-    public function __construct($elementName=null, $elementLabel=null, $attributes=null) {
-        parent::__construct($elementName, $elementLabel, $attributes);
+    public function __construct($elementname=null, $elementlabel=null, $attributes=null) {
+        parent::__construct($elementname, $elementlabel, $attributes);
     }
 
     /**
      * Old syntax of class constructor. Deprecated in PHP7.
      *
      * @deprecated since Moodle 3.1
+     * @param string $elementname
+     * @param string $elementlabel
+     * @param string $attributes
      */
-    public function MoodleQuickForm_rubrixeditor($elementName=null, $elementLabel=null, $attributes=null) {
+    public function moodlequickformrubrixeditor($elementname=null, $elementlabel=null, $attributes=null) {
         debugging('Use of class name as constructor is deprecated', DEBUG_DEVELOPER);
-        self::__construct($elementName, $elementLabel, $attributes);
+        self::__construct($elementname, $elementlabel, $attributes);
     }
 
     /**
@@ -79,7 +84,7 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
      *
      * @return string html for help button
      */
-    public function getHelpButton() {
+    public function gethelpbutton() {
         return $this->_helpbutton;
     }
 
@@ -88,7 +93,7 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
      *
      * @return string
      */
-    public function getElementTemplateType() {
+    public function getelementtemplatetype() {
         return 'default';
     }
 
@@ -108,16 +113,17 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
      *
      * @return string
      */
-    public function toHtml() {
+    public function tohtml() {
         global $PAGE;
         $html = $this->_getTabs();
         $renderer = $PAGE->get_renderer('gradingform_rubrix');
         $data = $this->prepare_data(null, $this->wasvalidated);
         if (!$this->_flagFrozen) {
             $mode = gradingform_rubrix_controller::DISPLAY_EDIT_FULL;
-            $module = array('name'=>'gradingform_rubrixeditor', 'fullpath'=>'/grade/grading/form/rubrix/js/rubrixeditor.js',
+            $module = array('name' => 'gradingform_rubrixeditor', 'fullpath' => '/grade/grading/form/rubrix/js/rubrixeditor.js',
                 'requires' => array('base', 'dom', 'event', 'event-touch', 'escape'),
-                'strings' => array(array('confirmdeletecriterion', 'gradingform_rubrix'), array('confirmdeletelevel', 'gradingform_rubrix'),
+                'strings' => array(array('confirmdeletecriterion',
+                'gradingform_rubrix'), array('confirmdeletelevel', 'gradingform_rubrix'),
                     array('criterionempty', 'gradingform_rubrix'), array('levelempty', 'gradingform_rubrix')
                 ));
             $PAGE->requires->js_init_call('M.gradingform_rubrixeditor.init', array(
@@ -127,7 +133,7 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
                    )),
                 true, $module);
         } else {
-            // Rubric is frozen, no javascript needed
+            // Rubric is frozen, no javascript needed.
             if ($this->_persistantFreeze) {
                 $mode = gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN;
             } else {
@@ -174,10 +180,10 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
             $value['criteria'] = array();
             $errors['err_nocriteria'] = 1;
         }
-        // If options are present in $value, replace default values with submitted values
+        // If options are present in $value, replace default values with submitted values.
         if (!empty($value['options'])) {
             foreach (array_keys($return['options']) as $option) {
-                // special treatment for checkboxes
+                // Special treatment for checkboxes.
                 if (!empty($value['options'][$option])) {
                     $return['options'][$option] = $value['options'][$option];
                 } else {
@@ -186,7 +192,7 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
             }
         }
         if (is_array($value)) {
-            // for other array keys of $value no special treatmeant neeeded, copy them to return value as is
+            // For other array keys of $value no special treatmeant neeeded, copy them to return value as is.
             foreach (array_keys($value) as $key) {
                 if ($key != 'options' && $key != 'criteria') {
                     $return[$key] = $value[$key];
@@ -194,7 +200,7 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
             }
         }
 
-        // iterate through criteria
+        // Iterate through criteria.
         $lastaction = null;
         $lastid = null;
         $overallminscore = $overallmaxscore = 0;
@@ -203,7 +209,7 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
                 $id = $this->get_next_id(array_keys($value['criteria']));
                 $criterion = array('description' => '', 'levels' => array());
                 $i = 0;
-                // when adding new criterion copy the number of levels and their scores from the last criterion
+                // When adding new criterion copy the number of levels and their scores from the last criterion.
                 if (!empty($value['criteria'][$lastid]['levels'])) {
                     foreach ($value['criteria'][$lastid]['levels'] as $lastlevel) {
                         $criterion['levels']['NEWID'.($i++)]['score'] = $lastlevel['score'];
@@ -211,11 +217,11 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
                 } else {
                     $criterion['levels']['NEWID'.($i++)]['score'] = 0;
                 }
-                // add more levels so there are at least 3 in the new criterion. Increment by 1 the score for each next one
-                for ($i=$i; $i<3; $i++) {
-                    $criterion['levels']['NEWID'.$i]['score'] = $criterion['levels']['NEWID'.($i-1)]['score'] + 1;
+                // Add more levels so there are at least 3 in the new criterion. Increment by 1 the score for each next one.
+                for ($i = $i; $i < 3; $i++) {
+                    $criterion['levels']['NEWID'.$i]['score'] = $criterion['levels']['NEWID'.($i - 1)]['score'] + 1;
                 }
-                // set other necessary fields (definition) for the levels in the new criterion
+                // Set other necessary fields (definition) for the levels in the new criterion.
                 foreach (array_keys($criterion['levels']) as $i) {
                     $criterion['levels'][$i]['definition'] = '';
                 }
@@ -265,7 +271,7 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
             $totalscore += (float)$maxscore;
             $criterion['levels'] = $levels;
             if ($withvalidation && !array_key_exists('delete', $criterion)) {
-                if (count($levels)<2) {
+                if (count($levels) < 2) {
                     $errors['err_mintwolevels'] = 1;
                     $criterion['error_levels'] = true;
                 }
@@ -306,13 +312,13 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
             $errors['err_totalscore'] = 1;
         }
 
-        // add sort order field to criteria
+        // Add sort order field to criteria.
         $csortorder = 1;
         foreach (array_keys($return['criteria']) as $id) {
             $return['criteria'][$id]['sortorder'] = $csortorder++;
         }
 
-        // create validation error string (if needed)
+        // Create validation error string (if needed).
         if ($withvalidation) {
             if (!$return['options']['lockzeropoints']) {
                 if ($overallminscore == $overallmaxscore) {
@@ -346,7 +352,7 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
                 $maxid = (int)$matches[1];
             }
         }
-        return 'NEWID'.($maxid+1);
+        return 'NEWID'.($maxid + 1);
     }
 
     /**
@@ -384,12 +390,12 @@ class MoodleQuickForm_rubrixeditor extends HTML_QuickForm_input {
      * Prepares the data for saving
      *
      * @see prepare_data()
-     * @param array $submitValues
+     * @param array $submitvalues
      * @param boolean $assoc
      * @return array
      */
-    public function exportValue(&$submitValues, $assoc = false) {
-        $value =  $this->prepare_data($this->_findValue($submitValues));
+    public function exportvalue(&$submitvalues, $assoc = false) {
+        $value = $this->prepare_data($this->_findValue($submitvalues));
         return $this->_prepareValue($value, $assoc);
     }
 }
