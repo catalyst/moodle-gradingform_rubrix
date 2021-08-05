@@ -41,7 +41,7 @@ require_once("HTML/QuickForm/input.php");
  * @copyright  2011 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class moodlequickformrubrixeditor extends HTML_QuickForm_input {
+class rubrixeditor extends HTML_QuickForm_input {
     /** @var string help message */
     public $_helpbutton = '';
     /** @var string|bool stores the result of the last validation: null - undefined, false - no errors, string - error(s) text */
@@ -74,7 +74,7 @@ class moodlequickformrubrixeditor extends HTML_QuickForm_input {
      * @param string $elementlabel
      * @param string $attributes
      */
-    public function moodlequickformrubrixeditor($elementname=null, $elementlabel=null, $attributes=null) {
+    public function rubrixeditor($elementname=null, $elementlabel=null, $attributes=null) {
         debugging('Use of class name as constructor is deprecated', DEBUG_DEVELOPER);
         self::__construct($elementname, $elementlabel, $attributes);
     }
@@ -84,7 +84,7 @@ class moodlequickformrubrixeditor extends HTML_QuickForm_input {
      *
      * @return string html for help button
      */
-    public function gethelpbutton() {
+    public function getHelpButton() { // phpcs:ignore
         return $this->_helpbutton;
     }
 
@@ -93,7 +93,7 @@ class moodlequickformrubrixeditor extends HTML_QuickForm_input {
      *
      * @return string
      */
-    public function getelementtemplatetype() {
+    public function getElementTemplateType() { // phpcs:ignore
         return 'default';
     }
 
@@ -113,7 +113,7 @@ class moodlequickformrubrixeditor extends HTML_QuickForm_input {
      *
      * @return string
      */
-    public function tohtml() {
+    public function toHtml() { // phpcs:ignore
         global $PAGE;
         $html = $this->_getTabs();
         $renderer = $PAGE->get_renderer('gradingform_rubrix');
@@ -394,7 +394,7 @@ class moodlequickformrubrixeditor extends HTML_QuickForm_input {
      * @param boolean $assoc
      * @return array
      */
-    public function exportvalue(&$submitvalues, $assoc = false) {
+    public function exportValue(&$submitvalues, $assoc = false) { // phpcs:ignore
         $value = $this->prepare_data($this->_findValue($submitvalues));
         return $this->_prepareValue($value, $assoc);
     }

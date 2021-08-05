@@ -45,7 +45,7 @@ use moodle_exception;
  */
 class fetch_test extends advanced_testcase {
 
-    public static function setupbeforeclass(): void {
+    public static function setupBeforeClass(): void { // phpcs:ignore
         global $CFG;
         require_once("{$CFG->libdir}/externallib.php");
     }
