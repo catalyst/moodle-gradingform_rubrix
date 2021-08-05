@@ -33,7 +33,7 @@ MoodleQuickForm::registerElementType('rubrixeditor',
 /**
  * Defines the rubrix edit form.
  *
- * @package    gradingform_rubrix.
+ * @package    gradingform_rubrix
  * @copyright  2011 Marina Glancy <marina@moodle.com>.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
  */
@@ -108,7 +108,7 @@ class gradingform_rubrix_editrubrix extends moodleform {
         } else {
             $vals = array_values($el->getValue());
             if ($vals[0] == gradingform_controller::DEFINITION_STATUS_READY) {
-                $this->findButton('saverubric')->setValue(get_string('save', 'gradingform_rubrix'));
+                $this->findbutton('saverubric')->setValue(get_string('save', 'gradingform_rubrix'));
             }
         }
     }
@@ -199,8 +199,8 @@ class gradingform_rubrix_editrubrix extends moodleform {
         }
 
         // Replace button text 'saverubric' and unfreeze 'Back to edit' button.
-        $this->findButton('saverubric')->setValue(get_string('continue'));
-        $el =& $this->findButton('editrubric');
+        $this->findbutton('saverubric')->setValue(get_string('continue'));
+        $el =& $this->findbutton('editrubric');
         $el->setValue(get_string('backtoediting', 'gradingform_rubrix'));
         $el->unfreeze();
 
@@ -213,7 +213,7 @@ class gradingform_rubrix_editrubrix extends moodleform {
      * @param string $elementname.
      * @return HTML_QuickForm_element
      */
-    protected function &findutton($elementname) {
+    protected function &findbutton($elementname) {
         $form = $this->_form;
         $buttonar =& $form->getElement('buttonar');
         $elements =& $buttonar->getElements();
