@@ -210,7 +210,7 @@ class gradingform_rubrix_editrubrix extends moodleform {
     /**
      * Returns a form element (submit button) with the name $elementname.
      *
-     * @param string $elementname.
+     * @param string $elementname
      * @return HTML_QuickForm_element
      */
     protected function &findbutton($elementname) {
