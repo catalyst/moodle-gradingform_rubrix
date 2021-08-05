@@ -25,7 +25,7 @@
 declare(strict_types = 1);
 
 namespace gradingform_rubrix\grades\grader\gradingpanel\external;
-require_once(__DIR__ . '/config.php');
+require_once(dirname(__FILE__) . "/../../../../../../../../../config.php");
 require_login();
 use coding_exception;
 use context;
