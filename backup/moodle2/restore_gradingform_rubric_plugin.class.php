@@ -36,7 +36,7 @@ class restore_gradingform_rubrix_plugin extends restore_gradingform_plugin {
     /**
      * Declares the rubric XML paths attached to the form definition element
      *
-     * @return array of {@link restore_path_element}
+     * @return array
      */
     protected function define_definition_plugin_structure() {
 
@@ -54,7 +54,7 @@ class restore_gradingform_rubrix_plugin extends restore_gradingform_plugin {
     /**
      * Declares the rubric XML paths attached to the form instance element
      *
-     * @return array of {@link restore_path_element}
+     * @return array
      */
     protected function define_instance_plugin_structure() {
 
@@ -70,7 +70,6 @@ class restore_gradingform_rubrix_plugin extends restore_gradingform_plugin {
      * Processes criterion element data
      *
      * Sets the mapping 'gradingform_rubrix_criterion' to be used later by
-     * {@link self::process_gradinform_rubric_filling()}
      *
      * @param stdClass|array $data
      */
@@ -89,7 +88,6 @@ class restore_gradingform_rubrix_plugin extends restore_gradingform_plugin {
      * Processes level element data
      *
      * Sets the mapping 'gradingform_rubrix_level' to be used later by
-     * {@link self::process_gradinform_rubric_filling()}
      *
      * @param stdClass|array $data
      */

@@ -26,19 +26,21 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 require_once(__DIR__.'/rubrixeditor.php');
-MoodleQuickForm::registerElementType('rubrixeditor', $CFG->dirroot.'/grade/grading/form/rubrix/rubrixeditor.php', 'MoodleQuickForm_rubrixeditor');
+MoodleQuickForm::registerElementType('rubrixeditor',
+                                    $CFG->dirroot.'/grade/grading/form/rubrix/rubrixeditor.php',
+                                    'rubrixeditor');
 
 /**
- * Defines the rubrix edit form
+ * Defines the rubrix edit form.
  *
  * @package    gradingform_rubrix
- * @copyright  2011 Marina Glancy <marina@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2011 Marina Glancy <marina@moodle.com>.
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
  */
 class gradingform_rubrix_editrubrix extends moodleform {
 
     /**
-     * Form element definition
+     * Form element definition.
      */
     public function definition() {
         $form = $this->_form;
@@ -49,30 +51,38 @@ class gradingform_rubrix_editrubrix extends moodleform {
         $form->addElement('hidden', 'returnurl');
         $form->setType('returnurl', PARAM_LOCALURL);
 
-        // name
+        // Name.
         $form->addElement('text', 'name', get_string('name', 'gradingform_rubrix'), array('size' => 52, 'aria-required' => 'true'));
         $form->addRule('name', get_string('required'), 'required', null, 'client');
         $form->setType('name', PARAM_TEXT);
 
-        // description
+        // Description.
         $options = gradingform_rubrix_controller::description_form_field_options($this->_customdata['context']);
         $form->addElement('editor', 'description_editor', get_string('description', 'gradingform_rubrix'), null, $options);
         $form->setType('description_editor', PARAM_RAW);
 
-        // rubrix completion status
+        // Rubrix completion status.
         $choices = array();
-        $choices[gradingform_controller::DEFINITION_STATUS_DRAFT]    = html_writer::tag('span', get_string('statusdraft', 'core_grading'), array('class' => 'status draft'));
-        $choices[gradingform_controller::DEFINITION_STATUS_READY]    = html_writer::tag('span', get_string('statusready', 'core_grading'), array('class' => 'status ready'));
+        $choices[gradingform_controller::DEFINITION_STATUS_DRAFT] = html_writer::tag('span',
+                                                                     get_string('statusdraft',
+                                                                                'core_grading'),
+                                                                                 array('class' => 'status draft'));
+        $choices[gradingform_controller::DEFINITION_STATUS_READY] = html_writer::tag('span',
+                                                                     get_string('statusready',
+                                                                     'core_grading'),
+                                                                     array('class' => 'status ready'));
         $form->addElement('select', 'status', get_string('rubricstatus', 'gradingform_rubrix'), $choices)->freeze();
 
-        // rubrix editor
+        // Rubrix editor.
         $element = $form->addElement('rubrixeditor', 'rubric', get_string('rubrix', 'gradingform_rubrix'));
         $form->setType('rubric', PARAM_RAW);
 
         $buttonarray = array();
         $buttonarray[] = &$form->createElement('submit', 'saverubric', get_string('saverubric', 'gradingform_rubrix'));
         if ($this->_customdata['allowdraft']) {
-            $buttonarray[] = &$form->createElement('submit', 'saverubricdraft', get_string('saverubricdraft', 'gradingform_rubrix'));
+            $buttonarray[] = &$form->createElement('submit',
+                                                   'saverubricdraft',
+                                                    get_string('saverubricdraft', 'gradingform_rubrix'));
         }
         $editbutton = &$form->createElement('submit', 'editrubric', ' ');
         $editbutton->freeze();
@@ -98,7 +108,7 @@ class gradingform_rubrix_editrubrix extends moodleform {
         } else {
             $vals = array_values($el->getValue());
             if ($vals[0] == gradingform_controller::DEFINITION_STATUS_READY) {
-                $this->findButton('saverubric')->setValue(get_string('save', 'gradingform_rubrix'));
+                $this->findbutton('saverubric')->setValue(get_string('save', 'gradingform_rubrix'));
             }
         }
     }
@@ -119,13 +129,13 @@ class gradingform_rubrix_editrubrix extends moodleform {
         $form = $this->_form;
         $rubricel = $form->getElement('rubric');
         if ($rubricel->non_js_button_pressed($data['rubric'])) {
-            // if JS is disabled and button such as 'Add criterion' is pressed - prevent from submit
+            // If JS is disabled and button such as 'Add criterion' is pressed - prevent from submit.
             $err['rubricdummy'] = 1;
         } else if (isset($data['editrubric'])) {
-            // continue editing
+            // Continue editing.
             $err['rubricdummy'] = 1;
         } else if (isset($data['saverubric']) && $data['saverubric']) {
-            // If user attempts to make rubric active - it needs to be validated
+            // If user attempts to make rubric active - it needs to be validated.
             if ($rubricel->validate($data['rubric']) !== false) {
                 $err['rubricdummy'] = 1;
             }
@@ -159,25 +169,25 @@ class gradingform_rubrix_editrubrix extends moodleform {
     public function need_confirm_regrading($controller) {
         $data = $this->get_data();
         if (isset($data->rubric['regrade'])) {
-            // we have already displayed the confirmation on the previous step
+            // We have already displayed the confirmation on the previous step.
             return false;
         }
         if (!isset($data->saverubric) || !$data->saverubric) {
-            // we only need confirmation when button 'Save rubric' is pressed
+            // We only need confirmation when button 'Save rubric' is pressed.
             return false;
         }
         if (!$controller->has_active_instances()) {
-            // nothing to re-grade, confirmation not needed
+            // Nothing to re-grade, confirmation not needed.
             return false;
         }
         $changelevel = $controller->update_or_check_rubric($data);
         if ($changelevel == 0) {
-            // no changes in the rubric, no confirmation needed
+            // No changes in the rubric, no confirmation needed.
             return false;
         }
 
-        // freeze form elements and pass the values in hidden fields
-        // TODO MDL-29421 description_editor does not freeze the normal way, uncomment below when fixed
+        // Freeze form elements and pass the values in hidden fields.
+        // TODO MDL-29421 description_editor does not freeze the normal way, uncomment below when fixed.
         $form = $this->_form;
         foreach (array('rubric', 'name'/*, 'description_editor'*/) as $fieldname) {
             $el =& $form->getElement($fieldname);
@@ -188,9 +198,9 @@ class gradingform_rubrix_editrubrix extends moodleform {
             }
         }
 
-        // replace button text 'saverubric' and unfreeze 'Back to edit' button
-        $this->findButton('saverubric')->setValue(get_string('continue'));
-        $el =& $this->findButton('editrubric');
+        // Replace button text 'saverubric' and unfreeze 'Back to edit' button.
+        $this->findbutton('saverubric')->setValue(get_string('continue'));
+        $el =& $this->findbutton('editrubric');
         $el->setValue(get_string('backtoediting', 'gradingform_rubrix'));
         $el->unfreeze();
 
@@ -198,12 +208,12 @@ class gradingform_rubrix_editrubrix extends moodleform {
     }
 
     /**
-     * Returns a form element (submit button) with the name $elementname
+     * Returns a form element (submit button) with the name $elementname.
      *
      * @param string $elementname
      * @return HTML_QuickForm_element
      */
-    protected function &findButton($elementname) {
+    protected function &findbutton($elementname) {
         $form = $this->_form;
         $buttonar =& $form->getElement('buttonar');
         $elements =& $buttonar->getElements();

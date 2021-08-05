@@ -25,9 +25,8 @@
 declare(strict_types = 1);
 
 namespace gradingform_rubrix\grades\grader\gradingpanel\external;
-
-global $CFG;
-
+require_once(dirname(__FILE__) . "/../../../../../../../../../config.php");
+require_login();
 use coding_exception;
 use context;
 use core_grades\component_gradeitem as gradeitem;
@@ -97,17 +96,16 @@ class store extends external_api {
      * @param int $contextid
      * @param string $itemname
      * @param int $gradeduserid
-     * @param string $formdata
      * @param bool $notifyuser
+     * @param string $formdata
      * @return array
      * @throws coding_exception
      * @throws moodle_exception
      * @since Moodle 3.8
      */
     public static function execute(string $component, int $contextid, string $itemname, int $gradeduserid, bool $notifyuser,
-            string $formdata): array {
+    string $formdata): array {
         global $USER;
-
         [
             'component' => $component,
             'contextid' => $contextid,
