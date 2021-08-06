@@ -55,7 +55,11 @@ class gradingform_rubrix_controller extends gradingform_controller {
     const DISPLAY_REVIEW        = 6;
     /** Rubric display mode: Dispaly filled rubric (i.e. students see their grades) */
     const DISPLAY_VIEW          = 7;
-
+    /** Normal display mode display mode */
+    const CRITERIA_TYPE_NORMAL  = 0;
+    /** Penalty display mode  */
+    const CRITERIA_TYPE_PENALTY = 1;
+    
     /**
      * Extends the module settings navigation with the rubric grading settings
      *
