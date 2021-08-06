@@ -52,7 +52,7 @@ class backup_gradingform_rubrix_plugin extends backup_gradingform_plugin {
         $criteria = new backup_nested_element('criteria');
 
         $criterion = new backup_nested_element('criterion', array('id'), array(
-            'sortorder', 'description', 'descriptionformat'));
+            'sortorder', 'description', 'descriptionformat', 'criteriatype'));
 
         $levels = new backup_nested_element('levels');
 
