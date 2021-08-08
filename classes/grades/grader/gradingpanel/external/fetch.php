@@ -78,6 +78,11 @@ class fetch extends external_api {
                 'The ID of the user show',
                 VALUE_REQUIRED
             ),
+            'criteriatype' => new external_value(
+                PARAM_INT,
+                'The value of criteria',
+                VALUE_REQUIRED
+            ),
         ]);
     }
 
@@ -88,10 +93,11 @@ class fetch extends external_api {
      * @param int $contextid
      * @param string $itemname
      * @param int $gradeduserid
+     * @param int $criteriatype
      * @return array
      * @since Moodle 3.8
      */
-    public static function execute(string $component, int $contextid, string $itemname, int $gradeduserid): array {
+    public static function execute(string $component, int $contextid, string $itemname, int $gradeduserid, int $criteriatype): array {
         global $CFG, $USER;
         require_once("{$CFG->libdir}/gradelib.php");
         [
@@ -99,11 +105,13 @@ class fetch extends external_api {
             'contextid' => $contextid,
             'itemname' => $itemname,
             'gradeduserid' => $gradeduserid,
+            'criteriatype' => $criteriatype,
         ] = self::validate_parameters(self::execute_parameters(), [
             'component' => $component,
             'contextid' => $contextid,
             'itemname' => $itemname,
             'gradeduserid' => $gradeduserid,
+            'criteriatype' => $criteriatype,
         ]);
 
         // Validate the context.

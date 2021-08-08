@@ -86,6 +86,11 @@ class store extends external_api {
                 'The serialised form data representing the grade',
                 VALUE_REQUIRED
             ),
+            'criteriatype' => new external_value(
+                PARAM_INT,
+                'The value of criteria',
+                VALUE_REQUIRED
+            ),
         ]);
     }
 
@@ -113,6 +118,7 @@ class store extends external_api {
             'gradeduserid' => $gradeduserid,
             'notifyuser' => $notifyuser,
             'formdata' => $formdata,
+            'criteriatype' => $criteriatype,
         ] = self::validate_parameters(self::execute_parameters(), [
             'component' => $component,
             'contextid' => $contextid,
@@ -120,6 +126,7 @@ class store extends external_api {
             'gradeduserid' => $gradeduserid,
             'notifyuser' => $notifyuser,
             'formdata' => $formdata,
+            'criteriatype' => $criteriatype,
         ]);
 
         // Validate the context.

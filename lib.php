@@ -59,7 +59,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
     const CRITERIA_TYPE_NORMAL  = 0;
     /** Penalty display mode  */
     const CRITERIA_TYPE_PENALTY = 1;
-    
+
     /**
      * Extends the module settings navigation with the rubric grading settings
      *
