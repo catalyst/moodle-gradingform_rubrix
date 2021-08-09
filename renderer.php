@@ -444,6 +444,17 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
             $input = html_writer::empty_tag('input', $criteriainputparams);
             $rubrictemplate .= html_writer::tag('div', $input, array('class' => 'addcriterion btn btn-secondary'));
         }
+        if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FULL) {
+            $value = get_string('addpenalty', 'gradingform_rubrix');
+            $criteriainputparams = array(
+                'type' => 'submit',
+                'name' => '{NAME}[criteria][addpenalty]',
+                'id' => '{NAME}-criteria-addpenalty',
+                'value' => $value
+            );
+            $input = html_writer::empty_tag('input', $criteriainputparams);
+            $rubrictemplate .= html_writer::tag('div', $input, array('class' => 'addcriterion btn btn-secondary'));
+        }
         $rubrictemplate .= $this->rubric_edit_options($mode, $options);
         $rubrictemplate .= html_writer::end_tag('div');
 

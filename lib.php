@@ -318,7 +318,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
         global $DB;
         $sql = "SELECT gd.*,
                        rc.id AS rcid, rc.sortorder AS rcsortorder, rc.description AS
-                       rcdescription, rc.descriptionformat AS rcdescriptionformat,
+                       rcdescription, rc.descriptionformat AS rcdescriptionformat, rc.criteriatype AS rccriteriatype,
                        rl.id AS rlid, rl.score AS rlscore, rl.definition AS rldefinition, rl.definitionformat AS rldefinitionformat
                   FROM {grading_definitions} gd
              LEFT JOIN {gradingform_rubrix_criteria} rc ON (rc.definitionid = gd.id)
@@ -341,7 +341,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
             }
             // Pick the criterion data.
             if (!empty($record->rcid) and empty($this->definition->rubric_criteria[$record->rcid])) {
-                foreach (array('id', 'sortorder', 'description', 'descriptionformat') as $fieldname) {
+                foreach (array('id', 'sortorder', 'description', 'descriptionformat', 'criteriatype') as $fieldname) {
                     $this->definition->rubric_criteria[$record->rcid][$fieldname] = $record->{'rc'.$fieldname};
                 }
                 $this->definition->rubric_criteria[$record->rcid]['levels'] = array();
