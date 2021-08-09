@@ -137,7 +137,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         action = chunks[chunks.length-1]
     if (chunks[0] != name || chunks[1] != 'criteria') return;
     var elements_str
-    if (chunks.length>4 || action == 'addlevel') {
+    if (chunks.length>4 || action == 'addlevel' || action == 'addpenalty') {
         elements_str = '#rubric-'+name+' #'+name+'-criteria-'+chunks[2]+'-levels .level'
     } else {
         elements_str = '#rubric-'+name+' .criterion'
@@ -145,7 +145,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
     // prepare the id of the next inserted level or criterion
     var newlevid = 0;
     var newid = 0;
-    if (action == 'addcriterion' || action == 'addlevel' || action == 'duplicate' ) {
+    if (action == 'addcriterion' || action == 'addlevel' || action == 'duplicate' || action == 'addpenalty') {
         newid = M.gradingform_rubrixeditor.calculatenewid('#rubric-'+name+' .criterion');
         newlevid = M.gradingform_rubrixeditor.calculatenewid('#rubric-'+name+' .level');
     }
@@ -154,7 +154,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         'callbackargs' : [e, true],
         'callback' : M.gradingform_rubrixeditor.buttonclick
     };
-    if (chunks.length == 3 && action == 'addcriterion') {
+    if (chunks.length == 3 && action == 'addcriterion' || action == 'addpenalty') {
         // ADD NEW CRITERION
         var levelsscores = [0], levidx = 1
         var parentel = Y.one('#'+name+'-criteria')
