@@ -129,7 +129,8 @@ class rubrixeditor extends HTML_QuickForm_input {
             $PAGE->requires->js_init_call('M.gradingform_rubrixeditor.init', array(
                 array('name' => $this->getName(),
                     'criteriontemplate' => $renderer->criterion_template($mode, $data['options'], $this->getName()),
-                    'leveltemplate' => $renderer->level_template($mode, $data['options'], $this->getName())
+                    'leveltemplate' => $renderer->level_template($mode, $data['options'], $this->getName()),
+                    'penaltyleveltemplate' => $renderer->penalty_level_template($mode, $data['options'], $this->getName())
                    )),
                 true, $module);
         } else {

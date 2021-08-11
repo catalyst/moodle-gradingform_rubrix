@@ -8,7 +8,8 @@ M.gradingform_rubrixeditor.init = function(Y, options) {
     M.gradingform_rubrixeditor.Y = Y
     M.gradingform_rubrixeditor.templates[options.name] = {
         'criterion' : options.criteriontemplate,
-        'level' : options.leveltemplate
+        'level' : options.leveltemplate,
+        'penaltylevel' : options.penaltyleveltemplate
     }
     M.gradingform_rubrixeditor.disablealleditors()
     Y.on('click', M.gradingform_rubrixeditor.clickanywhere, 'body', null)
@@ -165,11 +166,21 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         }
         for (levidx;levidx<3;levidx++) levelsscores[levidx] = parseFloat(levelsscores[levidx-1])+1
         var levelsstr = '';
-        for (levidx=0;levidx<levelsscores.length;levidx++) {
-            levelsstr += M.gradingform_rubrixeditor.templates[name].level.
-                replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
-                replace(/\{LEVEL-score\}/g, levelsscores[levidx]).
-                replace(/\{LEVEL-index\}/g, levidx + 1);
+
+        if(action == 'addpenalty') {
+            for (levidx=0;levidx<levelsscores.length;levidx++) {
+                levelsstr += M.gradingform_rubrixeditor.templates[name].penaltylevel.
+                    replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
+                    replace(/\{LEVEL-penalty\}/g, levelsscores[levidx]).
+                    replace(/\{LEVEL-index\}/g, levidx + 1);
+            }
+        } else {
+            for (levidx=0;levidx<levelsscores.length;levidx++) {
+                levelsstr += M.gradingform_rubrixeditor.templates[name].level.
+                    replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
+                    replace(/\{LEVEL-score\}/g, levelsscores[levidx]).
+                    replace(/\{LEVEL-index\}/g, levidx + 1);
+            }
         }
         var newcriterion = M.gradingform_rubrixeditor.templates[name]['criterion'].replace(/\{LEVELS\}/, levelsstr)
         parentel.append(newcriterion.replace(/\{CRITERION-id\}/g, 'NEWID'+newid).replace(/\{.+?\}/g, ''))
@@ -177,6 +188,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         M.gradingform_rubrixeditor.addhandlers();
         M.gradingform_rubrixeditor.disablealleditors()
         M.gradingform_rubrixeditor.assignclasses(elements_str)
+
         M.gradingform_rubrixeditor.editmode(
             Y.one('#rubric-' + name + ' #' + name + '-criteria-NEWID' + newid + '-description-cell'), true
         );
