@@ -48,8 +48,9 @@ class criterion {
     /**
      * Constructor for this test_criterion object
      *
-     * @param string $description A description of this criterion.
-     * @param array $levels
+     * @param string $description A description for criterion.
+     * @param int $criteriatype Criteria type.
+     * @param array $levels Criteria levels.
      */
     public function __construct(string $description, int $criteriatype, array $levels = []) {
         $this->description = $description;

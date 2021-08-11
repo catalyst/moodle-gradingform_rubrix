@@ -402,12 +402,16 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
      *                   whether this level is checked
      * @return string
      */
-    public function penalty_level_template($mode, $options, $elementname = '{NAME}', $criterionid = '{CRITERION-id}', $level = null) {
+    public function penalty_level_template($mode,
+                                           $options,
+                                           $elementname = '{NAME}',
+                                           $criterionid = '{CRITERION-id}',
+                                           $level = null) {
         // TODO MDL-31235 definition format.
 
         if (!isset($level['id'])) {
             $level = array('id' => '{LEVEL-id}', 'definition' => '{LEVEL-definition}',
-                           'penalty' => '{LEVEL-score}', 'class' => '{LEVEL-class}', 'checked' => false);
+                           'penalty' => '{LEVEL-penalty}', 'class' => '{LEVEL-class}', 'checked' => false);
         } else {
             foreach (array('penalty', 'definition', 'class', 'checked', 'index') as $key) {
                 // Set missing array elements to empty strings to avoid warnings.
@@ -441,9 +445,9 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
 
             $scoreparams = array(
                 'type' => 'text',
-                'id' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][score]',
-                'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][score]',
-                'aria-label' => get_string('scoreinputforlevel', 'gradingform_rubrix', $levelindex),
+                'id' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
+                'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
+                'aria-label' => get_string('penaltyinputforlevel', 'gradingform_rubrix', $levelindex),
                 'size' => '3',
                 'value' => '0'
             );
@@ -454,7 +458,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                                  'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][definition]',
                                  'value' => $level['definition']));
                 $leveltemplate .= html_writer::empty_tag('input', array('type' =>
-                                 'hidden', 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][score]',
+                                 'hidden', 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
                                  'value' => '0'));
             }
             $definition = s($level['definition']);
@@ -497,7 +501,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
             $levelinfo = new stdClass();
             $levelinfo->definition = s($level['definition']);
             $levelinfo->score = '0';
-            $tdattributes['aria-label'] = get_string('level', 'gradingform_rubrix', $levelinfo);
+            $tdattributes['aria-label'] = get_string('penaltylevel', 'gradingform_rubrix', $levelinfo);
 
             if ($mode != gradingform_rubrix_controller::DISPLAY_PREVIEW &&
                 $mode != gradingform_rubrix_controller::DISPLAY_PREVIEW_GRADED) {

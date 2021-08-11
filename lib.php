@@ -146,6 +146,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
         if (!isset($newdefinition->rubric['options'])) {
             $newdefinition->rubric['options'] = self::get_default_options();
         }
+
         $newdefinition->options = json_encode($newdefinition->rubric['options']);
         $editoroptions = self::description_form_field_options($this->get_context());
         $newdefinition = file_postupdate_standard_editor($newdefinition, 'description', $editoroptions, $this->get_context(),
@@ -170,7 +171,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
             $newcriteria = $newdefinition->rubric['criteria']; // New ones to be saved.
         }
         $currentcriteria = $currentdefinition->rubric_criteria;
-        $criteriafields = array('sortorder', 'description', 'descriptionformat');
+        $criteriafields = array('sortorder', 'description', 'descriptionformat', 'criteriatype');
         $levelfields = array('score', 'definition', 'definitionformat');
         foreach ($newcriteria as $id => $criterion) {
             // Get list of submitted levels.
@@ -183,11 +184,21 @@ class gradingform_rubrix_controller extends gradingform_controller {
                 // Insert criterion into DB.
                 // TODO MDL-31235 format is not supported yet.
                 $data = array('definitionid' => $this->definition->id, 'descriptionformat' => FORMAT_MOODLE);
+
                 foreach ($criteriafields as $key) {
+
                     if (array_key_exists($key, $criterion)) {
+
                         $data[$key] = $criterion[$key];
+
+                        if ($this->multi_array_key_exists('penalty', $criterion)) {
+                            $data['criteriatype'] = self::CRITERIA_TYPE_PENALTY;
+                        } else {
+                            $data['criteriatype'] = self::CRITERIA_TYPE_NORMAL;
+                        }
                     }
                 }
+
                 if ($doupdate) {
                     $id = $DB->insert_record('gradingform_rubrix_criteria', $data);
                 }
@@ -224,6 +235,9 @@ class gradingform_rubrix_controller extends gradingform_controller {
             foreach ($levelsdata as $levelid => $level) {
                 if (isset($level['score'])) {
                     $level['score'] = unformat_float($level['score']);
+                }
+                if (isset($level['penalty'])) {
+                    $level['score'] = unformat_float($level['penalty']);
                 }
                 if (preg_match('/^NEWID\d+$/', $levelid)) {
                     // Insert level into DB.
@@ -295,6 +309,26 @@ class gradingform_rubrix_controller extends gradingform_controller {
         $changelevels = array_keys($haschanges);
         sort($changelevels);
         return array_pop($changelevels);
+    }
+
+    /**
+     * Finds key in multidimensional array.
+     *
+     * @param array $key
+     * @param array $array
+     * @return bool
+     */
+    public function multi_array_key_exists($key, array $array): bool {
+        if (array_key_exists($key, $array)) {
+            return true;
+        } else {
+            foreach ($array as $nested) {
+                if (is_array($nested) && $this->multi_array_key_exists($key, $nested)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

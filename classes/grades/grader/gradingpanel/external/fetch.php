@@ -97,7 +97,11 @@ class fetch extends external_api {
      * @return array
      * @since Moodle 3.8
      */
-    public static function execute(string $component, int $contextid, string $itemname, int $gradeduserid, int $criteriatype): array {
+    public static function execute(string $component,
+                                   int $contextid,
+                                   string $itemname,
+                                   int $gradeduserid,
+                                   int $criteriatype): array {
         global $CFG, $USER;
         require_once("{$CFG->libdir}/gradelib.php");
         [
