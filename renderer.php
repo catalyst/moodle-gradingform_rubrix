@@ -449,7 +449,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
                 'aria-label' => get_string('penaltyinputforlevel', 'gradingform_rubrix', $levelindex),
                 'size' => '3',
-                'value' => '0'
+                'value' => '10'
             );
             $penalty = html_writer::empty_tag('input', $scoreparams);
         } else {
@@ -462,7 +462,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                                  'value' => '0'));
             }
             $definition = s($level['definition']);
-            $penalty = '0';
+            $penalty = '10';
         }
         if ($mode == gradingform_rubrix_controller::DISPLAY_EVAL) {
             $levelradioparams = array(
@@ -537,7 +537,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 $scoreclass .= ' error';
             }
             $leveltemplate .= html_writer::tag('div',
-                              get_string('scorepostfix',
+                              get_string('percentpostfix',
                               'gradingform_rubrix',
                               $penalty), array('class' => $scoreclass));
         }

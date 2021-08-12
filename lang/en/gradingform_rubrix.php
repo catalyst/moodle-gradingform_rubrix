@@ -90,6 +90,7 @@ $string['saverubricdraft'] = 'Save as draft';
 $string['scoreinputforlevel'] = 'Score input for level {$a}';
 $string['penaltyinputforlevel'] = 'Penalty input for level {$a}';
 $string['scorepostfix'] = '{$a}points';
+$string['percentpostfix'] = '{$a}percent';
 $string['showdescriptionstudent'] = 'Display rubric description to those being graded';
 $string['showdescriptionteacher'] = 'Display rubric description during evaluation';
 $string['showremarksstudent'] = 'Show remarks to those being graded';
