@@ -719,7 +719,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
             return null;
         }
         $returnvalue = array('minscore' => 0, 'maxscore' => 0);
-        
+
         foreach ($this->get_definition()->rubric_criteria as $id => $criterion) {
 
             if ($criterion['criteriatype'] == "0") {
@@ -965,8 +965,23 @@ class gradingform_rubrix_instance extends gradingform_instance {
         $maxgrade = $graderange[count($graderange) - 1];
 
         $curscore = 0;
+        $curpenalty = 0;
+
         foreach ($grade['criteria'] as $id => $record) {
-            $curscore += $this->get_controller()->get_definition()->rubric_criteria[$id]['levels'][$record['levelid']]['score'];
+
+            if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "0") {
+                $curscore += $this->get_controller()->get_definition()->rubric_criteria
+                [$id]['levels'][$record['levelid']]['score'];
+            } else {
+                $curpenalty += $this->get_controller()->get_definition()->rubric_criteria
+                [$id]['levels'][$record['levelid']]['score'];
+            }
+        }
+
+        // Calculate score minus penalty.
+        if ($curpenalty > 0) {
+            $curpenalty = $curpenalty / 100;
+            $curscore = $curscore - ($curscore * $curpenalty);
         }
 
         $allowdecimals = $this->get_controller()->get_allow_grade_decimals();
