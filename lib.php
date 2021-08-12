@@ -719,14 +719,18 @@ class gradingform_rubrix_controller extends gradingform_controller {
             return null;
         }
         $returnvalue = array('minscore' => 0, 'maxscore' => 0);
+        
         foreach ($this->get_definition()->rubric_criteria as $id => $criterion) {
-            $scores = array();
-            foreach ($criterion['levels'] as $level) {
-                $scores[] = $level['score'];
+
+            if ($criterion['criteriatype'] == "0") {
+                $scores = array();
+                foreach ($criterion['levels'] as $level) {
+                    $scores[] = $level['score'];
+                }
+                sort($scores);
+                $returnvalue['minscore'] += $scores[0];
+                $returnvalue['maxscore'] += $scores[count($scores) - 1];
             }
-            sort($scores);
-            $returnvalue['minscore'] += $scores[0];
-            $returnvalue['maxscore'] += $scores[count($scores) - 1];
         }
         return $returnvalue;
     }
@@ -948,7 +952,6 @@ class gradingform_rubrix_instance extends gradingform_instance {
      */
     public function get_grade() {
         $grade = $this->get_rubric_filling();
-
         if (!($scores = $this->get_controller()->get_min_max_score()) || $scores['maxscore'] <= $scores['minscore']) {
             return -1;
         }
