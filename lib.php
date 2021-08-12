@@ -960,9 +960,9 @@ class gradingform_rubrix_instance extends gradingform_instance {
         if (empty($graderange)) {
             return -1;
         }
-        sort($graderange);
-        $mingrade = $graderange[0];
-        $maxgrade = $graderange[count($graderange) - 1];
+        // sort($graderange);
+        // $mingrade = $graderange[0];
+        // $maxgrade = $graderange[count($graderange) - 1];
 
         $curscore = 0;
         $curpenalty = 0;
@@ -984,19 +984,21 @@ class gradingform_rubrix_instance extends gradingform_instance {
             $curscore = $curscore - ($curscore * $curpenalty);
         }
 
-        $allowdecimals = $this->get_controller()->get_allow_grade_decimals();
-        $options = $this->get_controller()->get_options();
+        // $allowdecimals = $this->get_controller()->get_allow_grade_decimals();
+        // $options = $this->get_controller()->get_options();
 
-        if ($options['lockzeropoints']) {
-            // Grade calculation method when 0-level is locked.
-            $grade = max($mingrade, $curscore / $scores['maxscore'] * $maxgrade);
-            return $allowdecimals ? $grade : round($grade, 0);
-        } else {
-            // Alternative grade calculation method.
-            $gradeoffset = ($curscore - $scores['minscore']) /
-                           ($scores['maxscore'] - $scores['minscore']) * ($maxgrade - $mingrade);
-            return ($allowdecimals ? $gradeoffset : round($gradeoffset, 0)) + $mingrade;
-        }
+        // if ($options['lockzeropoints']) {
+        //     // Grade calculation method when 0-level is locked.
+        //     $grade = max($mingrade, $curscore / $scores['maxscore'] * $maxgrade);
+        //     return $allowdecimals ? $grade : round($grade, 0);
+        // } else {
+        //     // Alternative grade calculation method.
+        //     $gradeoffset = ($curscore - $scores['minscore']) /
+        //                    ($scores['maxscore'] - $scores['minscore']) * ($maxgrade - $mingrade);
+        //     return ($allowdecimals ? $gradeoffset : round($gradeoffset, 0)) + $mingrade;
+        // }
+
+        return $curscore;
     }
 
     /**
