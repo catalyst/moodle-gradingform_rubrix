@@ -729,6 +729,10 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
 
         global $DB;
 
+        if(!is_int($id)){
+            return;
+        }
+
         $sql = "SELECT * FROM {gradingform_rubrix_criteria} rc
         JOIN {gradingform_rubrix_levels} rl ON (rl.criterionid = rc.id)
         WHERE rl.id = :id";
@@ -790,12 +794,18 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 if (isset($criterionvalue['savedlevelid']) && ((int)$criterionvalue['savedlevelid'] === $levelid)) {
                     $level['class'] .= ' currentchecked';
                 }
-                if ($criteriondata[$levelid]->criteriatype == "1") {
-                    $level['class'] .= ' penalty';
-                    $levelsstr .= $this->penalty_level_template($mode, $options, $elementname, $id, $level);
+
+                if($criteriondata[$levelid]) {
+                    if ($criteriondata[$levelid]->criteriatype == "1") {
+                        $level['class'] .= ' penalty';
+                        $levelsstr .= $this->penalty_level_template($mode, $options, $elementname, $id, $level);
+                    } else {
+                        $levelsstr .= $this->level_template($mode, $options, $elementname, $id, $level);
+                    }
                 } else {
                     $levelsstr .= $this->level_template($mode, $options, $elementname, $id, $level);
                 }
+
                 $level['tdwidth'] = 100 / count($criterion['levels']);
                 $level['index'] = $index;
                 $index++;
