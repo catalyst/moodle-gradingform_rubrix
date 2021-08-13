@@ -792,10 +792,12 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 }
                 if ($criteriondata[$levelid]->criteriatype == "1") {
                     $level['class'] .= ' penalty';
+                    $levelsstr .= $this->penalty_level_template($mode, $options, $elementname, $id, $level);
+                } else {
+                    $levelsstr .= $this->level_template($mode, $options, $elementname, $id, $level);
                 }
                 $level['tdwidth'] = 100 / count($criterion['levels']);
                 $level['index'] = $index;
-                $levelsstr .= $this->level_template($mode, $options, $elementname, $id, $level);
                 $index++;
             }
             $criteriastr .= $this->criterion_template($mode, $options, $elementname, $criterion, $levelsstr, $criterionvalue);
