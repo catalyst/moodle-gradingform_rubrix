@@ -173,6 +173,15 @@
     background: #30ff30;
 }
 
+.gradingform_rubrix .criterion .levels .penalty.checked {
+    background: #dcdef7;
+    border: 1px solid #555;
+}
+
+.gradingform_rubrix.evaluate .criterion .levels .penalty:hover {
+    background: #1a20d9;
+}
+
 /* replace buttons with images */
 .gradingform_rubrix.editor .delete input,
 .gradingform_rubrix.editor .duplicate input,

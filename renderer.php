@@ -720,6 +720,27 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
     }
 
     /**
+     * Thi function returns reference to whether the created level is a penalty or not.
+     *
+     * @param int $id
+     * @return object
+     */
+    public function criterion_data($id) {
+
+        global $DB;
+
+        $sql = "SELECT * FROM {gradingform_rubrix_criteria} rc
+        JOIN {gradingform_rubrix_levels} rl ON (rl.criterionid = rc.id)
+        WHERE rl.id = :id";
+
+        $params = ['id' => $id];
+
+        $criteriondata = $DB->get_records_sql($sql, $params);
+
+        return $criteriondata;
+    }
+
+    /**
      * This function returns html code for displaying rubric. Depending on $mode it may be the code
      * to edit rubric, to preview the rubric, to evaluate somebody or to review the evaluation.
      *
@@ -736,6 +757,9 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
      * @return string
      */
     public function display_rubric($criteria, $options, $mode, $elementname = null, $values = null) {
+
+        global $DB;
+
         $criteriastr = '';
         $cnt = 0;
         foreach ($criteria as $id => $criterion) {
@@ -749,8 +773,10 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 $criterionvalue = null;
             }
             $index = 1;
+
             foreach ($criterion['levels'] as $levelid => $level) {
                 $level['id'] = $levelid;
+                $criteriondata = $this->criterion_data($levelid);
                 $level['class'] = $this->get_css_class_suffix($levelcnt++, count($criterion['levels']) - 1);
                 $level['checked'] = (isset($criterionvalue['levelid']) && ((int)$criterionvalue['levelid'] === $levelid));
                 if ($level['checked'] &&
@@ -763,6 +789,9 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 }
                 if (isset($criterionvalue['savedlevelid']) && ((int)$criterionvalue['savedlevelid'] === $levelid)) {
                     $level['class'] .= ' currentchecked';
+                }
+                if ($criteriondata[$levelid]->criteriatype == "1") {
+                    $level['class'] .= ' penalty';
                 }
                 $level['tdwidth'] = 100 / count($criterion['levels']);
                 $level['index'] = $index;
