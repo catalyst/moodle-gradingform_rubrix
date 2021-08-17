@@ -48,6 +48,7 @@ $string['err_nodescription'] = 'Criterion description can not be empty';
 $string['err_novariations'] = 'Criterion levels cannot all be worth the same number of points';
 $string['err_scoreformat'] = 'Number of points for each level must be a valid number';
 $string['err_totalscore'] = 'Maximum number of points possible when graded by the rubric must be more than zero';
+$string['exportgrades'] = 'Export rubrix grades';
 $string['gradingof'] = '{$a} grading';
 $string['level'] = 'Level {$a->definition}, {$a->score} points.';
 $string['leveldelete'] = 'Delete level {$a}';

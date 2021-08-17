@@ -1018,3 +1018,24 @@ class gradingform_rubrix_instance extends gradingform_instance {
         return $html;
     }
 }
+
+/**
+ * This function extends the module navigation with the export link.
+ *
+ * @param navigation_node $navigation The navigation node to extend
+ * @param cm_info $cm
+ */
+function report_componentgrades_extend_navigation_module(navigation_node $navigation, cm_info $cm) {
+    global $CFG;
+    $context = context_module::instance($cm->id);
+    if ($cm->modname == 'assign' && has_capability('moodle/grade:edit', $context)) {
+        $gradingmanager = get_grading_manager($context, 'mod_assign', 'submissions');
+        if ($gradingmanager->get_active_method() == 'rubrix') {
+            if (file_exists("$CFG->dirroot/report/componentgrades/locallib.php")) {
+                $url = new moodle_url('/grade/grading/form/rubrix/export.php', array('id' => $cm->course, 'modid' => $cm->id));
+                $navigation->add(get_string('exportgrades', 'gradingform_rubrix'), $url, navigation_node::TYPE_SETTING, null,
+                    'rubricgrades');
+            }
+        }
+    }
+}
