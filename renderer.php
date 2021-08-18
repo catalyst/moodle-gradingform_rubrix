@@ -153,6 +153,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'class' => 'btn btn-secondary'));
             $criteriontemplate .= html_writer::tag('td', $button, array('class' => 'addlevel'));
         }
+
         $displayremark = ($options['enableremarks'] &&
                          ($mode != gradingform_rubrix_controller::DISPLAY_VIEW ||
                          $options['showremarksstudent']));
@@ -449,7 +450,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
                 'aria-label' => get_string('penaltyinputforlevel', 'gradingform_rubrix', $levelindex),
                 'size' => '3',
-                'value' => '10'
+                'value' => $level['penalty'],
             );
             $penalty = html_writer::empty_tag('input', $scoreparams);
         } else {

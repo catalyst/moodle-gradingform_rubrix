@@ -169,6 +169,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
 
         if(action == 'addpenalty') {
             for (levidx=0;levidx<levelsscores.length;levidx++) {
+                levelsscores = [0, 5, 10]
                 levelsstr += M.gradingform_rubrixeditor.templates[name].penaltylevel.
                     replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
                     replace(/\{LEVEL-penalty\}/g, levelsscores[levidx]).
@@ -176,6 +177,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
             }
         } else {
             for (levidx=0;levidx<levelsscores.length;levidx++) {
+                levelsscores = [0, 1, 2]
                 levelsstr += M.gradingform_rubrixeditor.templates[name].level.
                     replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
                     replace(/\{LEVEL-score\}/g, levelsscores[levidx]).
@@ -205,7 +207,6 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
                 ispenalty = lastcriterion.item(levidx).get('id').includes('penaltylevel')
             }
         }
-
         var levelIndex = 1;
 
         parent.all('.level').each(function (node) {
