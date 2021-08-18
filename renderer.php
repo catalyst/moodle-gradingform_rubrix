@@ -426,7 +426,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
 
         // Template for one level within one criterion.
         $tdattributes = array(
-            'id' => '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}',
+            'id' => '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}-penaltylevel',
             'class' => 'level' . $level['class']
         );
         if (isset($level['tdwidth'])) {
@@ -583,6 +583,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
      */
     protected function rubric_template($mode, $options, $elementname, $criteriastr) {
         $classsuffix = ''; // CSS suffix for class of the main div. Depends on the mode.
+
         switch ($mode) {
             case gradingform_rubrix_controller::DISPLAY_EDIT_FULL:
                 $classsuffix = ' editor editable';
