@@ -204,7 +204,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         if (parentel.all('.criterion').size()) {
             var lastcriterion = parentel.all('.criterion').item(parentel.all('.criterion').size()-1).all('.level')
             for (levidx=0;levidx<lastcriterion.size();levidx++) {
-                ispenalty = lastcriterion.item(levidx).get('id').includes('penaltylevel')
+                ispenalty = lastcriterion.item(levidx).getAttribute('class').includes('penaltylevel')
             }
         }
         var levelIndex = 1;
