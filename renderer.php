@@ -412,9 +412,9 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
 
         if (!isset($level['id'])) {
             $level = array('id' => '{LEVEL-id}', 'definition' => '{LEVEL-definition}',
-                           'penalty' => '{LEVEL-penalty}', 'class' => '{LEVEL-class}', 'checked' => false);
+                           'score' => '{LEVEL-penalty}', 'class' => '{LEVEL-class}', 'checked' => false);
         } else {
-            foreach (array('penalty', 'definition', 'class', 'checked', 'index') as $key) {
+            foreach (array('score', 'definition', 'class', 'checked', 'index') as $key) {
                 // Set missing array elements to empty strings to avoid warnings.
                 if (!array_key_exists($key, $level)) {
                     $level[$key] = '';
@@ -450,7 +450,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
                 'aria-label' => get_string('penaltyinputforlevel', 'gradingform_rubrix', $levelindex),
                 'size' => '3',
-                'value' => $level['penalty'],
+                'value' => $level['score'],
             );
             $penalty = html_writer::empty_tag('input', $scoreparams);
         } else {
@@ -463,7 +463,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                                  'value' => '0'));
             }
             $definition = s($level['definition']);
-            $penalty = '10';
+            $penalty = $level['score'];
         }
         if ($mode == gradingform_rubrix_controller::DISPLAY_EVAL) {
             $levelradioparams = array(
