@@ -195,21 +195,16 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
             Y.one('#rubric-' + name + ' #' + name + '-criteria-NEWID' + newid + '-description-cell'), true
         );
     } else if (chunks.length == 5 && action == 'addlevel') {
+
         // ADD NEW LEVEL
         var newscore = 0;
         var ispenalty = false;
-        parent = Y.one('#'+name+'-criteria-'+chunks[2]+'-levels')
-        var parentel = Y.one('#'+name+'-criteria')
-
-        if (parentel.all('.criterion').size()) {
-            var lastcriterion = parentel.all('.criterion').item(parentel.all('.criterion').size()-1).all('.level')
-            for (levidx=0;levidx<lastcriterion.size();levidx++) {
-                ispenalty = lastcriterion.item(levidx).getAttribute('class').includes('penaltylevel')
-            }
-        }
         var levelIndex = 1;
 
+        parent = Y.one('#'+name+'-criteria-'+chunks[2]+'-levels')
+
         parent.all('.level').each(function (node) {
+            ispenalty = node.getAttribute('class').includes('penaltylevel')
             newscore = Math.max(newscore, parseFloat(node.one('.score input[type=text]').get('value')) + 1);
             levelIndex++;
         });
