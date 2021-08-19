@@ -564,6 +564,189 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
     }
 
     /**
+     * This function returns html code for displaying one level of one criterion. Depending on $mode
+     * it may be the code to edit rubric, to preview the rubric, to evaluate somebody or to review the evaluation.
+     *
+     * This function may be called from display_rubric() to display the whole rubric, or it can be
+     * called by itself to return a template used by JavaScript to add new empty level to the
+     * criterion during the design of rubric.
+     * In this case it will use macros like {NAME}, {CRITERION-id}, {LEVEL-id}, etc.
+     *
+     * When overriding this function it is very important to remember that all elements of html
+     * form (in edit or evaluate mode) must have the name $elementname.
+     *
+     * Also JavaScript relies on the class names of elements and when developer changes them
+     * script might stop working.
+     *
+     * @param int $mode rubric display mode see
+     * @param array $options display options for this rubric
+     * @param string $elementname the name of the form element (in editor mode) or the prefix for div ids (in view mode)
+     * @param string|int $criterionid either id of the nesting criterion or a macro for template
+     * @param array|null $level level data, also in view mode it might also have property $level['checked']
+     *                   whether this level is checked
+     * @return string
+     */
+    public function late_level_template($mode,
+                                           $options,
+                                           $elementname = '{NAME}',
+                                           $criterionid = '{CRITERION-id}',
+                                           $level = null) {
+        // TODO MDL-31235 definition format.
+
+        if (!isset($level['id'])) {
+            $level = array('id' => '{LEVEL-id}', 'definition' => '{LEVEL-definition}',
+                           'score' => '{LEVEL-late}', 'class' => '{LEVEL-class}', 'checked' => false);
+        } else {
+            foreach (array('score', 'definition', 'class', 'checked', 'index') as $key) {
+                // Set missing array elements to empty strings to avoid warnings.
+                if (!array_key_exists($key, $level)) {
+                    $level[$key] = '';
+                }
+            }
+        }
+
+        // Get level index.
+        $levelindex = isset($level['index']) ? $level['index'] : '{LEVEL-index}';
+
+        // Template for one level within one criterion.
+        $tdattributes = array(
+            'id' => '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}',
+            'class' => 'level' . $level['class'] . ' latelevel'
+        );
+        if (isset($level['tdwidth'])) {
+            $tdattributes['width'] = round($level['tdwidth']).'%';
+        }
+
+        $leveltemplate = html_writer::start_tag('div', array('class' => 'level-wrapper'));
+        if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FULL) {
+            $definitionparams = array(
+                'id' => '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}-definition',
+                'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][definition]',
+                'aria-label' => get_string('leveldefinition', 'gradingform_rubrix', $levelindex),
+                'cols' => '10', 'rows' => '4'
+            );
+            $definition = html_writer::tag('textarea', s($level['definition']), $definitionparams);
+
+            $scoreparams = array(
+                'type' => 'text',
+                'id' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][late]',
+                'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][late]',
+                'aria-label' => get_string('lateinputforlevel', 'gradingform_rubrix', $levelindex),
+                'size' => '3',
+                'value' => $level['score'],
+            );
+            $late = html_writer::empty_tag('input', $scoreparams);
+        } else {
+            if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN) {
+                $leveltemplate .= html_writer::empty_tag('input', array('type' => 'hidden',
+                                 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][definition]',
+                                 'value' => $level['definition']));
+                $leveltemplate .= html_writer::empty_tag('input', array('type' =>
+                                 'hidden', 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
+                                 'value' => '0'));
+            }
+            $definition = s($level['definition']);
+            $late = $level['score'];
+        }
+        if ($mode == gradingform_rubrix_controller::DISPLAY_EVAL) {
+            $levelradioparams = array(
+                'type' => 'radio',
+                'id' => '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}-definition',
+                'name' => '{NAME}[criteria][{CRITERION-id}][levelid]',
+                'value' => $level['id']
+            );
+            if ($level['checked']) {
+                $levelradioparams['checked'] = 'checked';
+            }
+            $input = html_writer::empty_tag('input', $levelradioparams);
+            $leveltemplate .= html_writer::div($input, 'radio');
+        }
+        if ($mode == gradingform_rubrix_controller::DISPLAY_EVAL_FROZEN && $level['checked']) {
+            $leveltemplate .= html_writer::empty_tag('input',
+                array(
+                    'type' => 'hidden',
+                    'name' => '{NAME}[criteria][{CRITERION-id}][levelid]',
+                    'value' => $level['id']
+                )
+            );
+        }
+        $late = html_writer::tag('span', $late, array('id' =>
+                                                        '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}-late',
+                                                        'class' => 'scorevalue'));
+        $definitionclass = 'definition';
+        if (isset($level['error_definition'])) {
+            $definitionclass .= ' error';
+        }
+
+        if ($mode != gradingform_rubrix_controller::DISPLAY_EDIT_FULL &&
+            $mode != gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN) {
+
+            $tdattributes['tabindex'] = '0';
+            $levelinfo = new stdClass();
+            $levelinfo->definition = s($level['definition']);
+            $levelinfo->score = '0';
+            $tdattributes['aria-label'] = get_string('latelevel', 'gradingform_rubrix', $levelinfo);
+
+            if ($mode != gradingform_rubrix_controller::DISPLAY_PREVIEW &&
+                $mode != gradingform_rubrix_controller::DISPLAY_PREVIEW_GRADED) {
+                // Add role of radio button to level cell if not in edit and preview mode.
+                $tdattributes['role'] = 'radio';
+                if ($level['checked']) {
+                    $tdattributes['aria-checked'] = 'true';
+                } else {
+                    $tdattributes['aria-checked'] = 'false';
+                }
+            }
+        }
+
+        $leveltemplateparams = array(
+            'id' => '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}-definition-container'
+        );
+        $leveltemplate .= html_writer::div($definition, $definitionclass, $leveltemplateparams);
+        $displayscore = true;
+        if (!$options['showscoreteacher'] &&
+            in_array($mode, array(gradingform_rubrix_controller::DISPLAY_EVAL,
+                    gradingform_rubrix_controller::DISPLAY_EVAL_FROZEN,
+                    gradingform_rubrix_controller::DISPLAY_REVIEW))) {
+            $displayscore = false;
+        }
+        if (!$options['showscorestudent'] &&
+            in_array($mode, array(gradingform_rubrix_controller::DISPLAY_VIEW,
+            gradingform_rubrix_controller::DISPLAY_PREVIEW_GRADED))) {
+            $displayscore = false;
+        }
+        if ($displayscore) {
+            $scoreclass = 'score';
+            if (isset($level['error_score'])) {
+                $scoreclass .= ' error';
+            }
+            $leveltemplate .= html_writer::tag('div',
+                              get_string('percentpostfix',
+                              'gradingform_rubrix',
+                              $late), array('class' => $scoreclass));
+        }
+        if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FULL) {
+            $value = get_string('leveldelete', 'gradingform_rubrix', $levelindex);
+            $buttonparams = array(
+                'type' => 'submit',
+                'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][delete]',
+                'id' => '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}-delete',
+                'value' => $value
+            );
+            $button = html_writer::empty_tag('input', $buttonparams);
+            $leveltemplate .= html_writer::tag('div', $button, array('class' => 'delete'));
+        }
+        $leveltemplate .= html_writer::end_tag('div'); // Level-wrapper.
+
+        $leveltemplate = html_writer::tag('td', $leveltemplate, $tdattributes); // The .level cell.
+
+        $leveltemplate = str_replace('{NAME}', $elementname, $leveltemplate);
+        $leveltemplate = str_replace('{CRITERION-id}', $criterionid, $leveltemplate);
+        $leveltemplate = str_replace('{LEVEL-id}', $level['id'], $leveltemplate);
+        return $leveltemplate;
+    }
+
+    /**
      * This function returns html code for displaying rubric template (content before and after
      * criteria list). Depending on $mode it may be the code to edit rubric, to preview the rubric,
      * to evaluate somebody or to review the evaluation.
@@ -638,6 +821,17 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'type' => 'submit',
                 'name' => '{NAME}[criteria][addpenalty]',
                 'id' => '{NAME}-criteria-addpenalty',
+                'value' => $value
+            );
+            $input = html_writer::empty_tag('input', $criteriainputparams);
+            $rubrictemplate .= html_writer::tag('div', $input, array('class' => 'addcriterion btn btn-secondary'));
+        }
+        if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FULL) {
+            $value = get_string('addlate', 'gradingform_rubrix');
+            $criteriainputparams = array(
+                'type' => 'submit',
+                'name' => '{NAME}[criteria][addlate]',
+                'id' => '{NAME}-criteria-addlate',
                 'value' => $value
             );
             $input = html_writer::empty_tag('input', $criteriainputparams);

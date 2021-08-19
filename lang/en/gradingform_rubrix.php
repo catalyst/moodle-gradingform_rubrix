@@ -26,6 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['addcriterion'] = 'Add criterion';
 $string['addpenalty'] = 'Add percentage penalty';
+$string['addlate'] = 'Add late penalty';
 $string['additionalfeedback'] = 'Additional feedback';
 $string['alwaysshowdefinition'] = 'Allow users to preview rubric (otherwise it will only be displayed after grading)';
 $string['backtoediting'] = 'Back to editing';
@@ -89,6 +90,7 @@ $string['saverubric'] = 'Save rubric and make it ready';
 $string['saverubricdraft'] = 'Save as draft';
 $string['scoreinputforlevel'] = 'Score input for level {$a}';
 $string['penaltyinputforlevel'] = 'Penalty input for level {$a}';
+$string['lateinputforlevel'] = 'Late penalty input for level {$a}';
 $string['scorepostfix'] = '+ {$a}points';
 $string['percentpostfix'] = '- {$a}percent';
 $string['showdescriptionstudent'] = 'Display rubric description to those being graded';
