@@ -721,7 +721,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 $scoreclass .= ' error';
             }
             $leveltemplate .= html_writer::tag('div',
-                              get_string('percentpostfix',
+                              get_string('latepostfix',
                               'gradingform_rubrix',
                               $late), array('class' => $scoreclass));
         }

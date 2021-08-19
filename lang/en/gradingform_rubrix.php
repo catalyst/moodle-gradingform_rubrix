@@ -93,6 +93,7 @@ $string['penaltyinputforlevel'] = 'Penalty input for level {$a}';
 $string['lateinputforlevel'] = 'Late penalty input for level {$a}';
 $string['scorepostfix'] = '+ {$a}points';
 $string['percentpostfix'] = '- {$a}percent';
+$string['latepostfix'] = '- {$a}points';
 $string['showdescriptionstudent'] = 'Display rubric description to those being graded';
 $string['showdescriptionteacher'] = 'Display rubric description during evaluation';
 $string['showremarksstudent'] = 'Show remarks to those being graded';
