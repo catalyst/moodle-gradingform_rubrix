@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="grade/grading/form/rubrix/db" VERSION="20210806" COMMENT="XMLDB file for Moodle rubrix"
+<XMLDB PATH="grade/grading/form/rubrix/db" VERSION="20210819" COMMENT="XMLDB file for Moodle rubrix"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >
@@ -12,6 +12,7 @@
         <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The criterion description"/>
         <FIELD NAME="descriptionformat" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false" COMMENT="The format of the description field"/>
         <FIELD NAME="criteriatype" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="cap" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
