@@ -653,7 +653,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                                  'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][definition]',
                                  'value' => $level['definition']));
                 $leveltemplate .= html_writer::empty_tag('input', array('type' =>
-                                 'hidden', 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
+                                 'hidden', 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][late]',
                                  'value' => '0'));
             }
             $definition = s($level['definition']);
@@ -756,6 +756,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
         $leveltemplate = str_replace('{LEVEL-id}', $level['id'], $leveltemplate);
         return $leveltemplate;
     }
+
 
     /**
      * This function returns html code for displaying rubric template (content before and after

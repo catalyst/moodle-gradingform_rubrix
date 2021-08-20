@@ -287,6 +287,26 @@ class rubrixeditor extends HTML_QuickForm_input {
                                 $maxscore = $penalty;
                             }
                         }
+                        if (isset($level['late'])) {
+                            $late = unformat_float($level['late'], true);
+                            if ($withvalidation) {
+                                if (!strlen(trim($level['definition']))) {
+                                    $errors['err_nodefinition'] = 1;
+                                    $level['error_definition'] = true;
+                                }
+                                if ($late === null || $late === false) {
+                                    $errors['err_scoreformat'] = 1;
+                                    $level['error_score'] = true;
+                                }
+                            }
+                            $levels[$levelid] = $level;
+                            if ($minscore === null || $late < $minscore) {
+                                $minscore = $late;
+                            }
+                            if ($maxscore === null || $late > $maxscore) {
+                                $maxscore = $late;
+                            }
+                        }
                     } else {
                         $this->nonjsbuttonpressed = true;
                     }

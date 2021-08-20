@@ -171,8 +171,9 @@ class gradingform_rubrix_controller extends gradingform_controller {
             $newcriteria = $newdefinition->rubric['criteria']; // New ones to be saved.
         }
         $currentcriteria = $currentdefinition->rubric_criteria;
-        $criteriafields = array('sortorder', 'description', 'descriptionformat', 'criteriatype');
+        $criteriafields = array('sortorder', 'description', 'descriptionformat', 'criteriatype', 'cap');
         $levelfields = array('score', 'definition', 'definitionformat');
+
         foreach ($newcriteria as $id => $criterion) {
             // Get list of submitted levels.
             $levelsdata = array();
@@ -191,6 +192,9 @@ class gradingform_rubrix_controller extends gradingform_controller {
 
                         $data[$key] = $criterion[$key];
 
+                        if ($this->multi_array_key_exists('late', $criterion)) {
+                            $data['cap'] = $criterion['cap'];
+                        }
                         if ($this->multi_array_key_exists('penalty', $criterion)) {
                             $data['criteriatype'] = self::CRITERIA_TYPE_PENALTY;
                         } else {
@@ -239,6 +243,9 @@ class gradingform_rubrix_controller extends gradingform_controller {
                 if (isset($level['penalty'])) {
                     $level['score'] = unformat_float($level['penalty']);
                 }
+                if (isset($level['late'])) {
+                    $level['score'] = unformat_float($level['late']);
+                }
                 if (preg_match('/^NEWID\d+$/', $levelid)) {
                     // Insert level into DB.
                     $data = array('criterionid' => $id,
@@ -280,6 +287,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
                 }
             }
         }
+
         // Remove deleted criteria from DB.
         foreach (array_keys($currentcriteria) as $id) {
             if (!array_key_exists($id, $newcriteria)) {
