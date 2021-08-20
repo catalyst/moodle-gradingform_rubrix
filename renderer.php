@@ -63,9 +63,10 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
         // TODO MDL-31235 description format, remark format.
         if ($criterion === null || !is_array($criterion) || !array_key_exists('id', $criterion)) {
             $criterion = array('id' => '{CRITERION-id}', 'description' => '{CRITERION-description}',
+                               'cap' => '{CRITERION-cap}',
                                'sortorder' => '{CRITERION-sortorder}', 'class' => '{CRITERION-class}');
         } else {
-            foreach (array('sortorder', 'description', 'class') as $key) {
+            foreach (array('sortorder', 'description', 'cap', 'class') as $key) {
                 // Set missing array elements to empty strings to avoid warnings.
                 if (!array_key_exists($key, $criterion)) {
                     $criterion[$key] = '';
@@ -95,7 +96,17 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'aria-label' => get_string('criterion', 'gradingform_rubrix', ''),
                 'cols' => '10', 'rows' => '5'
             );
+
+            $captextareaparams = array(
+                'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
+                'id' => '{NAME}-criteria-{CRITERION-id}-cap',
+                'aria-label' => get_string('criterion', 'gradingform_rubrix', ''),
+                'cols' => '2', 'rows' => '2',
+                'class' => 'capclass',
+            );
             $description = html_writer::tag('textarea', s($criterion['description']), $descriptiontextareaparams);
+            $description .= html_writer::tag('input', s($criterion['description']), $captextareaparams);
+
         } else {
             if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN) {
                 $criteriontemplate .= html_writer::empty_tag('input',
