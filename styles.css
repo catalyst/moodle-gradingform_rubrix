@@ -182,6 +182,14 @@
     background: #1a20d9;
 }
 
+.gradingform_rubrix .criterion .levels .late.checked {
+    background: #f2d3d3;
+    border: 1px solid #555;
+}
+
+.gradingform_rubrix.evaluate .criterion .levels .late:hover {
+    background: #fc0303;
+}
 /* replace buttons with images */
 .gradingform_rubrix.editor .delete input,
 .gradingform_rubrix.editor .duplicate input,

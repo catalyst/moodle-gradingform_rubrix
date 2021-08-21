@@ -59,6 +59,8 @@ class gradingform_rubrix_controller extends gradingform_controller {
     const CRITERIA_TYPE_NORMAL  = 0;
     /** Penalty display mode  */
     const CRITERIA_TYPE_PENALTY = 1;
+    /** Late display mode  */
+    const CRITERIA_TYPE_LATE = 2;
 
     /**
      * Extends the module settings navigation with the rubric grading settings
@@ -194,8 +196,8 @@ class gradingform_rubrix_controller extends gradingform_controller {
 
                         if ($this->multi_array_key_exists('late', $criterion)) {
                             $data['cap'] = $criterion['cap'];
-                        }
-                        if ($this->multi_array_key_exists('penalty', $criterion)) {
+                            $data['criteriatype'] = self::CRITERIA_TYPE_LATE;
+                        } else if ($this->multi_array_key_exists('penalty', $criterion)) {
                             $data['criteriatype'] = self::CRITERIA_TYPE_PENALTY;
                         } else {
                             $data['criteriatype'] = self::CRITERIA_TYPE_NORMAL;

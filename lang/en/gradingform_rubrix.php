@@ -53,6 +53,7 @@ $string['err_totalscore'] = 'Maximum number of points possible when graded by th
 $string['gradingof'] = '{$a} grading';
 $string['level'] = 'Level {$a->definition}, {$a->score} points.';
 $string['penaltylevel'] = 'Level {$a->definition}, {$a->penalty} percent.';
+$string['latelevel'] = 'Level {$a->definition}, {$a->penalty} points.';
 $string['leveldelete'] = 'Delete level {$a}';
 $string['leveldefinition'] = 'Level {$a} definition';
 $string['levelempty'] = 'Click to edit level';

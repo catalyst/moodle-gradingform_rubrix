@@ -420,7 +420,6 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                                            $criterionid = '{CRITERION-id}',
                                            $level = null) {
         // TODO MDL-31235 definition format.
-
         if (!isset($level['id'])) {
             $level = array('id' => '{LEVEL-id}', 'definition' => '{LEVEL-definition}',
                            'score' => '{LEVEL-penalty}', 'class' => '{LEVEL-class}', 'checked' => false);
@@ -1007,6 +1006,9 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                     if ($criteriondata[$levelid]->criteriatype == "1") {
                         $level['class'] .= ' penalty';
                         $levelsstr .= $this->penalty_level_template($mode, $options, $elementname, $id, $level);
+                    } else if ($criteriondata[$levelid]->criteriatype == "2") {
+                        $level['class'] .= ' late';
+                        $levelsstr .= $this->late_level_template($mode, $options, $elementname, $id, $level);
                     } else {
                         $levelsstr .= $this->level_template($mode, $options, $elementname, $id, $level);
                     }
