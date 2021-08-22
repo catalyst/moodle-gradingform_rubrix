@@ -363,6 +363,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
         $sql = "SELECT gd.*,
                        rc.id AS rcid, rc.sortorder AS rcsortorder, rc.description AS
                        rcdescription, rc.descriptionformat AS rcdescriptionformat, rc.criteriatype AS rccriteriatype,
+                       rc.cap AS rccap,
                        rl.id AS rlid, rl.score AS rlscore, rl.definition AS rldefinition, rl.definitionformat AS rldefinitionformat
                   FROM {grading_definitions} gd
              LEFT JOIN {gradingform_rubrix_criteria} rc ON (rc.definitionid = gd.id)
@@ -385,7 +386,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
             }
             // Pick the criterion data.
             if (!empty($record->rcid) and empty($this->definition->rubric_criteria[$record->rcid])) {
-                foreach (array('id', 'sortorder', 'description', 'descriptionformat', 'criteriatype') as $fieldname) {
+                foreach (array('id', 'sortorder', 'description', 'descriptionformat', 'criteriatype', 'cap') as $fieldname) {
                     $this->definition->rubric_criteria[$record->rcid][$fieldname] = $record->{'rc'.$fieldname};
                 }
                 $this->definition->rubric_criteria[$record->rcid]['levels'] = array();
@@ -973,22 +974,41 @@ class gradingform_rubrix_instance extends gradingform_instance {
 
         $curscore = 0;
         $curpenalty = 0;
+        $cap = 0;
 
+        // Get the score, percent penalty, late penalty and cap from db and put them in vars.
         foreach ($grade['criteria'] as $id => $record) {
 
             if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "0") {
                 $curscore += $this->get_controller()->get_definition()->rubric_criteria
                 [$id]['levels'][$record['levelid']]['score'];
-            } else {
+            } else if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "1") {
                 $curpenalty += $this->get_controller()->get_definition()->rubric_criteria
                 [$id]['levels'][$record['levelid']]['score'];
+            } else if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "2") {
+                $curlate += $this->get_controller()->get_definition()->rubric_criteria
+                [$id]['levels'][$record['levelid']]['score'];
+                if ($this->get_controller()->get_definition()->rubric_criteria[$id]['cap'] > 0) {
+                    $cap = (int)$this->get_controller()->get_definition()->rubric_criteria[$id]['cap'];
+                }
             }
         }
 
         // Calculate score minus penalty.
         if ($curpenalty > 0) {
+
             $curpenalty = $curpenalty / 100;
             $curscore = $curscore - ($curscore * $curpenalty);
+
+            // After applying the penalty, apply the late penalty.
+            if ($curlate > 0) {
+                $curscore = $curscore - $curlate;
+            }
+
+            // If the score plus penalties exceed the cap reset the score to be the cap.
+            if ($curscore < $cap) {
+                $curscore = $cap;
+            }
         }
 
         return $curscore;
