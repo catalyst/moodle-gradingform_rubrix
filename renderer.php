@@ -97,15 +97,19 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'cols' => '10', 'rows' => '5'
             );
 
-            $captextareaparams = array(
-                'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
-                'id' => '{NAME}-criteria-{CRITERION-id}-cap',
-                'aria-label' => get_string('criterion', 'gradingform_rubrix', ''),
-                'cols' => '2', 'rows' => '2',
-                'class' => 'capclass',
-            );
             $description = html_writer::tag('textarea', s($criterion['description']), $descriptiontextareaparams);
-            $description .= html_writer::tag('input', s($criterion['description']), $captextareaparams);
+
+            // If the criterion type is a late penalty, add a cap field to the description column.
+            if (isset($criterion['criteriatype']) && $criterion['criteriatype'] == "2") {
+                $captextareaparams = array(
+                    'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
+                    'id' => '{NAME}-criteria-{CRITERION-id}-cap',
+                    'aria-label' => get_string('criterion', 'gradingform_rubrix', ''),
+                    'cols' => '2', 'rows' => '2',
+                    'class' => 'capclass',
+                );
+                $description .= html_writer::tag('input', s($criterion['description']), $captextareaparams);
+            }
 
         } else {
             if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN) {
@@ -135,6 +139,15 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
             // Set label for the criterion cell.
             $descriptiontdparams['aria-label'] = get_string('criterion', 'gradingform_rubrix', s($criterion['description']));
         }
+
+        $captextareaparams = array(
+            'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
+            'id' => '{NAME}-criteria-{CRITERION-id}-cap',
+            'aria-label' => get_string('criterion', 'gradingform_rubrix', ''),
+            'cols' => '2', 'rows' => '2',
+            'class' => 'capclass',
+        );
+        $description .= html_writer::tag('input', s($criterion['description']), $captextareaparams);
 
         // Description cell.
         $criteriontemplate .= html_writer::tag('td', $description, $descriptiontdparams);

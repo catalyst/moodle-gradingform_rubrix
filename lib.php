@@ -195,7 +195,9 @@ class gradingform_rubrix_controller extends gradingform_controller {
                         $data[$key] = $criterion[$key];
 
                         if ($this->multi_array_key_exists('late', $criterion)) {
-                            $data['cap'] = $criterion['cap'];
+                            if (isset($criterion['cap'])) {
+                                $data['cap'] = $criterion['cap'];
+                            }
                             $data['criteriatype'] = self::CRITERIA_TYPE_LATE;
                         } else if ($this->multi_array_key_exists('penalty', $criterion)) {
                             $data['criteriatype'] = self::CRITERIA_TYPE_PENALTY;
