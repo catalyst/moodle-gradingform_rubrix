@@ -60,12 +60,6 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
     public function criterion_template($mode, $options, $elementname = '{NAME}',
                                        $criterion = null, $levelsstr = '{LEVELS}', $value = null) {
 
-        if (strpos($levelsstr, 'regularleveltemplate') !== false) {
-            $criteriontype = 'regular';
-        } else {
-            $criteriontype = 'penalty';
-        }
-
         // TODO MDL-31235 description format, remark format.
         if ($criterion === null || !is_array($criterion) || !array_key_exists('id', $criterion)) {
             $criterion = array('id' => '{CRITERION-id}', 'description' => '{CRITERION-description}',
@@ -100,22 +94,21 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'name' => '{NAME}[criteria][{CRITERION-id}][description]',
                 'id' => '{NAME}-criteria-{CRITERION-id}-description',
                 'aria-label' => get_string('criterion', 'gradingform_rubrix', ''),
-                'cols' => '10', 'rows' => '5'
+                'cols' => '10', 'rows' => '5',
             );
 
             $description = html_writer::tag('textarea', s($criterion['description']), $descriptiontextareaparams);
 
             // If the criterion type is a late penalty, add a cap field to the description column.
-            if (isset($criteriontype) && $criteriontype == 'penalty') {
-                $captextareaparams = array(
-                    'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
-                    'id' => '{NAME}-criteria-{CRITERION-id}-cap',
-                    'aria-label' => get_string('criterion', 'gradingform_rubrix', ''),
-                    'cols' => '2', 'rows' => '2',
-                    'class' => 'capclass',
-                );
-                $description .= html_writer::tag('input', s($criterion['description']), $captextareaparams);
-            }
+            $captextareaparams = array(
+                'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
+                'id' => '{NAME}-criteria-{CRITERION-id}-cap',
+                'aria-label' => '',
+                'cols' => '2', 'rows' => '2',
+                'class' => 'capclass',
+                'value' => $criterion['cap'],
+            );
+            $description .= html_writer::tag('input', s($criterion['description']), $captextareaparams);
 
         } else {
             if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN) {
@@ -128,7 +121,13 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
             }
             $description = s($criterion['description']);
         }
-        $descriptionclass = 'description';
+
+        if (isset($criterion['criteriatype']) && $criterion['criteriatype'] == "2") {
+            $descriptionclass = 'description latedescription';
+        } else {
+            $descriptionclass = 'description';
+        }
+
         if (isset($criterion['error_description'])) {
             $descriptionclass .= ' error';
         }
@@ -144,17 +143,6 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
             $descriptiontdparams['tabindex'] = '0';
             // Set label for the criterion cell.
             $descriptiontdparams['aria-label'] = get_string('criterion', 'gradingform_rubrix', s($criterion['description']));
-        }
-
-        if (isset($criteriontype) && $criteriontype == 'penalty') {
-            $captextareaparams = array(
-                'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
-                'id' => '{NAME}-criteria-{CRITERION-id}-cap',
-                'aria-label' => get_string('criterion', 'gradingform_rubrix', ''),
-                'cols' => '2', 'rows' => '2',
-                'class' => 'capclass',
-            );
-            $description .= html_writer::tag('input', s($criterion['description']), $captextareaparams);
         }
 
         // Description cell.
