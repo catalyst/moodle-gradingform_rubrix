@@ -146,6 +146,9 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
             $descriptiontdparams['aria-label'] = get_string('criterion', 'gradingform_rubrix', s($criterion['description']));
         }
 
+        $mingrade = get_string('mingrade', 'gradingform_rubrix') . ' ' . $criterion['cap'];
+        $description .= html_writer::span($mingrade, $class = 'mingrade', null);
+
         // Description cell.
         $criteriontemplate .= html_writer::tag('td', $description, $descriptiontdparams);
 
