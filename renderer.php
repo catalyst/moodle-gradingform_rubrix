@@ -109,7 +109,6 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'value' => $criterion['cap'],
             );
             $description .= html_writer::tag('input', '', $captextareaparams);
-            $description .= html_writer::span(get_string('mingrade', 'gradingform_rubrix'), $class = 'mingrade', null);
 
         } else {
             if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN) {
