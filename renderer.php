@@ -108,7 +108,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'class' => 'capclass',
                 'value' => $criterion['cap'],
             );
-            $description .= html_writer::tag('input', s($criterion['description']), $captextareaparams);
+            $description .= html_writer::tag('input', '', $captextareaparams);
 
         } else {
             if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN) {
