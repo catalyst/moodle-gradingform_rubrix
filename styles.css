@@ -115,6 +115,10 @@
     display:inline;
 }
 
+.gradingform_rubrix .criterion .latedescription textarea {
+    margin-right: 10px;
+}
+
 .gradingform_rubrix .criterion .latedescription .mingrade {
     font-size: 10px;
     font-weight:normal;
