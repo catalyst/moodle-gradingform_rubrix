@@ -119,7 +119,12 @@
     margin-right: 10px;
 }
 
+.gradingform_rubrix .criterion .mingrade {
+    display:none;
+}
+
 .gradingform_rubrix .criterion .latedescription .mingrade {
+    display:inline;
     font-size: 10px;
     font-weight:normal;
     margin-left: 10px;
