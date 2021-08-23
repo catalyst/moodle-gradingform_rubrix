@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['addcriterion'] = 'Add criterion';
 $string['addpenalty'] = 'Add percentage penalty';
 $string['addlate'] = 'Add points penalty';
+$string['mingrade'] = 'Min grade';
 $string['additionalfeedback'] = 'Additional feedback';
 $string['alwaysshowdefinition'] = 'Allow users to preview rubric (otherwise it will only be displayed after grading)';
 $string['backtoediting'] = 'Back to editing';

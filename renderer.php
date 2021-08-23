@@ -99,16 +99,19 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
 
             $description = html_writer::tag('textarea', s($criterion['description']), $descriptiontextareaparams);
 
-            // If the criterion type is a late penalty, add a cap field to the description column.
-            $captextareaparams = array(
-                'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
-                'id' => '{NAME}-criteria-{CRITERION-id}-cap',
-                'aria-label' => '',
-                'cols' => '2', 'rows' => '2',
-                'class' => 'capclass',
-                'value' => $criterion['cap'],
-            );
-            $description .= html_writer::tag('input', '', $captextareaparams);
+            if (isset($criterion['criteriatype']) && $criterion['criteriatype'] == "2") {
+                // If the criterion type is a late penalty, add a cap field to the description column.
+                $captextareaparams = array(
+                    'name' => '{NAME}[criteria][{CRITERION-id}][cap]',
+                    'id' => '{NAME}-criteria-{CRITERION-id}-cap',
+                    'aria-label' => 'min grade',
+                    'cols' => '2', 'rows' => '2',
+                    'class' => 'capclass',
+                    'value' => $criterion['cap'],
+                );
+                $description .= html_writer::tag('input', '', $captextareaparams);
+                $description .= html_writer::span(get_string('mingrade', 'gradingform_rubrix'), $class = 'mingrade', null);
+            }
 
         } else {
             if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FROZEN) {
