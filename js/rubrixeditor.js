@@ -200,6 +200,11 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         M.gradingform_rubrixeditor.disablealleditors()
         M.gradingform_rubrixeditor.assignclasses(elements_str)
 
+        // Append class to late penalty description.
+        if(elements_str.includes('addlate')){
+            Y.one('#rubric-' + name + ' #' + name + '-criteria-NEWID' + newid + '-description-cell')._node.classList.add('latedescription');
+        }
+
         M.gradingform_rubrixeditor.editmode(
             Y.one('#rubric-' + name + ' #' + name + '-criteria-NEWID' + newid + '-description-cell'), true
         );

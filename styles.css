@@ -107,6 +107,11 @@
 
 .gradingform_rubrix .criterion .capclass {
     max-width: 50px;
+    display:none;
+}
+
+.gradingform_rubrix .criterion .latedescription .capclass {
+    display:block;
 }
 
 .gradingform_rubrix .criterion .capclass li:nth-of-type(1) > a, .nav > ul > li:nth-of-type(2) > a {
