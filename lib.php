@@ -998,19 +998,18 @@ class gradingform_rubrix_instance extends gradingform_instance {
 
         // Calculate score minus penalty.
         if ($curpenalty > 0) {
-
             $curpenalty = $curpenalty / 100;
             $curscore = $curscore - ($curscore * $curpenalty);
+        }
 
-            // After applying the penalty, apply the late penalty.
-            if ($curlate > 0) {
-                $curscore = $curscore - $curlate;
-            }
+        // After applying the penalty, apply the late penalty.
+        if ($curlate > 0) {
+            $curscore = $curscore - $curlate;
+        }
 
-            // If the score plus penalties exceed the cap reset the score to be the cap.
-            if ($curscore < $cap) {
-                $curscore = $cap;
-            }
+        // If the score plus penalties exceed the cap reset the score to be the cap.
+        if ($curscore < $cap) {
+            $curscore = $cap;
         }
 
         return $curscore;
