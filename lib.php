@@ -76,9 +76,10 @@ class gradingform_rubrix_controller extends gradingform_controller {
         if (file_exists("$CFG->dirroot/report/componentgrades/locallib.php")) {
             $context = $this->get_context();
             if ($context->contextlevel == CONTEXT_MODULE) {
-                $url = new moodle_url('/grade/grading/form/rubrix/export.php', array('id' => $COURSE->id, 'modid' => $context->instanceid));
-                $node->add(get_string('exportgrades', 'gradingform_rubrix'), $url, navigation_node::TYPE_SETTING, null,
-                    'rubricgrades');
+                $url = new moodle_url('/grade/grading/form/rubrix/export.php',
+                    array('id' => $COURSE->id, 'modid' => $context->instanceid));
+                $node->add(get_string('exportgrades', 'gradingform_rubrix'),
+                    $url, navigation_node::TYPE_SETTING, null, 'rubricgrades');
 
             }
         }
