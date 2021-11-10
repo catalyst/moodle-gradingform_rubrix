@@ -67,9 +67,21 @@ class gradingform_rubrix_controller extends gradingform_controller {
      * @param navigation_node $node
      */
     public function extend_settings_navigation(settings_navigation $settingsnav, navigation_node $node=null) {
+        global $COURSE, $CFG;
+
         $node->add(get_string('definerubric', 'gradingform_rubrix'),
             $this->get_editor_url(), settings_navigation::TYPE_CUSTOM,
             null, null, new pix_icon('icon', '', 'gradingform_rubrix'));
+
+        if (file_exists("$CFG->dirroot/report/componentgrades/locallib.php")) {
+            $context = $this->get_context();
+            if ($context->contextlevel == CONTEXT_MODULE) {
+                $url = new moodle_url('/grade/grading/form/rubrix/export.php', array('id' => $COURSE->id, 'modid' => $context->instanceid));
+                $node->add(get_string('exportgrades', 'gradingform_rubrix'), $url, navigation_node::TYPE_SETTING, null,
+                    'rubricgrades');
+
+            }
+        }
     }
 
     /**
@@ -1016,26 +1028,5 @@ class gradingform_rubrix_instance extends gradingform_instance {
                                                                               $gradingformelement->getName(),
                                                                               $value);
         return $html;
-    }
-}
-
-/**
- * This function extends the module navigation with the export link.
- *
- * @param navigation_node $navigation The navigation node to extend
- * @param cm_info $cm
- */
-function report_componentgrades_extend_navigation_module(navigation_node $navigation, cm_info $cm) {
-    global $CFG;
-    $context = context_module::instance($cm->id);
-    if ($cm->modname == 'assign' && has_capability('moodle/grade:edit', $context)) {
-        $gradingmanager = get_grading_manager($context, 'mod_assign', 'submissions');
-        if ($gradingmanager->get_active_method() == 'rubrix') {
-            if (file_exists("$CFG->dirroot/report/componentgrades/locallib.php")) {
-                $url = new moodle_url('/grade/grading/form/rubrix/export.php', array('id' => $cm->course, 'modid' => $cm->id));
-                $navigation->add(get_string('exportgrades', 'gradingform_rubrix'), $url, navigation_node::TYPE_SETTING, null,
-                    'rubricgrades');
-            }
-        }
     }
 }
