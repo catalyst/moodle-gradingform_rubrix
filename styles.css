@@ -105,6 +105,35 @@
     font-weight: bold;
 }
 
+.gradingform_rubrix .criterion .capclass {
+    max-width: 50px;
+    margin-bottom: 10px;
+    display:none;
+}
+
+.gradingform_rubrix .criterion .latedescription .capclass {
+    display:inline;
+}
+
+.gradingform_rubrix .criterion .latedescription textarea {
+    margin-right: 10px;
+}
+
+.gradingform_rubrix .criterion .mingrade {
+    display:none;
+}
+
+.gradingform_rubrix .criterion .latedescription .mingrade {
+    display:inline;
+    font-size: 10px;
+    font-weight:normal;
+    margin-left: 10px;
+}
+
+.gradingform_rubrix .criterion .capclass li:nth-of-type(1) > a, .nav > ul > li:nth-of-type(2) > a {
+    color: #f00;
+}
+
 .gradingform_rubrix .criterion .levels table {
     width: 100%;
     height: 100%;
@@ -173,6 +202,23 @@
     background: #30ff30;
 }
 
+.gradingform_rubrix .criterion .levels .penalty.checked {
+    background: #dcdef7;
+    border: 1px solid #555;
+}
+
+.gradingform_rubrix.evaluate .criterion .levels .penalty:hover {
+    background: #1a20d9;
+}
+
+.gradingform_rubrix .criterion .levels .late.checked {
+    background: #f2d3d3;
+    border: 1px solid #555;
+}
+
+.gradingform_rubrix.evaluate .criterion .levels .late:hover {
+    background: #fc0303;
+}
 /* replace buttons with images */
 .gradingform_rubrix.editor .delete input,
 .gradingform_rubrix.editor .duplicate input,

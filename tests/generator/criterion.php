@@ -42,14 +42,19 @@ class criterion {
     /** @var array $levels The levels for this criterion. */
     public $levels = [];
 
+    /** @var int $criteriatype The type for this criterion. */
+    public $criteriatype = gradingform_rubrix_controller::CRITERIA_TYPE_NORMAL;
+
     /**
      * Constructor for this test_criterion object
      *
-     * @param string $description A description of this criterion.
-     * @param array $levels
+     * @param string $description A description for criterion.
+     * @param int $criteriatype Criteria type.
+     * @param array $levels Criteria levels.
      */
-    public function __construct(string $description, array $levels = []) {
+    public function __construct(string $description, int $criteriatype, array $levels = []) {
         $this->description = $description;
+        $this->criteriatype = $criteriatype;
         foreach ($levels as $definition => $score) {
             $this->add_level($definition, $score);
         }

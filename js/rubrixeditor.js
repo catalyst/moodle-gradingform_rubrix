@@ -8,7 +8,9 @@ M.gradingform_rubrixeditor.init = function(Y, options) {
     M.gradingform_rubrixeditor.Y = Y
     M.gradingform_rubrixeditor.templates[options.name] = {
         'criterion' : options.criteriontemplate,
-        'level' : options.leveltemplate
+        'level' : options.leveltemplate,
+        'penaltylevel' : options.penaltyleveltemplate,
+        'latelevel' : options.lateleveltemplate,
     }
     M.gradingform_rubrixeditor.disablealleditors()
     Y.on('click', M.gradingform_rubrixeditor.clickanywhere, 'body', null)
@@ -137,7 +139,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         action = chunks[chunks.length-1]
     if (chunks[0] != name || chunks[1] != 'criteria') return;
     var elements_str
-    if (chunks.length>4 || action == 'addlevel') {
+    if (chunks.length>4 || action == 'addlevel' || action == 'addpenalty' || action == 'addlate') {
         elements_str = '#rubric-'+name+' #'+name+'-criteria-'+chunks[2]+'-levels .level'
     } else {
         elements_str = '#rubric-'+name+' .criterion'
@@ -145,7 +147,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
     // prepare the id of the next inserted level or criterion
     var newlevid = 0;
     var newid = 0;
-    if (action == 'addcriterion' || action == 'addlevel' || action == 'duplicate' ) {
+    if (action == 'addcriterion' || action == 'addlevel' || action == 'duplicate' || action == 'addpenalty' || action == 'addlate') {
         newid = M.gradingform_rubrixeditor.calculatenewid('#rubric-'+name+' .criterion');
         newlevid = M.gradingform_rubrixeditor.calculatenewid('#rubric-'+name+' .level');
     }
@@ -154,7 +156,7 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         'callbackargs' : [e, true],
         'callback' : M.gradingform_rubrixeditor.buttonclick
     };
-    if (chunks.length == 3 && action == 'addcriterion') {
+    if (chunks.length == 3 && action == 'addcriterion' || action == 'addpenalty' || action == 'addlate') {
         // ADD NEW CRITERION
         var levelsscores = [0], levidx = 1
         var parentel = Y.one('#'+name+'-criteria')
@@ -165,11 +167,31 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         }
         for (levidx;levidx<3;levidx++) levelsscores[levidx] = parseFloat(levelsscores[levidx-1])+1
         var levelsstr = '';
-        for (levidx=0;levidx<levelsscores.length;levidx++) {
-            levelsstr += M.gradingform_rubrixeditor.templates[name].level.
-                replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
-                replace(/\{LEVEL-score\}/g, levelsscores[levidx]).
-                replace(/\{LEVEL-index\}/g, levidx + 1);
+
+        if(action == 'addpenalty') {
+            for (levidx=0;levidx<levelsscores.length;levidx++) {
+                levelsscores = [0, 5, 10]
+                levelsstr += M.gradingform_rubrixeditor.templates[name].penaltylevel.
+                    replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
+                    replace(/\{LEVEL-penalty\}/g, levelsscores[levidx]).
+                    replace(/\{LEVEL-index\}/g, levidx + 1);
+            }
+        } else if(action == 'addlate') {
+            for (levidx=0;levidx<levelsscores.length;levidx++) {
+                levelsscores = [0, 5, 10]
+                levelsstr += M.gradingform_rubrixeditor.templates[name].latelevel.
+                    replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
+                    replace(/\{LEVEL-late\}/g, levelsscores[levidx]).
+                    replace(/\{LEVEL-index\}/g, levidx + 1);
+            }
+        } else {
+            for (levidx=0;levidx<levelsscores.length;levidx++) {
+                levelsscores = [0, 1, 2]
+                levelsstr += M.gradingform_rubrixeditor.templates[name].level.
+                    replace(/\{LEVEL-id\}/g, 'NEWID'+(newlevid+levidx)).
+                    replace(/\{LEVEL-score\}/g, levelsscores[levidx]).
+                    replace(/\{LEVEL-index\}/g, levidx + 1);
+            }
         }
         var newcriterion = M.gradingform_rubrixeditor.templates[name]['criterion'].replace(/\{LEVELS\}/, levelsstr)
         parentel.append(newcriterion.replace(/\{CRITERION-id\}/g, 'NEWID'+newid).replace(/\{.+?\}/g, ''))
@@ -177,23 +199,52 @@ M.gradingform_rubrixeditor.buttonclick = function(e, confirmed) {
         M.gradingform_rubrixeditor.addhandlers();
         M.gradingform_rubrixeditor.disablealleditors()
         M.gradingform_rubrixeditor.assignclasses(elements_str)
+
+        // Append class to late penalty description.
+        if(elements_str.includes('addlate')){
+            Y.one('#rubric-' + name + ' #' + name + '-criteria-NEWID' + newid + '-description-cell')._node.classList.add('latedescription');
+        }
+
         M.gradingform_rubrixeditor.editmode(
             Y.one('#rubric-' + name + ' #' + name + '-criteria-NEWID' + newid + '-description-cell'), true
         );
     } else if (chunks.length == 5 && action == 'addlevel') {
+
         // ADD NEW LEVEL
         var newscore = 0;
-        parent = Y.one('#'+name+'-criteria-'+chunks[2]+'-levels')
+        var ispenalty = false;
+        var islate = false;
         var levelIndex = 1;
+
+        parent = Y.one('#'+name+'-criteria-'+chunks[2]+'-levels')
+
         parent.all('.level').each(function (node) {
+            ispenalty = node.getAttribute('class').includes('penaltylevel');
+            islate = node.getAttribute('class').includes('latelevel');
             newscore = Math.max(newscore, parseFloat(node.one('.score input[type=text]').get('value')) + 1);
             levelIndex++;
         });
-        var newlevel = M.gradingform_rubrixeditor.templates[name]['level'].
+
+        if (ispenalty){
+            var newlevel = M.gradingform_rubrixeditor.templates[name]['penaltylevel'].
+            replace(/\{CRITERION-id\}/g, chunks[2]).replace(/\{LEVEL-id\}/g, 'NEWID'+newlevid).
+            replace(/\{LEVEL-penalty\}/g, newscore).
+            replace(/\{LEVEL-index\}/g, levelIndex).
+            replace(/\{.+?\}/g, '');
+        } else if (islate) {
+            var newlevel = M.gradingform_rubrixeditor.templates[name]['latelevel'].
+            replace(/\{CRITERION-id\}/g, chunks[2]).replace(/\{LEVEL-id\}/g, 'NEWID'+newlevid).
+            replace(/\{LEVEL-late\}/g, newscore).
+            replace(/\{LEVEL-index\}/g, levelIndex).
+            replace(/\{.+?\}/g, '');
+        } else {
+            var newlevel = M.gradingform_rubrixeditor.templates[name]['level'].
             replace(/\{CRITERION-id\}/g, chunks[2]).replace(/\{LEVEL-id\}/g, 'NEWID'+newlevid).
             replace(/\{LEVEL-score\}/g, newscore).
             replace(/\{LEVEL-index\}/g, levelIndex).
             replace(/\{.+?\}/g, '');
+        }
+
         parent.append(newlevel)
         M.gradingform_rubrixeditor.addhandlers();
         M.gradingform_rubrixeditor.disablealleditors()

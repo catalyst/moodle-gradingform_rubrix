@@ -55,6 +55,12 @@ class gradingform_rubrix_controller extends gradingform_controller {
     const DISPLAY_REVIEW        = 6;
     /** Rubric display mode: Dispaly filled rubric (i.e. students see their grades) */
     const DISPLAY_VIEW          = 7;
+    /** Normal display mode display mode */
+    const CRITERIA_TYPE_NORMAL  = 0;
+    /** Penalty display mode  */
+    const CRITERIA_TYPE_PENALTY = 1;
+    /** Late display mode  */
+    const CRITERIA_TYPE_LATE = 2;
 
     /**
      * Extends the module settings navigation with the rubric grading settings
@@ -155,6 +161,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
         if (!isset($newdefinition->rubric['options'])) {
             $newdefinition->rubric['options'] = self::get_default_options();
         }
+
         $newdefinition->options = json_encode($newdefinition->rubric['options']);
         $editoroptions = self::description_form_field_options($this->get_context());
         $newdefinition = file_postupdate_standard_editor($newdefinition, 'description', $editoroptions, $this->get_context(),
@@ -179,8 +186,9 @@ class gradingform_rubrix_controller extends gradingform_controller {
             $newcriteria = $newdefinition->rubric['criteria']; // New ones to be saved.
         }
         $currentcriteria = $currentdefinition->rubric_criteria;
-        $criteriafields = array('sortorder', 'description', 'descriptionformat');
+        $criteriafields = array('sortorder', 'description', 'descriptionformat', 'criteriatype', 'cap');
         $levelfields = array('score', 'definition', 'definitionformat');
+
         foreach ($newcriteria as $id => $criterion) {
             // Get list of submitted levels.
             $levelsdata = array();
@@ -192,11 +200,26 @@ class gradingform_rubrix_controller extends gradingform_controller {
                 // Insert criterion into DB.
                 // TODO MDL-31235 format is not supported yet.
                 $data = array('definitionid' => $this->definition->id, 'descriptionformat' => FORMAT_MOODLE);
+
                 foreach ($criteriafields as $key) {
+
                     if (array_key_exists($key, $criterion)) {
+
                         $data[$key] = $criterion[$key];
+
+                        if ($this->multi_array_key_exists('late', $criterion)) {
+                            if (isset($criterion['cap'])) {
+                                $data['cap'] = $criterion['cap'];
+                            }
+                            $data['criteriatype'] = self::CRITERIA_TYPE_LATE;
+                        } else if ($this->multi_array_key_exists('penalty', $criterion)) {
+                            $data['criteriatype'] = self::CRITERIA_TYPE_PENALTY;
+                        } else {
+                            $data['criteriatype'] = self::CRITERIA_TYPE_NORMAL;
+                        }
                     }
                 }
+
                 if ($doupdate) {
                     $id = $DB->insert_record('gradingform_rubrix_criteria', $data);
                 }
@@ -233,6 +256,12 @@ class gradingform_rubrix_controller extends gradingform_controller {
             foreach ($levelsdata as $levelid => $level) {
                 if (isset($level['score'])) {
                     $level['score'] = unformat_float($level['score']);
+                }
+                if (isset($level['penalty'])) {
+                    $level['score'] = unformat_float($level['penalty']);
+                }
+                if (isset($level['late'])) {
+                    $level['score'] = unformat_float($level['late']);
                 }
                 if (preg_match('/^NEWID\d+$/', $levelid)) {
                     // Insert level into DB.
@@ -275,6 +304,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
                 }
             }
         }
+
         // Remove deleted criteria from DB.
         foreach (array_keys($currentcriteria) as $id) {
             if (!array_key_exists($id, $newcriteria)) {
@@ -307,6 +337,26 @@ class gradingform_rubrix_controller extends gradingform_controller {
     }
 
     /**
+     * Finds key in multidimensional array.
+     *
+     * @param array $key
+     * @param array $array
+     * @return bool
+     */
+    public function multi_array_key_exists($key, array $array): bool {
+        if (array_key_exists($key, $array)) {
+            return true;
+        } else {
+            foreach ($array as $nested) {
+                if (is_array($nested) && $this->multi_array_key_exists($key, $nested)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Marks all instances filled with this rubric with the status INSTANCE_STATUS_NEEDUPDATE.
      */
     public function mark_for_regrade() {
@@ -327,7 +377,8 @@ class gradingform_rubrix_controller extends gradingform_controller {
         global $DB;
         $sql = "SELECT gd.*,
                        rc.id AS rcid, rc.sortorder AS rcsortorder, rc.description AS
-                       rcdescription, rc.descriptionformat AS rcdescriptionformat,
+                       rcdescription, rc.descriptionformat AS rcdescriptionformat, rc.criteriatype AS rccriteriatype,
+                       rc.cap AS rccap,
                        rl.id AS rlid, rl.score AS rlscore, rl.definition AS rldefinition, rl.definitionformat AS rldefinitionformat
                   FROM {grading_definitions} gd
              LEFT JOIN {gradingform_rubrix_criteria} rc ON (rc.definitionid = gd.id)
@@ -350,7 +401,7 @@ class gradingform_rubrix_controller extends gradingform_controller {
             }
             // Pick the criterion data.
             if (!empty($record->rcid) and empty($this->definition->rubric_criteria[$record->rcid])) {
-                foreach (array('id', 'sortorder', 'description', 'descriptionformat') as $fieldname) {
+                foreach (array('id', 'sortorder', 'description', 'descriptionformat', 'criteriatype', 'cap') as $fieldname) {
                     $this->definition->rubric_criteria[$record->rcid][$fieldname] = $record->{'rc'.$fieldname};
                 }
                 $this->definition->rubric_criteria[$record->rcid]['levels'] = array();
@@ -694,14 +745,18 @@ class gradingform_rubrix_controller extends gradingform_controller {
             return null;
         }
         $returnvalue = array('minscore' => 0, 'maxscore' => 0);
+
         foreach ($this->get_definition()->rubric_criteria as $id => $criterion) {
-            $scores = array();
-            foreach ($criterion['levels'] as $level) {
-                $scores[] = $level['score'];
+
+            if ($criterion['criteriatype'] == "0") {
+                $scores = array();
+                foreach ($criterion['levels'] as $level) {
+                    $scores[] = $level['score'];
+                }
+                sort($scores);
+                $returnvalue['minscore'] += $scores[0];
+                $returnvalue['maxscore'] += $scores[count($scores) - 1];
             }
-            sort($scores);
-            $returnvalue['minscore'] += $scores[0];
-            $returnvalue['maxscore'] += $scores[count($scores) - 1];
         }
         return $returnvalue;
     }
@@ -923,7 +978,6 @@ class gradingform_rubrix_instance extends gradingform_instance {
      */
     public function get_grade() {
         $grade = $this->get_rubric_filling();
-
         if (!($scores = $this->get_controller()->get_min_max_score()) || $scores['maxscore'] <= $scores['minscore']) {
             return -1;
         }
@@ -932,28 +986,46 @@ class gradingform_rubrix_instance extends gradingform_instance {
         if (empty($graderange)) {
             return -1;
         }
-        sort($graderange);
-        $mingrade = $graderange[0];
-        $maxgrade = $graderange[count($graderange) - 1];
 
         $curscore = 0;
+        $curpenalty = 0;
+        $cap = 0;
+
+        // Get the score, percent penalty, late penalty and cap from db and put them in vars.
         foreach ($grade['criteria'] as $id => $record) {
-            $curscore += $this->get_controller()->get_definition()->rubric_criteria[$id]['levels'][$record['levelid']]['score'];
+
+            if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "0") {
+                $curscore += $this->get_controller()->get_definition()->rubric_criteria
+                [$id]['levels'][$record['levelid']]['score'];
+            } else if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "1") {
+                $curpenalty += $this->get_controller()->get_definition()->rubric_criteria
+                [$id]['levels'][$record['levelid']]['score'];
+            } else if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "2") {
+                $curlate += $this->get_controller()->get_definition()->rubric_criteria
+                [$id]['levels'][$record['levelid']]['score'];
+                if ($this->get_controller()->get_definition()->rubric_criteria[$id]['cap'] > 0) {
+                    $cap = (int)$this->get_controller()->get_definition()->rubric_criteria[$id]['cap'];
+                }
+            }
         }
 
-        $allowdecimals = $this->get_controller()->get_allow_grade_decimals();
-        $options = $this->get_controller()->get_options();
-
-        if ($options['lockzeropoints']) {
-            // Grade calculation method when 0-level is locked.
-            $grade = max($mingrade, $curscore / $scores['maxscore'] * $maxgrade);
-            return $allowdecimals ? $grade : round($grade, 0);
-        } else {
-            // Alternative grade calculation method.
-            $gradeoffset = ($curscore - $scores['minscore']) /
-                           ($scores['maxscore'] - $scores['minscore']) * ($maxgrade - $mingrade);
-            return ($allowdecimals ? $gradeoffset : round($gradeoffset, 0)) + $mingrade;
+        // Calculate score minus penalty.
+        if ($curpenalty > 0) {
+            $curpenalty = $curpenalty / 100;
+            $curscore = $curscore - ($curscore * $curpenalty);
         }
+
+        // After applying the penalty, apply the late penalty.
+        if ($curlate > 0) {
+            $curscore = $curscore - $curlate;
+        }
+
+        // If the score plus penalties exceed the cap reset the score to be the cap.
+        if ($curscore < $cap) {
+            $curscore = $cap;
+        }
+
+        return $curscore;
     }
 
     /**

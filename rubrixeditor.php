@@ -129,7 +129,9 @@ class rubrixeditor extends HTML_QuickForm_input {
             $PAGE->requires->js_init_call('M.gradingform_rubrixeditor.init', array(
                 array('name' => $this->getName(),
                     'criteriontemplate' => $renderer->criterion_template($mode, $data['options'], $this->getName()),
-                    'leveltemplate' => $renderer->level_template($mode, $data['options'], $this->getName())
+                    'leveltemplate' => $renderer->level_template($mode, $data['options'], $this->getName()),
+                    'penaltyleveltemplate' => $renderer->penalty_level_template($mode, $data['options'], $this->getName()),
+                    'lateleveltemplate' => $renderer->late_level_template($mode, $data['options'], $this->getName())
                    )),
                 true, $module);
         } else {
@@ -245,23 +247,65 @@ class rubrixeditor extends HTML_QuickForm_input {
                         $this->nonjsbuttonpressed = true;
                     }
                     if (!array_key_exists('delete', $level)) {
-                        $score = unformat_float($level['score'], true);
-                        if ($withvalidation) {
-                            if (!strlen(trim($level['definition']))) {
-                                $errors['err_nodefinition'] = 1;
-                                $level['error_definition'] = true;
+                        if (isset($level['score'])) {
+                            $score = unformat_float($level['score'], true);
+                            if ($withvalidation) {
+                                if (!strlen(trim($level['definition']))) {
+                                    $errors['err_nodefinition'] = 1;
+                                    $level['error_definition'] = true;
+                                }
+                                if ($score === null || $score === false) {
+                                    $errors['err_scoreformat'] = 1;
+                                    $level['error_score'] = true;
+                                }
                             }
-                            if ($score === null || $score === false) {
-                                $errors['err_scoreformat'] = 1;
-                                $level['error_score'] = true;
+                            $levels[$levelid] = $level;
+                            if ($minscore === null || $score < $minscore) {
+                                $minscore = $score;
+                            }
+                            if ($maxscore === null || $score > $maxscore) {
+                                $maxscore = $score;
                             }
                         }
-                        $levels[$levelid] = $level;
-                        if ($minscore === null || $score < $minscore) {
-                            $minscore = $score;
+                        if (isset($level['penalty'])) {
+                            $penalty = unformat_float($level['penalty'], true);
+                            if ($withvalidation) {
+                                if (!strlen(trim($level['definition']))) {
+                                    $errors['err_nodefinition'] = 1;
+                                    $level['error_definition'] = true;
+                                }
+                                if ($penalty === null || $penalty === false) {
+                                    $errors['err_scoreformat'] = 1;
+                                    $level['error_score'] = true;
+                                }
+                            }
+                            $levels[$levelid] = $level;
+                            if ($minscore === null || $penalty < $minscore) {
+                                $minscore = $penalty;
+                            }
+                            if ($maxscore === null || $penalty > $maxscore) {
+                                $maxscore = $penalty;
+                            }
                         }
-                        if ($maxscore === null || $score > $maxscore) {
-                            $maxscore = $score;
+                        if (isset($level['late'])) {
+                            $late = unformat_float($level['late'], true);
+                            if ($withvalidation) {
+                                if (!strlen(trim($level['definition']))) {
+                                    $errors['err_nodefinition'] = 1;
+                                    $level['error_definition'] = true;
+                                }
+                                if ($late === null || $late === false) {
+                                    $errors['err_scoreformat'] = 1;
+                                    $level['error_score'] = true;
+                                }
+                            }
+                            $levels[$levelid] = $level;
+                            if ($minscore === null || $late < $minscore) {
+                                $minscore = $late;
+                            }
+                            if ($maxscore === null || $late > $maxscore) {
+                                $maxscore = $late;
+                            }
                         }
                     } else {
                         $this->nonjsbuttonpressed = true;
@@ -336,6 +380,7 @@ class rubrixeditor extends HTML_QuickForm_input {
             }
             $this->wasvalidated = true;
         }
+
         return $return;
     }
 

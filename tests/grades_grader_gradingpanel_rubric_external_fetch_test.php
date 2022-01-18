@@ -73,7 +73,7 @@ class fetch_test extends advanced_testcase {
 
         $this->expectException(coding_exception::class);
         $this->expectExceptionMessage("The 'foo' item is not valid for the 'mod_forum' component");
-        fetch::execute('mod_forum', 1, 'foo', 2);
+        fetch::execute('mod_forum', 1, 'foo', 2, 0);
     }
 
     /**
