@@ -108,11 +108,11 @@
 .gradingform_rubrix .criterion .capclass {
     max-width: 50px;
     margin-bottom: 10px;
-    display:none;
+    display: none;
 }
 
 .gradingform_rubrix .criterion .latedescription .capclass {
-    display:inline;
+    display: inline;
 }
 
 .gradingform_rubrix .criterion .latedescription textarea {
@@ -120,17 +120,18 @@
 }
 
 .gradingform_rubrix .criterion .mingrade {
-    display:none;
+    display: none;
 }
 
 .gradingform_rubrix .criterion .latedescription .mingrade {
-    display:inline;
+    display: inline;
     font-size: 10px;
-    font-weight:normal;
+    font-weight: normal;
     margin-left: 10px;
 }
 
-.gradingform_rubrix .criterion .capclass li:nth-of-type(1) > a, .nav > ul > li:nth-of-type(2) > a {
+.gradingform_rubrix .criterion .capclass li:nth-of-type(1) > a,
+.nav > ul > li:nth-of-type(2) > a {
     color: #f00;
 }
 
