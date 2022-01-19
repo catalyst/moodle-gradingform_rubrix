@@ -1014,7 +1014,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                     $level['class'] .= ' currentchecked';
                 }
 
-                if ($criteriondata[$levelid]) {
+                if (!empty($criteriondata[$levelid])) {
                     if ($criteriondata[$levelid]->criteriatype == "1") {
                         $level['class'] .= ' penalty';
                         $levelsstr .= $this->penalty_level_template($mode, $options, $elementname, $id, $level);
