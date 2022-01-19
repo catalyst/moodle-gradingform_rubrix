@@ -31,19 +31,33 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool true
  */
 function xmldb_gradingform_rubrix_upgrade($oldversion) {
-    global $CFG;
+    global $DB;
 
-    // Automatically generated Moodle v3.6.0 release upgrade line.
-    // Put any upgrade step following this.
+    $dbman = $DB->get_manager();
 
-    // Automatically generated Moodle v3.7.0 release upgrade line.
-    // Put any upgrade step following this.
+    if ($oldversion < 2022011900) {
 
-    // Automatically generated Moodle v3.8.0 release upgrade line.
-    // Put any upgrade step following this.
+        // Define field criteriatype to be added to gradingform_rubrix_criteria.
+        $table = new xmldb_table('gradingform_rubrix_criteria');
+        $field = new xmldb_field('criteriatype', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'descriptionformat');
 
-    // Automatically generated Moodle v3.9.0 release upgrade line.
-    // Put any upgrade step following this.
+        // Conditionally launch add field criteriatype.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field cap to be added to gradingform_rubrix_criteria.
+        $table = new xmldb_table('gradingform_rubrix_criteria');
+        $field = new xmldb_field('cap', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'criteriatype');
+
+        // Conditionally launch add field cap.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Rubrix savepoint reached.
+        upgrade_plugin_savepoint(true, 2022011900, 'gradingform', 'rubrix');
+    }
 
     return true;
 }
