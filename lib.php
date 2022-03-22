@@ -58,9 +58,9 @@ class gradingform_rubrix_controller extends gradingform_controller {
     /** Normal display mode display mode */
     const CRITERIA_TYPE_NORMAL  = 0;
     /** Penalty display mode  */
-    const CRITERIA_TYPE_PENALTY = 1;
+    const CRITERIA_TYPE_PENALTY_PERCENT = 1;
     /** Late display mode  */
-    const CRITERIA_TYPE_LATE = 2;
+    const CRITERIA_TYPE_PENALTY_POINTS = 2;
 
     /**
      * Extends the module settings navigation with the rubric grading settings
@@ -211,9 +211,9 @@ class gradingform_rubrix_controller extends gradingform_controller {
                             if (isset($criterion['cap'])) {
                                 $data['cap'] = $criterion['cap'];
                             }
-                            $data['criteriatype'] = self::CRITERIA_TYPE_LATE;
+                            $data['criteriatype'] = self::CRITERIA_TYPE_PENALTY_POINTS;
                         } else if ($this->multi_array_key_exists('penalty', $criterion)) {
-                            $data['criteriatype'] = self::CRITERIA_TYPE_PENALTY;
+                            $data['criteriatype'] = self::CRITERIA_TYPE_PENALTY_PERCENT;
                         } else {
                             $data['criteriatype'] = self::CRITERIA_TYPE_NORMAL;
                         }
@@ -988,41 +988,56 @@ class gradingform_rubrix_instance extends gradingform_instance {
         }
 
         $curscore = 0;
-        $curpenalty = 0;
+        $percentpenalty = 0;
+        $pointpenalties = array();
         $cap = 0;
 
         // Get the score, percent penalty, late penalty and cap from db and put them in vars.
         foreach ($grade['criteria'] as $id => $record) {
+            $criteriatype = $this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'];
+            $score = $this->get_controller()->get_definition()->rubric_criteria[$id]['levels'][$record['levelid']]['score'];
 
-            if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "0") {
-                $curscore += $this->get_controller()->get_definition()->rubric_criteria
-                [$id]['levels'][$record['levelid']]['score'];
-            } else if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "1") {
-                $curpenalty += $this->get_controller()->get_definition()->rubric_criteria
-                [$id]['levels'][$record['levelid']]['score'];
-            } else if ($this->get_controller()->get_definition()->rubric_criteria[$id]['criteriatype'] == "2") {
-                $curlate += $this->get_controller()->get_definition()->rubric_criteria
-                [$id]['levels'][$record['levelid']]['score'];
+            if ($criteriatype == gradingform_rubrix_controller::CRITERIA_TYPE_NORMAL) {
+                $curscore += $score;
+            } else if ($criteriatype == gradingform_rubrix_controller::CRITERIA_TYPE_PENALTY_PERCENT) {
+                $percentpenalty += $score;
+            } else if ($criteriatype == gradingform_rubrix_controller::CRITERIA_TYPE_PENALTY_POINTS) {
                 if ($this->get_controller()->get_definition()->rubric_criteria[$id]['cap'] > 0) {
                     $cap = (int)$this->get_controller()->get_definition()->rubric_criteria[$id]['cap'];
+                } else {
+                    $cap = 0;
                 }
+                $pointpenalties[] = ['score' => $score, 'cap' => $cap];
             }
         }
 
         // Calculate score minus penalty.
-        if ($curpenalty > 0) {
-            $curpenalty = $curpenalty / 100;
-            $curscore = $curscore - ($curscore * $curpenalty);
+        if ($percentpenalty > 0) {
+            $percentpenalty = $percentpenalty / 100;
+            $curscore = $curscore - ($curscore * $percentpenalty);
         }
 
-        // After applying the penalty, apply the late penalty.
-        if ($curlate > 0) {
-            $curscore = $curscore - $curlate;
-        }
-
-        // If the score plus penalties exceed the cap reset the score to be the cap.
-        if ($curscore < $cap) {
-            $curscore = $cap;
+        // After applying the penalty, apply the points based penalties.
+        foreach ($pointpenalties as $pp) {
+            if ($pp['score'] > 0) {
+                // If a cap is defined, check if this will decrease the score too much.
+                if (!empty($pp['cap'])) {
+                    if ($curscore < $pp['cap']) {
+                        // Score is already less than the cap, don't apply penalty.
+                        continue;
+                    }
+                    $calculatedscore = $curscore - $pp['score'];
+                    if ($calculatedscore < $pp['cap']) {
+                        // Applying the cap made the score drop too low, return the cap.
+                        $curscore = $pp['cap'];
+                    } else {
+                        $curscore = $calculatedscore;
+                    }
+                } else {
+                    // No Cap defined, just apply penalty normally.
+                    $curscore = $curscore - $pp['score'];
+                }
+            }
         }
 
         return $curscore;
