@@ -41,10 +41,10 @@ class restore_gradingform_rubrix_plugin extends restore_gradingform_plugin {
         $paths = array();
 
         $paths[] = new restore_path_element('gradingform_rubrix_criterion',
-            $this->get_pathfor('/criteria/criterion'));
+            $this->get_pathfor('/rubrixcriteria/rubrixcriterion'));
 
         $paths[] = new restore_path_element('gradingform_rubrix_level',
-            $this->get_pathfor('/criteria/criterion/levels/level'));
+            $this->get_pathfor('/rubrixcriteria/rubrixcriterion/rubrixlevels/rubrixlevel'));
 
         return $paths;
     }
@@ -58,8 +58,8 @@ class restore_gradingform_rubrix_plugin extends restore_gradingform_plugin {
 
         $paths = array();
 
-        $paths[] = new restore_path_element('gradinform_rubric_filling',
-            $this->get_pathfor('/fillings/filling'));
+        $paths[] = new restore_path_element('gradingform_rubrix_filling',
+            $this->get_pathfor('/rubrixfillings/rubrixfilling'));
 
         return $paths;
     }
@@ -105,7 +105,7 @@ class restore_gradingform_rubrix_plugin extends restore_gradingform_plugin {
      *
      * @param stdClass|array $data
      */
-    public function process_gradinform_rubric_filling($data) {
+    public function process_gradingform_rubrix_filling($data) {
         global $DB;
 
         $data = (object)$data;

@@ -37,7 +37,7 @@ class backup_gradingform_rubrix_plugin extends backup_gradingform_plugin {
     protected function define_definition_plugin_structure() {
 
         // Append data only if the grand-parent element has 'method' set to 'rubric'.
-        $plugin = $this->get_plugin_element(null, '../../method', 'rubric');
+        $plugin = $this->get_plugin_element(null, '../../method', 'rubrix');
 
         // Create a visible container for our data.
         $pluginwrapper = new backup_nested_element($this->get_recommended_name());
@@ -47,14 +47,14 @@ class backup_gradingform_rubrix_plugin extends backup_gradingform_plugin {
 
         // Define our elements.
 
-        $criteria = new backup_nested_element('criteria');
+        $criteria = new backup_nested_element('rubrixcriteria');
 
-        $criterion = new backup_nested_element('criterion', array('id'), array(
-            'sortorder', 'description', 'descriptionformat', 'criteriatype'));
+        $criterion = new backup_nested_element('rubrixcriterion', array('id'), array(
+            'sortorder', 'description', 'descriptionformat', 'criteriatype', 'cap'));
 
-        $levels = new backup_nested_element('levels');
+        $levels = new backup_nested_element('rubrixlevels');
 
-        $level = new backup_nested_element('level', array('id'), array(
+        $level = new backup_nested_element('rubrixlevel', array('id'), array(
             'score', 'definition', 'definitionformat'));
 
         // Build elements hierarchy.
@@ -84,7 +84,7 @@ class backup_gradingform_rubrix_plugin extends backup_gradingform_plugin {
     protected function define_instance_plugin_structure() {
 
         // Append data only if the ancestor 'definition' element has 'method' set to 'rubric'.
-        $plugin = $this->get_plugin_element(null, '../../../../method', 'rubric');
+        $plugin = $this->get_plugin_element(null, '../../../../method', 'rubrix');
 
         // Create a visible container for our data.
         $pluginwrapper = new backup_nested_element($this->get_recommended_name());
@@ -94,9 +94,9 @@ class backup_gradingform_rubrix_plugin extends backup_gradingform_plugin {
 
         // Define our elements.
 
-        $fillings = new backup_nested_element('fillings');
+        $fillings = new backup_nested_element('rubrixfillings');
 
-        $filling = new backup_nested_element('filling', array('id'), array(
+        $filling = new backup_nested_element('rubrixfilling', array('id'), array(
             'criterionid', 'levelid', 'remark', 'remarkformat'));
 
         // Build elements hierarchy.
