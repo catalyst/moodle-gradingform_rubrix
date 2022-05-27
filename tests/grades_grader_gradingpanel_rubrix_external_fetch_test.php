@@ -290,7 +290,7 @@ class grades_grader_gradingpanel_rubrix_external_fetch_test extends advanced_tes
         $this->assertIsInt($result['grade']['timemodified']);
 
         $this->assertArrayHasKey('usergrade', $result['grade']);
-        $this->assertEquals(50, $result['grade']['usergrade']);
+        $this->assertEquals(2, $result['grade']['usergrade']);
 
         $this->assertArrayHasKey('maxgrade', $result['grade']);
         $this->assertIsInt($result['grade']['maxgrade']);
