@@ -60,7 +60,7 @@ class grades_grader_gradingpanel_rubrix_external_fetch_test extends advanced_tes
 
         $this->expectException(coding_exception::class);
         $this->expectExceptionMessage("The 'foo' item is not valid for the 'mod_invalid' component");
-        fetch::execute('mod_invalid', 1, 'foo', 2);
+        fetch::execute('mod_invalid', 1, 'foo', 2, 0);
     }
 
     /**
@@ -95,7 +95,7 @@ class grades_grader_gradingpanel_rubrix_external_fetch_test extends advanced_tes
 
         $this->expectException(moodle_exception::class);
         $this->expectExceptionMessage("not configured for advanced grading with a rubric");
-        fetch::execute('mod_forum', (int) $forum->get_context()->id, 'forum', (int) $student->id);
+        fetch::execute('mod_forum', (int) $forum->get_context()->id, 'forum', (int) $student->id, 0);
     }
 
     /**
@@ -116,7 +116,7 @@ class grades_grader_gradingpanel_rubrix_external_fetch_test extends advanced_tes
 
         $gradeitem = component_gradeitem::instance('mod_forum', $forum->get_context(), 'forum');
 
-        $result = fetch::execute('mod_forum', (int) $forum->get_context()->id, 'forum', (int) $student->id);
+        $result = fetch::execute('mod_forum', (int) $forum->get_context()->id, 'forum', (int) $student->id, 0);
         $result = external_api::clean_returnvalue(fetch::execute_returns(), $result);
 
         $this->assertIsArray($result);
@@ -269,7 +269,7 @@ class grades_grader_gradingpanel_rubrix_external_fetch_test extends advanced_tes
 
         $this->setUser($fetcheruser);
 
-        $result = fetch::execute('mod_forum', (int) $forum->get_context()->id, 'forum', (int) $gradeduser->id);
+        $result = fetch::execute('mod_forum', (int) $forum->get_context()->id, 'forum', (int) $gradeduser->id, 0);
         $result = external_api::clean_returnvalue(fetch::execute_returns(), $result);
 
         $this->assertIsArray($result);
