@@ -978,7 +978,6 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
      * @return string
      */
     public function display_rubric($criteria, $options, $mode, $elementname = null, $values = null) {
-
         global $DB;
 
         $criteriastr = '';
@@ -1011,7 +1010,9 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 if (isset($criterionvalue['savedlevelid']) && ((int)$criterionvalue['savedlevelid'] === $levelid)) {
                     $level['class'] .= ' currentchecked';
                 }
-
+                if (isset($level['penalty'])) {
+                    $level['score'] = unformat_float($level['penalty']);
+                }
                 if (!empty($criteriondata[$levelid])) {
                     if ($criteriondata[$levelid]->criteriatype == "1") {
                         $level['class'] .= ' penalty';
