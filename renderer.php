@@ -455,6 +455,7 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
         }
 
         $leveltemplate = html_writer::start_tag('div', array('class' => 'level-wrapper'));
+        $score = isset($level['penalty']) ? $level['penalty'] : $level['score'];
         if ($mode == gradingform_rubrix_controller::DISPLAY_EDIT_FULL) {
             $definitionparams = array(
                 'id' => '{NAME}-criteria-{CRITERION-id}-levels-{LEVEL-id}-definition',
@@ -463,14 +464,13 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                 'cols' => '10', 'rows' => '4'
             );
             $definition = html_writer::tag('textarea', s($level['definition']), $definitionparams);
-
             $scoreparams = array(
                 'type' => 'text',
                 'id' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
                 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
                 'aria-label' => get_string('penaltyinputforlevel', 'gradingform_rubrix', $levelindex),
                 'size' => '3',
-                'value' => $level['score'],
+                'value' => $score,
             );
             $penalty = html_writer::empty_tag('input', $scoreparams);
         } else {
@@ -480,10 +480,10 @@ class gradingform_rubrix_renderer extends plugin_renderer_base {
                                  'value' => $level['definition']));
                 $leveltemplate .= html_writer::empty_tag('input', array('type' =>
                                  'hidden', 'name' => '{NAME}[criteria][{CRITERION-id}][levels][{LEVEL-id}][penalty]',
-                                 'value' => '0'));
+                                 'value' => $score));
             }
             $definition = s($level['definition']);
-            $penalty = $level['score'];
+            $penalty = $score;
         }
         if ($mode == gradingform_rubrix_controller::DISPLAY_EVAL) {
             $levelradioparams = array(
