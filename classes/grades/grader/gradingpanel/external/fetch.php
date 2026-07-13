@@ -25,8 +25,6 @@
 declare(strict_types = 1);
 
 namespace gradingform_rubrix\grades\grader\gradingpanel\external;
-require_once(dirname(__FILE__) . "/../../../../../../../../../config.php");
-require_login();
 use coding_exception;
 use context;
 use core_grades\component_gradeitem as gradeitem;
